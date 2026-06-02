@@ -34,7 +34,26 @@ body {
   background: var(--color-bg-darker);
   color: var(--color-text-light);
   font-family: var(--font-body);
+  overflow-x: clip;
 }
+
+/* Classe utilitaria para colocar a borda degrade em baixo do elemento */
+.borda-gradient-bottom {
+  position: relative;
+}
+
+.borda-gradient-bottom::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  height: 2px;
+  background: var(--gradient-primary);
+  transform: translateX(-50%);
+}
+
+/* navbar */
 
 header {
   position: sticky;
@@ -46,7 +65,6 @@ header {
   align-items: center;
   padding: 20px 5%;
   background: var(--color-bg-dark);
-  border-bottom: 1px solid var(--color-text-muted);
 }
 
 .logo {
@@ -131,7 +149,9 @@ nav ul {
   transition: 0.3s;
 }
 
+/* Responsividade */
 @media (max-width: 850px) {
+  /* Navbar */
   header {
     flex-wrap: wrap;
   }
