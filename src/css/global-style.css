@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
+
+:root {
+  --font-title: "Orbitron", sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+  --font-body: "Roboto", sans-serif;
+
+  --color-bg-dark: #0a0e27;
+  --color-bg-darker: #050810;
+  --color-cyan: #00d9ff;
+  --color-cyan-dark: #00a8cc;
+  --color-magenta: #ff006e;
+  --color-magenta-dark: #cc0056;
+  --color-text-light: #e0e0e0;
+  --color-text-lighter: #f0f0f0;
+  --color-text-muted: #a0a0a0;
+  --color-success: #00ff88;
+  --color-error: #ff3366;
+  --color-warning: #ffaa00;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
