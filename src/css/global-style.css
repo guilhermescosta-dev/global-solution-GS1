@@ -17,6 +17,12 @@
   --color-success: #00ff88;
   --color-error: #ff3366;
   --color-warning: #ffaa00;
+  --color-cyan-transparent: rgba(0, 217, 255, 0.035);
+  --color-cyan-shadow: rgba(0, 217, 255, 0.35);
+  --color-magenta-transparent: rgba(255, 0, 110, 0.04);
+  --color-magenta-shadow: rgba(255, 0, 110, 0.08);
+  --color-success-transparent: rgba(0, 255, 136, 0.04);
+  --color-success-shadow: rgba(0, 255, 136, 0.08);
   --gradient-primary: linear-gradient(
     100deg,
     var(--color-cyan) 0%,
@@ -88,7 +94,7 @@ header {
   background: var(--gradient-primary);
   color: var(--color-bg-darker);
   font-size: 1.7rem;
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.35);
+  box-shadow: 0 0 20px var(--color-cyan-shadow);
 }
 
 .logo-texto {
@@ -96,7 +102,7 @@ header {
   white-space: nowrap;
 }
 
-nav ul {
+header nav ul {
   display: flex;
   align-items: center;
   gap: clamp(8px, 2vw, 24px);
@@ -104,6 +110,7 @@ nav ul {
   margin: 0;
   padding: 0;
 }
+
 .nav-section {
   display: inline-block;
   padding: 10px clamp(12px, 2vw, 20px);
@@ -165,15 +172,15 @@ nav ul {
   .menu-hamburguer {
     display: flex;
   }
-  nav {
+  header nav {
     display: none;
     width: 100%;
     padding: 20px 0;
   }
-  nav.active {
+  header nav.active {
     display: block;
   }
-  nav ul {
+  header nav ul {
     flex-direction: column;
     text-align: center;
   }
@@ -186,4 +193,5 @@ nav ul {
   .open span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -7px);
   }
+
 }

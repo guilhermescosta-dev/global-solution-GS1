@@ -97,6 +97,149 @@
   object-fit: cover;
 }
 
+/* Impacto e ODS */
+
+.impacto-section {
+  padding: clamp(64px, 8vw, 104px) 0;
+  background: var(--color-bg-darker);
+}
+
+.impacto-conteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.titulo-section {
+  position: relative;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  color: var(--color-text-lighter);
+  font-family: var(--font-title);
+  font-size: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+}
+
+.titulo-section::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 86px;
+  height: 3px;
+  background: var(--gradient-primary);
+  transform: translateX(-50%);
+}
+
+.impacto-descricao {
+  max-width: 760px;
+  margin: 0 auto 42px;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.missoes-destaque h3,
+.ods-destaque h3 {
+  color: var(--color-text-lighter);
+  font-family: var(--font-title);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+}
+
+.missoes-destaque p,
+.ods-destaque p {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.cards-impacto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.card-impacto {
+  flex: 1 1 260px;
+  min-height: 170px;
+  padding: 20px;
+  border: 1px solid var(--color-cyan);
+  border-radius: 10px;
+  background: var(--color-cyan-transparent);
+}
+
+.card-impacto i {
+  color: var(--color-cyan);
+  font-size: 1.7rem;
+}
+
+.card-impacto h3 {
+  margin-top: 14px;
+  color: var(--color-text-lighter);
+  font-family: var(--font-title);
+  font-size: 1rem;
+}
+
+.card-impacto p {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.destaques-impacto {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+  margin-top: 42px;
+}
+
+.missoes-destaque,
+.ods-destaque {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 10px;
+}
+
+.missoes-destaque {
+  border: 1px solid var(--color-magenta);
+  background: var(--color-magenta-transparent);
+  box-shadow: 0 0 20px var(--color-magenta-shadow);
+}
+
+.ods-destaque {
+  border: 1px solid var(--color-success);
+  background: var(--color-success-transparent);
+  box-shadow: 0 0 20px var(--color-success-shadow);
+}
+
+.missoes-destaque > i,
+.ods-destaque > i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: var(--color-bg-darker);
+  font-size: 1.5rem;
+}
+
+.missoes-destaque > i {
+  background: var(--color-magenta);
+}
+
+.ods-destaque > i {
+  background: var(--color-success);
+}
+
 /* Responsividade */
 @media (max-width: 850px) {
   /* Hero */
@@ -132,5 +275,19 @@
   .botoes-hero .botao-iniciar {
     flex: 1 1 0;
     text-align: center;
+  }
+
+  .card-impacto {
+    flex-basis: 100%;
+  }
+
+  .missoes-destaque,
+  .ods-destaque {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .destaques-impacto {
+    flex-direction: column;
   }
 }
