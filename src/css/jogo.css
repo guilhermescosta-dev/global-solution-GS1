@@ -1,5 +1,9 @@
 @import url("./global-style.css");
 
+/* =========================
+   Página do jogo
+========================= */
+
 .game-page {
   position: relative;
   isolation: isolate;
@@ -8,7 +12,7 @@
   background:
     radial-gradient(circle at 18% 18%, rgba(0, 217, 255, 0.12), transparent 28%),
     radial-gradient(circle at 78% 20%, rgba(255, 0, 110, 0.1), transparent 26%),
-    linear-gradient(135deg, var(--color-bg-darker) 0%, var(--color-bg-dark) 100%);
+    linear-gradient(135deg, var(--color-bg-darker), var(--color-bg-dark));
 }
 
 .game-page::before {
@@ -16,19 +20,12 @@
   position: absolute;
   inset: 0;
   z-index: -2;
+  opacity: 0.2;
   background-image:
-    radial-gradient(circle, rgba(240, 240, 240, 0.8) 1px, transparent 1px),
-    linear-gradient(rgba(0, 217, 255, 0.12) 1px, transparent 1px),
+    radial-gradient(circle, rgba(240, 240, 240, 0.75) 1px, transparent 1px),
+    linear-gradient(rgba(0, 217, 255, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 217, 255, 0.08) 1px, transparent 1px);
-  background-position:
-    0 0,
-    center,
-    center;
-  background-size:
-    120px 120px,
-    96px 96px,
-    96px 96px;
-  opacity: 0.22;
+  background-size: 120px 120px, 96px 96px, 96px 96px;
 }
 
 .game-page::after {
@@ -37,9 +34,9 @@
   right: -12vw;
   bottom: -18vw;
   z-index: -1;
-  width: min(640px, 70vw);
+  width: min(620px, 70vw);
   aspect-ratio: 1;
-  border: 1px solid rgba(0, 217, 255, 0.24);
+  border: 1px solid rgba(0, 217, 255, 0.22);
   border-radius: 50%;
   background:
     linear-gradient(145deg, rgba(224, 224, 224, 0.08), rgba(0, 217, 255, 0.02)),
@@ -51,6 +48,48 @@
   max-width: 1200px;
 }
 
+/* =========================
+   Componentes base
+========================= */
+
+.mission-panel,
+.rule-card,
+.vitals-card {
+  border: 1px solid rgba(0, 217, 255, 0.7);
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(0, 217, 255, 0.06), rgba(255, 0, 110, 0.04)),
+    rgba(5, 8, 16, 0.88);
+  box-shadow:
+    0 0 28px rgba(0, 217, 255, 0.08),
+    inset 0 0 28px rgba(0, 217, 255, 0.04);
+}
+
+.mission-copy h1,
+.mission-panel h2,
+.rule-card h2,
+.vitals-card h2 {
+  color: var(--color-text-lighter);
+  font-family: var(--font-title);
+}
+
+.mission-tag,
+.panel-kicker,
+.week-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* =========================
+   Briefing
+========================= */
+
 .game-briefing {
   min-height: calc(100vh - 95px);
   padding: clamp(48px, 7vw, 92px) 0 clamp(42px, 6vw, 76px);
@@ -58,7 +97,7 @@
 
 .game-briefing-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.9fr);
+  grid-template-columns: minmax(0, 1fr) minmax(390px, 0.9fr);
   gap: clamp(28px, 5vw, 64px);
   align-items: center;
 }
@@ -71,27 +110,11 @@
 
 .mission-tag,
 .panel-kicker {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
   margin-bottom: 18px;
   padding: 6px 14px;
   border: 1px solid var(--color-cyan);
-  border-radius: 999px;
   color: var(--color-cyan);
   background: rgba(0, 217, 255, 0.07);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.mission-copy h1,
-.mission-panel h2,
-.rule-card h2,
-.vitals-card h2 {
-  color: var(--color-text-lighter);
-  font-family: var(--font-title);
 }
 
 .mission-copy h1 {
@@ -128,9 +151,7 @@
   justify-content: center;
   min-height: 52px;
   text-decoration: none;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .mission-actions .botao-iniciar:hover {
@@ -144,18 +165,9 @@
   color: var(--color-cyan);
 }
 
-.mission-panel,
-.rule-card,
-.vitals-card {
-  border: 1px solid rgba(0, 217, 255, 0.74);
-  border-radius: 18px;
-  background:
-    linear-gradient(145deg, rgba(0, 217, 255, 0.06), rgba(255, 0, 110, 0.04)),
-    rgba(5, 8, 16, 0.88);
-  box-shadow:
-    0 0 28px rgba(0, 217, 255, 0.08),
-    inset 0 0 28px rgba(0, 217, 255, 0.04);
-}
+/* =========================
+   Painel da missão
+========================= */
 
 .mission-panel {
   padding: clamp(22px, 3vw, 30px);
@@ -185,12 +197,8 @@
   flex-shrink: 0;
   padding: 8px 12px;
   border: 1px solid var(--color-magenta);
-  border-radius: 999px;
   color: var(--color-magenta);
   background: var(--color-magenta-transparent);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
 }
 
 .base-status {
@@ -210,6 +218,10 @@
 .base-status i {
   font-size: 1.1rem;
 }
+
+/* =========================
+   Recursos vitais
+========================= */
 
 .vital-resources {
   display: grid;
@@ -274,8 +286,12 @@
   height: 100%;
   border-radius: inherit;
   background: var(--resource-color);
-  box-shadow: 0 0 14px color-mix(in srgb, var(--resource-color) 60%, transparent);
+  box-shadow: 0 0 14px var(--resource-color);
 }
+
+/* =========================
+   Recursos operacionais
+========================= */
 
 .operational-resources {
   display: grid;
@@ -308,9 +324,13 @@
   font-size: 1.65rem;
 }
 
+/* =========================
+   Cards de regras
+========================= */
+
 .game-rules-preview,
 .vitals-preview {
-  padding: 0 0 clamp(42px, 6vw, 72px);
+  padding-bottom: clamp(42px, 6vw, 72px);
 }
 
 .rules-grid {
@@ -357,9 +377,13 @@
   line-height: 1.6;
 }
 
+/* =========================
+   Card de recursos vitais
+========================= */
+
 .vitals-card {
   display: grid;
-  grid-template-columns: minmax(240px, 0.85fr) 1.3fr;
+  grid-template-columns: minmax(230px, 0.85fr) 1.3fr;
   gap: 24px;
   align-items: center;
   padding: 26px;
@@ -373,7 +397,7 @@
 
 .vitals-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
@@ -391,22 +415,35 @@
   color: var(--color-success);
 }
 
-@media (max-width: 850px) {
+/* =========================
+   Responsividade
+========================= */
+
+@media (max-width: 992px) {
+  .game-page {
+    overflow: visible;
+  }
+
   .game-briefing {
     min-height: auto;
-    padding-top: 42px;
+    padding-top: 48px;
   }
 
   .game-briefing-grid,
-  .rules-grid,
   .vitals-card {
     grid-template-columns: 1fr;
   }
 
   .mission-copy h1 {
-    font-size: clamp(2.2rem, 12vw, 3.2rem);
+    font-size: clamp(2.4rem, 9vw, 3.8rem);
   }
 
+  .mission-panel-header {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
   .mission-actions {
     width: 100%;
   }
@@ -416,13 +453,13 @@
     text-align: center;
   }
 
-  .mission-panel-header {
-    flex-direction: column;
+  .rules-grid {
+    grid-template-columns: 1fr;
   }
 
   .operational-resources,
   .vitals-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 
   .operational-resources span {
@@ -430,7 +467,11 @@
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 480px) {
+  .game-briefing {
+    padding-top: 36px;
+  }
+
   .mission-actions {
     flex-direction: column;
   }
@@ -443,5 +484,10 @@
   .rule-card,
   .vitals-card {
     border-radius: 14px;
+  }
+
+  .operational-resources,
+  .vitals-list {
+    grid-template-columns: 1fr;
   }
 }
