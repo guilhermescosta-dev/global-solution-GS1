@@ -1,1 +1,447 @@
 @import url("./global-style.css");
+
+.game-page {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100vh - 95px);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(0, 217, 255, 0.12), transparent 28%),
+    radial-gradient(circle at 78% 20%, rgba(255, 0, 110, 0.1), transparent 26%),
+    linear-gradient(135deg, var(--color-bg-darker) 0%, var(--color-bg-dark) 100%);
+}
+
+.game-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    radial-gradient(circle, rgba(240, 240, 240, 0.8) 1px, transparent 1px),
+    linear-gradient(rgba(0, 217, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 217, 255, 0.08) 1px, transparent 1px);
+  background-position:
+    0 0,
+    center,
+    center;
+  background-size:
+    120px 120px,
+    96px 96px,
+    96px 96px;
+  opacity: 0.22;
+}
+
+.game-page::after {
+  content: "";
+  position: absolute;
+  right: -12vw;
+  bottom: -18vw;
+  z-index: -1;
+  width: min(640px, 70vw);
+  aspect-ratio: 1;
+  border: 1px solid rgba(0, 217, 255, 0.24);
+  border-radius: 50%;
+  background:
+    linear-gradient(145deg, rgba(224, 224, 224, 0.08), rgba(0, 217, 255, 0.02)),
+    var(--color-bg-dark);
+  box-shadow: inset 0 0 50px rgba(0, 217, 255, 0.08);
+}
+
+.game-page .container {
+  max-width: 1200px;
+}
+
+.game-briefing {
+  min-height: calc(100vh - 95px);
+  padding: clamp(48px, 7vw, 92px) 0 clamp(42px, 6vw, 76px);
+}
+
+.game-briefing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.9fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+.mission-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mission-tag,
+.panel-kicker {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 18px;
+  padding: 6px 14px;
+  border: 1px solid var(--color-cyan);
+  border-radius: 999px;
+  color: var(--color-cyan);
+  background: rgba(0, 217, 255, 0.07);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.mission-copy h1,
+.mission-panel h2,
+.rule-card h2,
+.vitals-card h2 {
+  color: var(--color-text-lighter);
+  font-family: var(--font-title);
+}
+
+.mission-copy h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  line-height: 1;
+}
+
+.mission-copy h2 {
+  margin: 14px 0 22px;
+  color: var(--color-cyan);
+  font-family: var(--font-title);
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+}
+
+.mission-copy p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--color-text-light);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.mission-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.mission-actions .botao-iniciar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  text-decoration: none;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.mission-actions .botao-iniciar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 22px var(--color-cyan-shadow);
+}
+
+.button-secondary {
+  border: 1px solid var(--color-cyan);
+  background: rgba(0, 217, 255, 0.04);
+  color: var(--color-cyan);
+}
+
+.mission-panel,
+.rule-card,
+.vitals-card {
+  border: 1px solid rgba(0, 217, 255, 0.74);
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(0, 217, 255, 0.06), rgba(255, 0, 110, 0.04)),
+    rgba(5, 8, 16, 0.88);
+  box-shadow:
+    0 0 28px rgba(0, 217, 255, 0.08),
+    inset 0 0 28px rgba(0, 217, 255, 0.04);
+}
+
+.mission-panel {
+  padding: clamp(22px, 3vw, 30px);
+}
+
+.mission-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.panel-kicker {
+  margin-bottom: 10px;
+  border-color: var(--color-success);
+  color: var(--color-success);
+  background: var(--color-success-transparent);
+}
+
+.mission-panel h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+}
+
+.week-badge {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--color-magenta);
+  border-radius: 999px;
+  color: var(--color-magenta);
+  background: var(--color-magenta-transparent);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.base-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding: 14px;
+  border: 1px solid rgba(0, 255, 136, 0.45);
+  border-radius: 12px;
+  color: var(--color-success);
+  background: var(--color-success-transparent);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+}
+
+.base-status i {
+  font-size: 1.1rem;
+}
+
+.vital-resources {
+  display: grid;
+  gap: 18px;
+}
+
+.resource-row {
+  --resource-color: var(--color-cyan);
+}
+
+.resource-energy {
+  --resource-color: var(--color-warning);
+}
+
+.resource-water {
+  --resource-color: var(--color-cyan);
+}
+
+.resource-oxygen {
+  --resource-color: var(--color-success);
+}
+
+.resource-food {
+  --resource-color: var(--color-magenta);
+}
+
+.resource-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 8px;
+  color: var(--color-text-light);
+}
+
+.resource-label span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.resource-label i,
+.resource-label strong {
+  color: var(--resource-color);
+}
+
+.resource-label strong {
+  font-family: var(--font-mono);
+}
+
+.resource-bar {
+  height: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(160, 160, 160, 0.28);
+  border-radius: 999px;
+  background: rgba(224, 224, 224, 0.08);
+}
+
+.resource-bar span {
+  display: block;
+  width: var(--progress);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--resource-color);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--resource-color) 60%, transparent);
+}
+
+.operational-resources {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.operational-resources article {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid rgba(0, 217, 255, 0.42);
+  border-radius: 12px;
+  background: rgba(0, 217, 255, 0.04);
+}
+
+.operational-resources span {
+  display: block;
+  min-height: 38px;
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.operational-resources strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--color-cyan);
+  font-family: var(--font-title);
+  font-size: 1.65rem;
+}
+
+.game-rules-preview,
+.vitals-preview {
+  padding: 0 0 clamp(42px, 6vw, 72px);
+}
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.rule-card {
+  min-height: 190px;
+  padding: 24px;
+}
+
+.rule-card:nth-child(2) {
+  border-color: rgba(255, 0, 110, 0.72);
+}
+
+.rule-card:nth-child(3) {
+  border-color: rgba(0, 255, 136, 0.72);
+}
+
+.rule-card i {
+  color: var(--color-cyan);
+  font-size: 1.8rem;
+}
+
+.rule-card:nth-child(2) i {
+  color: var(--color-magenta);
+}
+
+.rule-card:nth-child(3) i {
+  color: var(--color-success);
+}
+
+.rule-card h2 {
+  margin: 18px 0 10px;
+  font-size: 1.05rem;
+}
+
+.rule-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.vitals-card {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.85fr) 1.3fr;
+  gap: 24px;
+  align-items: center;
+  padding: 26px;
+  border-color: rgba(0, 255, 136, 0.64);
+}
+
+.vitals-heading h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.8vw, 2rem);
+}
+
+.vitals-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.vitals-list p {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(160, 160, 160, 0.18);
+  border-radius: 12px;
+  color: var(--color-text-muted);
+  background: rgba(224, 224, 224, 0.035);
+  line-height: 1.5;
+}
+
+.vitals-list strong {
+  color: var(--color-success);
+}
+
+@media (max-width: 850px) {
+  .game-briefing {
+    min-height: auto;
+    padding-top: 42px;
+  }
+
+  .game-briefing-grid,
+  .rules-grid,
+  .vitals-card {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-copy h1 {
+    font-size: clamp(2.2rem, 12vw, 3.2rem);
+  }
+
+  .mission-actions {
+    width: 100%;
+  }
+
+  .mission-actions .botao-iniciar {
+    flex: 1 1 220px;
+    text-align: center;
+  }
+
+  .mission-panel-header {
+    flex-direction: column;
+  }
+
+  .operational-resources,
+  .vitals-list {
+    grid-template-columns: 1fr;
+  }
+
+  .operational-resources span {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .mission-actions {
+    flex-direction: column;
+  }
+
+  .mission-actions .botao-iniciar {
+    width: 100%;
+  }
+
+  .mission-panel,
+  .rule-card,
+  .vitals-card {
+    border-radius: 14px;
+  }
+}

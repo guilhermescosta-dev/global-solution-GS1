@@ -50,6 +50,154 @@
       </nav>
     </header>
 
+    <main class="game-page">
+      <section class="game-briefing">
+        <div class="container game-briefing-grid">
+          <div class="mission-copy">
+            <span class="mission-tag">Missão Lunar</span>
+            <h1>Briefing da Missão</h1>
+            <h2>Operação Selene</h2>
+            <p>
+              Comande uma base lunar por 10 semanas. Responda desafios, colete
+              recursos operacionais, construa módulos, faça upgrades e mantenha
+              energia, água, oxigênio e alimentos acima de zero.
+            </p>
+
+            <div class="mission-actions">
+              <a href="#" class="botao-iniciar">Iniciar Simulação</a>
+              <a href="./comoJogar.html" class="botao-iniciar button-secondary"
+                >Ver Como Jogar</a
+              >
+            </div>
+          </div>
+
+          <aside class="mission-panel" aria-label="Status inicial da base">
+            <div class="mission-panel-header">
+              <div>
+                <span class="panel-kicker">Painel de comando</span>
+                <h2>Status Inicial da Base</h2>
+              </div>
+              <span class="week-badge">Semana 01/10</span>
+            </div>
+
+            <div class="base-status">
+              <i class="bi bi-broadcast-pin" aria-hidden="true"></i>
+              <span>Missão aguardando início</span>
+            </div>
+
+            <div class="vital-resources" aria-label="Recursos vitais iniciais">
+              <article class="resource-row resource-energy">
+                <div class="resource-label">
+                  <span><i class="bi bi-lightning-charge-fill"></i>Energia</span>
+                  <strong>60%</strong>
+                </div>
+                <div class="resource-bar" aria-hidden="true">
+                  <span style="--progress: 60%"></span>
+                </div>
+              </article>
+
+              <article class="resource-row resource-water">
+                <div class="resource-label">
+                  <span><i class="bi bi-droplet-fill"></i>Água</span>
+                  <strong>60%</strong>
+                </div>
+                <div class="resource-bar" aria-hidden="true">
+                  <span style="--progress: 60%"></span>
+                </div>
+              </article>
+
+              <article class="resource-row resource-oxygen">
+                <div class="resource-label">
+                  <span><i class="bi bi-wind"></i>Oxigênio</span>
+                  <strong>60%</strong>
+                </div>
+                <div class="resource-bar" aria-hidden="true">
+                  <span style="--progress: 60%"></span>
+                </div>
+              </article>
+
+              <article class="resource-row resource-food">
+                <div class="resource-label">
+                  <span><i class="bi bi-flower1"></i>Alimentos</span>
+                  <strong>50%</strong>
+                </div>
+                <div class="resource-bar" aria-hidden="true">
+                  <span style="--progress: 50%"></span>
+                </div>
+              </article>
+            </div>
+
+            <div
+              class="operational-resources"
+              aria-label="Recursos operacionais iniciais"
+            >
+              <article>
+                <span>Minerais Lunares</span>
+                <strong>10</strong>
+              </article>
+              <article>
+                <span>Componentes Eletrônicos</span>
+                <strong>10</strong>
+              </article>
+              <article>
+                <span>Biomassa</span>
+                <strong>10</strong>
+              </article>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="game-rules-preview">
+        <div class="container rules-grid">
+          <article class="rule-card">
+            <i class="bi bi-question-circle" aria-hidden="true"></i>
+            <h2>Responda desafios</h2>
+            <p>
+              Cada semana possui perguntas educativas que liberam recursos
+              operacionais.
+            </p>
+          </article>
+
+          <article class="rule-card">
+            <i class="bi bi-tools" aria-hidden="true"></i>
+            <h2>Construa módulos</h2>
+            <p>
+              Use minerais, componentes e biomassa para construir sistemas da
+              base.
+            </p>
+          </article>
+
+          <article class="rule-card">
+            <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
+            <h2>Faça upgrades</h2>
+            <p>
+              Melhore os módulos para aumentar a produção e sobreviver até a
+              semana 10.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="vitals-preview">
+        <div class="container">
+          <article class="vitals-card">
+            <div class="vitals-heading">
+              <span class="mission-tag">Recursos Vitais</span>
+              <h2>O que mantém a base viva?</h2>
+            </div>
+
+            <div class="vitals-list">
+              <p><strong>Energia</strong> mantém os sistemas ligados.</p>
+              <p><strong>Água</strong> sustenta consumo e cultivo.</p>
+              <p><strong>Oxigênio</strong> mantém a tripulação viva.</p>
+              <p><strong>Alimentos</strong> garantem sobrevivência.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
