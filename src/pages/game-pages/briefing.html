@@ -54,7 +54,6 @@
       <section class="game-briefing">
         <div class="container game-briefing-grid">
           <div class="mission-copy">
-            <span class="game-tag">Missão Lunar</span>
             <h1 class="game-title">Briefing da Missão</h1>
             <h2 class="game-subtitle">Operação Selene</h2>
             <p class="game-text">
@@ -62,6 +61,28 @@
               recursos operacionais, construa módulos, faça upgrades e mantenha
               energia, água, oxigênio e alimentos acima de zero.
             </p>
+
+            <div class="briefing-vitals" aria-label="Recursos vitais">
+              <article class="briefing-vital-card vital-energy">
+                <strong>Energia</strong>
+                <span>Mantém a base funcionando.</span>
+              </article>
+
+              <article class="briefing-vital-card vital-water">
+                <strong>Água</strong>
+                <span>Serve para consumo e cultivo.</span>
+              </article>
+
+              <article class="briefing-vital-card vital-oxygen">
+                <strong>Oxigênio</strong>
+                <span>Protege a vida da tripulação.</span>
+              </article>
+
+              <article class="briefing-vital-card vital-food">
+                <strong>Alimentos</strong>
+                <span>Repõem energia dos astronautas.</span>
+              </article>
+            </div>
 
             <div class="game-actions">
               <a href="./quiz.html" class="botao-iniciar">Iniciar Simulação</a>
@@ -73,16 +94,25 @@
 
           <aside class="mission-panel game-panel" aria-label="Status inicial da base">
             <div class="game-panel-header">
-              <div>
-                <span class="panel-kicker">Painel de comando</span>
-                <h2>Status Inicial da Base</h2>
+              <h2>Status Inicial da Base</h2>
+              <div class="briefing-week-progress" aria-label="Semana 1 de 10">
+                <div class="progress-chip-heading">
+                  <span>Semana</span>
+                  <strong>1/10</strong>
+                </div>
+                <div class="progress-blocks" aria-hidden="true">
+                  <i class="is-active"></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </div>
               </div>
-              <span class="game-badge magenta">Semana 01/10</span>
-            </div>
-
-            <div class="status-line">
-              <i class="bi bi-broadcast-pin" aria-hidden="true"></i>
-              <span>Missão aguardando início</span>
             </div>
 
             <div class="vital-resources" aria-label="Recursos vitais iniciais">
@@ -128,20 +158,31 @@
             </div>
 
             <div
-              class="operational-resources"
+              class="operational-resources briefing-operational-list"
               aria-label="Recursos operacionais iniciais"
             >
-              <article>
-                <span>Minerais Lunares</span>
-                <strong>10</strong>
+              <article class="operational-card resource-minerals">
+                <i class="bi bi-gem" aria-hidden="true"></i>
+                <div class="operational-card-info">
+                  <span>Minerais Lunares</span>
+                  <strong>10</strong>
+                </div>
               </article>
-              <article>
-                <span>Componentes Eletrônicos</span>
-                <strong>10</strong>
+
+              <article class="operational-card resource-components">
+                <i class="bi bi-cpu" aria-hidden="true"></i>
+                <div class="operational-card-info">
+                  <span>Componentes Eletrônicos</span>
+                  <strong>10</strong>
+                </div>
               </article>
-              <article>
-                <span>Biomassa</span>
-                <strong>10</strong>
+
+              <article class="operational-card resource-biomass">
+                <i class="bi bi-flower1" aria-hidden="true"></i>
+                <div class="operational-card-info">
+                  <span>Biomassa</span>
+                  <strong>10</strong>
+                </div>
               </article>
             </div>
           </aside>
@@ -175,24 +216,6 @@
               Melhore os módulos para aumentar a produção e sobreviver até a
               semana 10.
             </p>
-          </article>
-        </div>
-      </section>
-
-      <section class="vitals-preview">
-        <div class="container">
-          <article class="vitals-card game-card">
-            <div class="vitals-heading">
-              <span class="game-tag">Recursos Vitais</span>
-              <h2>O que mantém a base viva?</h2>
-            </div>
-
-            <div class="vitals-list">
-              <p><strong>Energia</strong> mantém os sistemas ligados.</p>
-              <p><strong>Água</strong> sustenta consumo e cultivo.</p>
-              <p><strong>Oxigênio</strong> mantém a tripulação viva.</p>
-              <p><strong>Alimentos</strong> garantem sobrevivência.</p>
-            </div>
           </article>
         </div>
       </section>
