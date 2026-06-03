@@ -13,8 +13,8 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../css/jogo.css" />
-    <title>Operação Selene - Sobrevivência Lunar</title>
+    <link rel="stylesheet" href="../../css/game/briefing.css" />
+    <title>Operação Selene - Briefing da Missão</title>
   </head>
   <body>
     <header class="borda-gradient-bottom">
@@ -37,12 +37,12 @@
 
       <nav id="nav-menu">
         <ul>
-          <li><a href="../../index.html" class="nav-section">Home</a></li>
+          <li><a href="../../../index.html" class="nav-section">Home</a></li>
           <li>
-            <a href="./comoJogar.html" class="nav-section">Como jogar</a>
+            <a href="../comoJogar.html" class="nav-section">Como jogar</a>
           </li>
           <li>
-            <a href="./jogo.html" class="nav-section botao-iniciar"
+            <a href="./briefing.html" class="nav-section botao-iniciar"
               >Iniciar missão</a
             >
           </li>
@@ -54,33 +54,33 @@
       <section class="game-briefing">
         <div class="container game-briefing-grid">
           <div class="mission-copy">
-            <span class="mission-tag">Missão Lunar</span>
-            <h1>Briefing da Missão</h1>
-            <h2>Operação Selene</h2>
-            <p>
+            <span class="game-tag">Missão Lunar</span>
+            <h1 class="game-title">Briefing da Missão</h1>
+            <h2 class="game-subtitle">Operação Selene</h2>
+            <p class="game-text">
               Comande uma base lunar por 10 semanas. Responda desafios, colete
               recursos operacionais, construa módulos, faça upgrades e mantenha
               energia, água, oxigênio e alimentos acima de zero.
             </p>
 
-            <div class="mission-actions">
-              <a href="#" class="botao-iniciar">Iniciar Simulação</a>
-              <a href="./comoJogar.html" class="botao-iniciar button-secondary"
+            <div class="game-actions">
+              <a href="./quiz.html" class="botao-iniciar">Iniciar Simulação</a>
+              <a href="../comoJogar.html" class="botao-iniciar button-secondary"
                 >Ver Como Jogar</a
               >
             </div>
           </div>
 
-          <aside class="mission-panel" aria-label="Status inicial da base">
-            <div class="mission-panel-header">
+          <aside class="mission-panel game-panel" aria-label="Status inicial da base">
+            <div class="game-panel-header">
               <div>
                 <span class="panel-kicker">Painel de comando</span>
                 <h2>Status Inicial da Base</h2>
               </div>
-              <span class="week-badge">Semana 01/10</span>
+              <span class="game-badge magenta">Semana 01/10</span>
             </div>
 
-            <div class="base-status">
+            <div class="status-line">
               <i class="bi bi-broadcast-pin" aria-hidden="true"></i>
               <span>Missão aguardando início</span>
             </div>
@@ -150,7 +150,7 @@
 
       <section class="game-rules-preview">
         <div class="container rules-grid">
-          <article class="rule-card">
+          <article class="rule-card game-card">
             <i class="bi bi-question-circle" aria-hidden="true"></i>
             <h2>Responda desafios</h2>
             <p>
@@ -159,7 +159,7 @@
             </p>
           </article>
 
-          <article class="rule-card">
+          <article class="rule-card game-card">
             <i class="bi bi-tools" aria-hidden="true"></i>
             <h2>Construa módulos</h2>
             <p>
@@ -168,7 +168,7 @@
             </p>
           </article>
 
-          <article class="rule-card">
+          <article class="rule-card game-card">
             <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
             <h2>Faça upgrades</h2>
             <p>
@@ -181,9 +181,9 @@
 
       <section class="vitals-preview">
         <div class="container">
-          <article class="vitals-card">
+          <article class="vitals-card game-card">
             <div class="vitals-heading">
-              <span class="mission-tag">Recursos Vitais</span>
+              <span class="game-tag">Recursos Vitais</span>
               <h2>O que mantém a base viva?</h2>
             </div>
 
@@ -202,7 +202,7 @@
       <div class="footer-container">
         <div class="footer-grid">
           <section class="footer-marca">
-            <a href="../../index.html" class="footer-logo">Operação Selene</a>
+            <a href="../../../index.html" class="footer-logo">Operação Selene</a>
 
             <p class="footer-texto-medio">Sobrevivência Lunar</p>
 
@@ -213,11 +213,11 @@
 
           <nav class="footer-navegacao" aria-label="Links do rodapé">
             <p class="footer-titulo">Navegação</p>
-            <a href="../../index.html" class="footer-navegacao-pagina">Home</a>
-            <a href="./comoJogar.html" class="footer-navegacao-pagina"
+            <a href="../../../index.html" class="footer-navegacao-pagina">Home</a>
+            <a href="../comoJogar.html" class="footer-navegacao-pagina"
               >Como jogar</a
             >
-            <a href="./jogo.html" class="footer-navegacao-pagina"
+            <a href="./briefing.html" class="footer-navegacao-pagina"
               >Iniciar missão</a
             >
           </nav>
@@ -258,6 +258,6 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="../js/script.js"></script>
+    <script src="../../js/script.js"></script>
   </body>
 </html>

@@ -1,0 +1,151 @@
+@import url("./game-base.css");
+@import url("./game-components.css");
+
+.game-briefing {
+  min-height: calc(100vh - 95px);
+  padding: clamp(48px, 7vw, 92px) 0 clamp(42px, 6vw, 76px);
+}
+
+.game-briefing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.9fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+.mission-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mission-copy .game-tag {
+  margin-bottom: 18px;
+}
+
+.mission-copy .game-actions {
+  margin-top: 32px;
+}
+
+.mission-panel {
+  padding: clamp(22px, 3vw, 30px);
+}
+
+.mission-panel .status-line {
+  margin-bottom: 24px;
+}
+
+.vital-resources {
+  display: grid;
+  gap: 18px;
+}
+
+.mission-panel .operational-resources {
+  margin-top: 28px;
+}
+
+.mission-panel .operational-resources span {
+  min-height: 38px;
+}
+
+.game-rules-preview,
+.vitals-preview {
+  padding: 0 0 clamp(42px, 6vw, 72px);
+}
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.rule-card {
+  min-height: 190px;
+}
+
+.rule-card:nth-child(2) {
+  border-color: rgba(255, 0, 110, 0.72);
+}
+
+.rule-card:nth-child(3) {
+  border-color: rgba(0, 255, 136, 0.72);
+}
+
+.rule-card i {
+  color: var(--color-cyan);
+  font-size: 1.8rem;
+}
+
+.rule-card:nth-child(2) i {
+  color: var(--color-magenta);
+}
+
+.rule-card:nth-child(3) i {
+  color: var(--color-success);
+}
+
+.rule-card h2 {
+  margin: 18px 0 10px;
+  font-size: 1.05rem;
+}
+
+.rule-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.vitals-card {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.85fr) 1.3fr;
+  gap: 24px;
+  align-items: center;
+  border-color: rgba(0, 255, 136, 0.64);
+}
+
+.vitals-heading h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.8vw, 2rem);
+}
+
+.vitals-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.vitals-list p {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(160, 160, 160, 0.18);
+  border-radius: 12px;
+  color: var(--color-text-muted);
+  background: rgba(224, 224, 224, 0.035);
+  line-height: 1.5;
+}
+
+.vitals-list strong {
+  color: var(--color-success);
+}
+
+@media (max-width: 850px) {
+  .game-briefing {
+    min-height: auto;
+    padding-top: 42px;
+  }
+
+  .game-briefing-grid,
+  .rules-grid,
+  .vitals-card {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-panel .operational-resources span {
+    min-height: auto;
+  }
+
+  .vitals-list {
+    grid-template-columns: 1fr;
+  }
+}

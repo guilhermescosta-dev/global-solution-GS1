@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../../css/game/quiz.css" />
+    <title>Operação Selene - Quiz Educativo</title>
+  </head>
+  <body>
+    <header class="borda-gradient-bottom">
+      <div class="logo">
+        <i class="bi bi-rocket-takeoff-fill logo-icone"></i>
+        <p class="logo-texto">Operação Selene</p>
+      </div>
+
+      <button
+        class="menu-hamburguer"
+        id="menu-icone"
+        type="button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="nav-menu">
+        <ul>
+          <li><a href="../../../index.html" class="nav-section">Home</a></li>
+          <li>
+            <a href="../comoJogar.html" class="nav-section">Como jogar</a>
+          </li>
+          <li>
+            <a href="./briefing.html" class="nav-section botao-iniciar"
+              >Iniciar missão</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="game-page">
+      <section class="quiz-section game-section">
+        <div class="container">
+          <div class="game-topbar">
+            <h1 class="game-title">Quiz Educativo</h1>
+          </div>
+
+          <section class="quiz-resources game-card">
+            <div class="quiz-resources-header">
+              <h2>Recursos Operacionais</h2>
+              <span class="panel-kicker">Inventário da Missão</span>
+            </div>
+
+            <div
+              class="operational-resources quiz-resource-list"
+              aria-label="Recursos operacionais atuais"
+            >
+              <article class="operational-card resource-minerals is-target">
+                <i class="bi bi-gem" aria-hidden="true"></i>
+                <div class="operational-card-info">
+                  <span>Minerais Lunares</span>
+                  <strong>10</strong>
+                </div>
+              </article>
+
+              <article class="operational-card resource-components">
+                <i class="bi bi-cpu" aria-hidden="true"></i>
+                <div class="operational-card-info">
+                  <span>Componentes Eletrônicos</span>
+                  <strong>10</strong>
+                </div>
+              </article>
+
+              <article class="operational-card resource-biomass">
+                <i class="bi bi-flower1" aria-hidden="true"></i>
+                <div class="operational-card-info">
+                  <span>Biomassa</span>
+                  <strong>10</strong>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="quiz-card game-card">
+            <div class="quiz-progress-row" aria-label="Progresso do quiz">
+              <div class="progress-chip" aria-label="Semana 1 de 10">
+                <div class="progress-chip-heading">
+                  <span>Semana</span>
+                  <strong>1/10</strong>
+                </div>
+                <div class="progress-blocks" aria-hidden="true">
+                  <i class="is-active"></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </div>
+              </div>
+
+              <div class="progress-chip" aria-label="Pergunta 1 de 3">
+                <div class="progress-chip-heading">
+                  <span>Pergunta</span>
+                  <strong>1/3</strong>
+                </div>
+                <div class="progress-blocks progress-blocks-question" aria-hidden="true">
+                  <i class="is-active"></i>
+                  <i></i>
+                  <i></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-card-header">
+              <h2>Desafio da Semana</h2>
+            </div>
+
+            <p class="quiz-question">
+              Por que a reciclagem de água é essencial em uma base lunar?
+            </p>
+
+            <form class="quiz-form" action="#" method="post">
+              <div class="answer-list" aria-label="Alternativas do quiz">
+                <label class="answer-option">
+                  <input type="radio" name="quiz-answer" value="A" />
+                  <strong>A</strong>
+                  <span>Porque a água é limitada e precisa ser reaproveitada.</span>
+                </label>
+
+                <label class="answer-option">
+                  <input type="radio" name="quiz-answer" value="B" />
+                  <strong>B</strong>
+                  <span>Porque existe muita água líquida na superfície da Lua.</span>
+                </label>
+
+                <label class="answer-option">
+                  <input type="radio" name="quiz-answer" value="C" />
+                  <strong>C</strong>
+                  <span>Porque astronautas não precisam de água.</span>
+                </label>
+
+                <label class="answer-option">
+                  <input type="radio" name="quiz-answer" value="D" />
+                  <strong>D</strong>
+                  <span>Porque reciclar água elimina o uso de energia.</span>
+                </label>
+              </div>
+
+              <div class="game-actions">
+                <button type="submit" class="botao-iniciar">
+                  Confirmar Resposta
+                </button>
+                <span class="answer-reward">
+                  <i class="bi bi-gem" aria-hidden="true"></i>
+                  Acerto +12 · Erro +3
+                </span>
+              </div>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-section">
+      <div class="footer-container">
+        <div class="footer-grid">
+          <section class="footer-marca">
+            <a href="../../../index.html" class="footer-logo">Operação Selene</a>
+
+            <p class="footer-texto-medio">Sobrevivência Lunar</p>
+
+            <p class="footer-texto-fraco">
+              Estratégia e gestão de recursos em uma missão espacial.
+            </p>
+          </section>
+
+          <nav class="footer-navegacao" aria-label="Links do rodapé">
+            <p class="footer-titulo">Navegação</p>
+            <a href="../../../index.html" class="footer-navegacao-pagina">Home</a>
+            <a href="../comoJogar.html" class="footer-navegacao-pagina"
+              >Como jogar</a
+            >
+            <a href="./briefing.html" class="footer-navegacao-pagina"
+              >Iniciar missão</a
+            >
+          </nav>
+
+          <section class="footer-pitch">
+            <p class="footer-titulo">Pitch vídeo</p>
+
+            <a href="#" target="_blank" class="footer-pitch-link">
+              <i class="bi bi-play-circle-fill" aria-hidden="true"></i>
+              <span>
+                <strong>Assista ao nosso pitch</strong>
+                <small>Conheça a proposta do projeto</small>
+              </span>
+            </a>
+          </section>
+
+          <section class="footer-equipe">
+            <p class="footer-titulo">Equipe 1ESOB — FIAP 2026</p>
+            <ul>
+              <li>Estevão Nunes Gabriel — RM571413</li>
+              <li>Guilherme Silva Costa — RM573826</li>
+              <li>Matheus Leite Carneiro — RM568733</li>
+              <li>Pedro Corvino Gamba — RM573756</li>
+              <li>Pietro Gonçalves Ponciano — RM570521</li>
+            </ul>
+          </section>
+        </div>
+
+        <p class="footer-copyright">
+          © 2026 Operação Selene · Projeto acadêmico FIAP — todos os direitos
+          reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../js/script.js"></script>
+    <script src="../../js/game.js"></script>
+  </body>
+</html>
