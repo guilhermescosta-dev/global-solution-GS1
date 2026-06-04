@@ -156,6 +156,10 @@ Object.assign(LunarGameUI.prototype, {
         ...this.state.operational,
         [resource]: this.state.operational[resource] + rewardValue,
       },
+      stats: {
+        answered: (this.state.stats?.answered ?? 0) + 1,
+        correct: (this.state.stats?.correct ?? 0) + (isCorrect ? 1 : 0),
+      },
     });
   },
 

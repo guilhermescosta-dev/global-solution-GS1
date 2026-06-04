@@ -1,23 +1,26 @@
 ﻿Object.assign(LunarGameUI.prototype, {
-  finishWeek(actionMessage) {
-    const weekChanges = this.calculateWeekVitalChanges();
-    const nextState = this.createNextWeekState(actionMessage, weekChanges);
+  finishWeek(actionMessage, sourceState = this.state) {
+    const weekChanges = this.calculateWeekVitalChanges(sourceState);
+    const cappedChanges = this.applyVitalCaps(weekChanges);
+    const nextState = this.createNextWeekState(actionMessage, cappedChanges, sourceState);
 
     this.setState(nextState);
   },
 
-  calculateWeekVitalChanges() {
-    const vitalBefore = { ...this.state.vital };
-    const vitalAfter = { ...this.state.vital };
+  calculateWeekVitalChanges(sourceState = this.state) {
+    const vitalBefore = { ...sourceState.vital };
+    const vitalAfter = { ...sourceState.vital };
     const totalDelta = this.createEmptyVitalDelta();
 
     // Mantem a regra antiga de ativar modulos, mas troca a tabela detalhada
     // por um saldo geral mais facil de entender no novo layout.
-    Object.entries(this.state.activeModules).forEach(([key, level]) => {
+    Object.entries(sourceState.activeModules).forEach(([key]) => {
+      const level = getActiveModuleLevel(sourceState, key);
       if (level <= 0) return;
 
       const module = getModulesData()[key];
-      const moduleData = module.levels[level - 1];
+      const moduleData = module?.levels[level - 1];
+      if (!moduleData) return;
 
       Object.entries(moduleData.prod).forEach(([resource, value]) => {
         vitalAfter[resource] += value;
@@ -38,20 +41,42 @@
     return { vitalBefore, vitalAfter, totalDelta };
   },
 
+  applyVitalCaps(weekChanges) {
+    const vitalAfter = Object.fromEntries(
+      Object.entries(weekChanges.vitalAfter).map(([resource, value]) => [
+        resource,
+        clampBarValue(value),
+      ]),
+    );
+    const totalDelta = Object.fromEntries(
+      Object.entries(vitalAfter).map(([resource, value]) => [
+        resource,
+        value - weekChanges.vitalBefore[resource],
+      ]),
+    );
+
+    return {
+      ...weekChanges,
+      vitalAfter,
+      totalDelta,
+    };
+  },
+
   createEmptyVitalDelta() {
     return Object.fromEntries(Object.keys(CONFIG.INITIAL_VITAL).map((resource) => [resource, 0]));
   },
 
-  createNextWeekState(actionMessage, weekChanges) {
+  createNextWeekState(actionMessage, weekChanges, sourceState = this.state) {
     const failed = Object.values(weekChanges.vitalAfter).some((value) => value <= 0);
-    const completedMission = this.state.week >= CONFIG.MAX_WEEKS;
+    const completedMission = sourceState.week >= CONFIG.MAX_WEEKS;
     const nextState = {
-      ...this.state,
+      ...sourceState,
       vital: weekChanges.vitalAfter,
       lastReport: {
         actionMessage,
         ...weekChanges,
       },
+      history: [...(sourceState.history ?? []), this.createHistoryEntry(actionMessage, weekChanges, sourceState)],
     };
 
     if (failed || completedMission) {
@@ -59,13 +84,27 @@
       nextState.finalResult = this.createFinalResult(!failed, weekChanges.vitalAfter);
     } else {
       nextState.phase = "week-summary";
-      nextState.week += 1;
+      nextState.week = sourceState.week + 1;
       nextState.questionIndex = 0;
       nextState.questionResults = Array(CONFIG.QUESTIONS_PER_WEEK).fill(null);
       nextState.lastAnswer = null;
     }
 
     return nextState;
+  },
+
+  createHistoryEntry(actionMessage, weekChanges, sourceState = this.state) {
+    const correctAnswers = (sourceState.questionResults ?? []).filter((result) => result === "correct").length;
+
+    return {
+      week: sourceState.week,
+      actionMessage,
+      correctAnswers,
+      questionResults: [...(sourceState.questionResults ?? [])],
+      vitalAfter: { ...weekChanges.vitalAfter },
+      totalDelta: { ...weekChanges.totalDelta },
+      modules: { ...sourceState.activeModules },
+    };
   },
 
   renderWeekSummary() {
@@ -81,7 +120,11 @@
     this.updateCardTitle("Resumo da Semana");
 
     this.answerList.innerHTML = `
-      ${this.createVitalSummary()}
+      ${this.createRiskAlerts()}
+      ${this.createVitalSummary(this.state.vital, this.state.lastReport?.vitalBefore, {
+        mode: "summary",
+        deltas: this.state.lastReport?.totalDelta,
+      })}
       ${this.createReportCard()}
       <div class="construction-actions">
         <button type="button" class="botao-iniciar" data-next-week>
@@ -114,12 +157,7 @@
     return `
       <article class="quiz-feedback-card">
         <strong>${report.actionMessage}</strong>
-        <p>Saldo geral da semana ap\u00f3s produ\u00e7\u00e3o dos m\u00f3dulos e consumo da base:</p>
-        <div class="round-summary-grid">
-          ${Object.entries(report.totalDelta)
-            .map(([resource, delta]) => this.createRoundSummaryItem(report, resource, delta))
-            .join("")}
-        </div>
+        <p>Os cards acima já mostram o saldo final da semana, incluindo produção dos módulos e consumo da base.</p>
       </article>
     `;
   },
@@ -139,98 +177,71 @@
     `;
   },
 
-  createVitalSummary() {
+  createVitalSummary(vital = this.state.vital, previewVital = null, options = {}) {
     return `
       <div class="vital-summary">
-        ${Object.entries(this.state.vital)
-          .map(([resource, value]) => this.createVitalSummaryCard(resource, value))
+        ${Object.entries(vital)
+          .map(([resource, value]) =>
+            this.createVitalSummaryCard(resource, value, previewVital?.[resource], options),
+          )
           .join("")}
       </div>
     `;
   },
 
-  createVitalSummaryCard(resource, value) {
+  createVitalSummaryCard(resource, value, previewValue = null, options = {}) {
+    const meta = getVitalMeta(resource);
+    const hasPreview = Number.isFinite(previewValue) && previewValue !== value;
+    const currentBar = clampBarValue(value);
+    const previewBar = clampBarValue(previewValue ?? value);
+    const deltaStart = Math.min(currentBar, previewBar);
+    const deltaWidth = Math.abs(currentBar - previewBar);
+    const previewClass = previewBar >= currentBar ? "is-gain" : "is-loss";
+    const delta = options.deltas?.[resource] ?? (hasPreview ? value - previewValue : 0);
+    const deltaSignal = delta > 0 ? "+" : "";
+    const summaryMode = options.mode === "summary";
+
     return `
       <article class="vital-summary-card vital-${getVitalClass(resource)}">
-        <span>${VITAL_LABELS[resource]}</span>
-        <strong>${Math.max(0, value)}</strong>
+        <span class="vital-card-label">
+          <i class="bi ${meta.icon}" aria-hidden="true"></i>
+          ${meta.label}
+          ${
+            options.showBaseConsumption
+              ? `<small class="base-consumption" title="Consumo semanal da base">-${CONFIG.BASE_CONSUMPTION[resource] ?? 0}</small>`
+              : ""
+          }
+        </span>
+        <strong>
+          ${
+            summaryMode && hasPreview
+              ? `<small class="vital-previous-value">${Math.max(0, previewValue)} →</small>`
+              : ""
+          }
+          ${Math.max(0, value)}
+          ${
+            hasPreview && !summaryMode
+              ? `<small class="vital-preview-value ${previewClass}">→ ${Math.max(0, previewValue)}</small>`
+              : ""
+          }
+          ${
+            summaryMode
+              ? `<small class="vital-delta-value ${delta >= 0 ? "is-gain" : "is-loss"}">${deltaSignal}${delta}</small>`
+              : ""
+          }
+        </strong>
         <div class="resource-bar" aria-hidden="true">
           <span style="--progress: ${clampBarValue(value)}%"></span>
+          ${
+            hasPreview
+              ? summaryMode
+                ? `<em class="resource-bar-previous" style="--previous: ${previewBar}%"></em>`
+                : `<em class="resource-bar-delta ${previewClass}" style="--delta-start: ${deltaStart}%; --delta-width: ${deltaWidth}%"></em>`
+              : ""
+          }
         </div>
       </article>
     `;
-  },
-
-  createFinalResult(victory, vital = this.state.vital) {
-    if (!victory) {
-      return {
-        title: "Falha na Missão",
-        status: "Um recurso vital chegou a zero.",
-        message:
-          "A base perdeu estabilidade e a tripulação precisou encerrar a operação. Tente outra estratégia de construção.",
-      };
-    }
-
-    const minVital = Math.min(...Object.values(vital));
-
-    if (minVital >= 60) {
-      return {
-        title: "Base Autossustentável",
-        status: "Missão concluída com excelência.",
-        message: "Sua base sobreviveu \u00e0s 10 semanas com grande equil\u00edbrio de recursos.",
-      };
-    }
-
-    if (minVital >= 30) {
-      return {
-        title: "Missão Concluída",
-        status: "A tripulação chegou ao fim da operação.",
-        message: "A base sobreviveu, mas alguns recursos ainda poderiam ser otimizados.",
-      };
-    }
-
-    return {
-      title: "Missão em Risco",
-      status: "A base sobreviveu no limite.",
-      message: "Você concluiu a missão, mas a gestão de recursos precisaria de melhorias.",
-    };
-  },
-
-  renderGameOver() {
-    this.updateResources(null);
-    this.quizCard.classList.add("is-summary-mode");
-    this.quizForm.hidden = false;
-    if (this.formActions) this.formActions.hidden = true;
-    this.clearFeedback();
-    this.quizForm.onsubmit = (event) => event.preventDefault();
-
-    const result = this.state.finalResult ?? this.createFinalResult(false);
-    this.updateCardTitle("Resultado da Miss\u00e3o");
-
-    this.questionEl.hidden = false;
-    this.questionEl.textContent = result.title;
-
-    this.answerList.innerHTML = `
-      ${this.createVitalSummary()}
-      <article class="quiz-feedback-card result-card">
-        <strong>${result.status}</strong>
-        <p>${result.message}</p>
-      </article>
-      ${this.createReportCard()}
-      <div class="construction-actions">
-        <button type="button" class="botao-iniciar" data-restart-game>
-          Tentar novamente
-        </button>
-        <a href="./briefing.html" class="botao-iniciar button-secondary">
-          Voltar ao briefing
-        </a>
-      </div>
-    `;
-
-    this.answerList.querySelector("[data-restart-game]").addEventListener("click", () => {
-      resetGameState();
-      this.setState(loadState());
-    });
   },
 });
 
