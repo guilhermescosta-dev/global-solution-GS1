@@ -12,7 +12,10 @@ class LunarGameUI {
     this.rewardEl = document.querySelector(".answer-reward");
     this.progressWeek = document.querySelector("[data-progress-week]");
     this.progressQuestion = document.querySelector("[data-progress-question]");
+    this.progressRow = document.querySelector(".quiz-progress-row");
     this.resourceCards = document.querySelectorAll("[data-resource-card]");
+    this.resourcesSection = document.querySelector(".quiz-resources");
+    this.pendingBuildKey = null;
 
     if (!this.root || !this.quizCard || !this.quizForm) {
       return;
@@ -32,8 +35,7 @@ class LunarGameUI {
   scrollToGameTop(previousState, nextState) {
     const changedSection =
       previousState.phase !== nextState.phase ||
-      previousState.questionIndex !== nextState.questionIndex ||
-      Boolean(previousState.lastAnswer) !== Boolean(nextState.lastAnswer);
+      previousState.questionIndex !== nextState.questionIndex;
 
     if (!changedSection) {
       return;
@@ -47,6 +49,7 @@ class LunarGameUI {
   render() {
     this.updateResources();
     this.updateProgress();
+    this.updateProgressVisibility();
 
     if (this.state.phase === "construction") {
       this.renderConstruction();
@@ -69,6 +72,10 @@ class LunarGameUI {
   updateResources(targetResource = null) {
     const question = getCurrentQuestion(this.state);
     const activeResource = targetResource ?? question?.resource;
+
+    if (this.resourcesSection) {
+      this.resourcesSection.hidden = this.state.phase === "game-over";
+    }
 
     this.resourceCards.forEach((card) => {
       const resource = card.dataset.resourceCard;
@@ -111,6 +118,16 @@ class LunarGameUI {
     });
   }
 
+  updateProgressVisibility() {
+    const hideQuestionProgress = ["week-summary", "game-over"].includes(this.state.phase);
+
+    if (this.progressQuestion) {
+      this.progressQuestion.hidden = hideQuestionProgress;
+    }
+
+    this.progressRow?.classList.toggle("is-week-only", hideQuestionProgress);
+  }
+
   updateProgressChip(chip, config) {
     if (!chip) {
       return;
@@ -139,6 +156,8 @@ class LunarGameUI {
         if (!result && index === this.state.questionIndex && this.state.phase === "quiz") {
           block.classList.add("is-active");
         }
+      } else if (this.state.phase === "game-over") {
+        block.classList.add(config.completedStatus);
       } else if (index + 1 < this.state.week) {
         block.classList.add(config.completedStatus);
       } else if (index + 1 === this.state.week) {
@@ -166,6 +185,8 @@ class LunarGameUI {
 
     const feedback = document.createElement("p");
     feedback.className = `quiz-inline-feedback is-${type}`;
+    feedback.setAttribute("role", "status");
+    feedback.setAttribute("aria-live", "polite");
     feedback.textContent = message;
     this.quizForm.appendChild(feedback);
   }

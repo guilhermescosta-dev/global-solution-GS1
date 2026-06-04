@@ -12,94 +12,272 @@
     this.updateCardTitle("Construção e Upgrades");
 
     const modules = getModulesData();
+    const previewState = this.pendingBuildKey ? this.createBuildPreviewState(this.pendingBuildKey) : null;
+    const previewVital = previewState
+      ? this.applyVitalCaps(this.calculateWeekVitalChanges(previewState)).vitalAfter
+      : this.createSkipWeekPreview();
     const moduleCards = Object.entries(modules)
       .map(([key, module]) => this.createModuleCard(key, module))
       .join("");
+    const selectedModule = this.pendingBuildKey ? modules[this.pendingBuildKey] : null;
 
     this.answerList.innerHTML = `
-      ${this.createVitalSummary()}
+      ${this.createRiskAlerts()}
+      ${this.createVitalSummary(this.state.vital, previewVital, { showBaseConsumption: true })}
       <div class="construction-grid">
         ${moduleCards}
       </div>
+      ${this.createSelectedBuildCallout(selectedModule)}
       <div class="construction-actions">
-        <button type="button" class="botao-iniciar button-secondary" data-skip-build>
-          Guardar recursos e finalizar semana
-        </button>
+        ${
+          selectedModule
+            ? `
+              <button type="button" class="botao-iniciar" data-confirm-build>
+                Confirmar escolha e finalizar semana
+              </button>
+            `
+            : `
+              <button type="button" class="botao-iniciar button-secondary" data-skip-build>
+                Guardar recursos e finalizar semana
+              </button>
+            `
+        }
       </div>
     `;
 
-    this.answerList.querySelectorAll("[data-build-module]").forEach((button) => {
-      button.addEventListener("click", () => this.buildModule(button.dataset.buildModule));
+    this.answerList.querySelectorAll("[data-module-option]").forEach((card) => {
+      card.addEventListener("click", () => this.selectBuildModule(card.dataset.moduleOption));
     });
 
-    this.answerList.querySelector("[data-skip-build]").addEventListener("click", () => {
-      this.finishWeek("Nenhum m\u00f3dulo foi constru\u00eddo nesta semana.");
+    this.answerList.querySelector("[data-confirm-build]")?.addEventListener("click", () => {
+      this.confirmSelectedBuild();
+    });
+
+    this.answerList.querySelector("[data-skip-build]")?.addEventListener("click", () => {
+      this.skipBuildStep();
     });
   },
 
   // O mapa com tooltips do JS antigo virou uma lista de cards simples,
   // entao cada card ja mostra custo, producao e consumo antes do clique.
   createModuleCard(key, module) {
-    const currentLevel = this.state.activeModules[key] ?? 0;
+    const currentLevel = getActiveModuleLevel(this.state, key);
     const nextLevel = module.levels[currentLevel];
     const isMaxLevel = !nextLevel;
     const cost = nextLevel?.cost ?? {};
     const available = !isMaxLevel && canAfford(this.state.operational, cost);
-    const actionLabel = currentLevel === 0 ? "Construir" : "Fazer upgrade";
-    const costText = isMaxLevel ? "Nível máximo alcançado" : formatCostList(cost);
+    const isUpgrade = currentLevel > 0 && !isMaxLevel;
+    const isSelected = this.pendingBuildKey === key;
+    const actionLabel = currentLevel === 0 ? "Construir módulo" : "Fazer upgrade";
+    const buttonClass = isUpgrade ? "button-upgrade" : "button-build";
+    const statusClass = isMaxLevel ? "is-complete" : isUpgrade ? "is-upgrade" : "is-new";
+    const previousLevel = currentLevel > 0 ? module.levels[currentLevel - 1] : null;
     const effectText = isMaxLevel
       ? this.createModuleEffects(module.levels[currentLevel - 1])
-      : this.createModuleEffects(nextLevel);
+      : this.createModuleEffects(nextLevel, previousLevel);
 
     return `
-      <article class="module-option ${available ? "" : "is-disabled"}">
+      <article
+        class="module-option ${statusClass} ${isSelected ? "is-selected" : ""} ${available ? "" : "is-disabled"}"
+        data-module-option="${key}"
+      >
         <i class="bi ${MODULE_ICONS[key] ?? "bi-tools"}" aria-hidden="true"></i>
         <div class="module-option-content">
-          <span class="module-level">Nível atual: ${currentLevel}/3</span>
+          ${this.createModuleLevelBlocks(currentLevel)}
           <h3>${module.name}</h3>
-          <p class="module-cost"><strong>Custo:</strong> ${costText}</p>
+          ${this.createCostTags(cost, isMaxLevel)}
           ${effectText}
           <button
             type="button"
-            class="botao-iniciar"
-            data-build-module="${key}"
+            class="botao-iniciar ${buttonClass}"
             ${available ? "" : "disabled"}
           >
-            ${isMaxLevel ? "Completo" : actionLabel}
+            ${isMaxLevel ? "Completo" : isSelected ? "Escolha marcada" : actionLabel}
           </button>
         </div>
       </article>
     `;
   },
 
-  createModuleEffects(levelData) {
-    if (!levelData) {
-      return "";
-    }
-
-    const production = Object.entries(levelData.prod)
-      .map(([resource, value]) => formatVitalDelta(resource, value, "+"))
-      .join(" · ");
-    const consumption = Object.entries(levelData.cons)
-      .map(([resource, value]) => formatVitalDelta(resource, value, "-"))
-      .join(" · ");
+  createModuleLevelBlocks(currentLevel) {
+    const blocks = Array.from({ length: 3 }, (_, index) => `
+      <i class="${index < currentLevel ? "is-active" : ""}"></i>
+    `).join("");
 
     return `
-      <div class="module-effects">
-        <span class="effect-positive"><strong>Produz:</strong> ${production || "Nada"}</span>
-        <span class="effect-negative"><strong>Consome:</strong> ${consumption || "Nada"}</span>
+      <div class="module-level-row" aria-label="Nível atual ${currentLevel} de 3">
+        <span>Nível</span>
+        <div class="module-level-blocks" aria-hidden="true">${blocks}</div>
       </div>
     `;
   },
 
-  buildModule(key) {
+  createSkipWeekPreview() {
+    return this.applyVitalCaps(this.calculateWeekVitalChanges()).vitalAfter;
+  },
+
+  createCostTags(cost, isMaxLevel) {
+    if (isMaxLevel) {
+      return `<div class="module-cost-tags"><span class="module-tag is-neutral">Nível máximo</span></div>`;
+    }
+
+    const entries = Object.entries(cost);
+
+    if (!entries.length) {
+      return `<div class="module-cost-tags"><span class="module-tag is-neutral">Sem custo</span></div>`;
+    }
+
+    return `
+      <div class="module-cost-tags" aria-label="Custo do módulo">
+        <strong>Custo</strong>
+        ${entries
+          .map(([resource, value]) => {
+            const meta = getResourceMeta(resource);
+            return `
+              <span class="module-tag is-cost">
+                <i class="bi ${meta.icon}" aria-hidden="true"></i>
+                ${value}
+              </span>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  },
+
+  createModuleEffects(levelData, previousLevelData = null) {
+    if (!levelData) {
+      return "";
+    }
+
+    const production = this.createVitalEffectTags(levelData.prod, previousLevelData?.prod, "prod");
+    const consumption = this.createVitalEffectTags(levelData.cons, previousLevelData?.cons, "cons");
+
+    return `
+      <div class="module-effects">
+        <div class="effect-group">
+          <strong>Produz</strong>
+          <div>${production || `<span class="module-tag is-neutral">Nada</span>`}</div>
+        </div>
+        <div class="effect-group">
+          <strong>Consome</strong>
+          <div>${consumption || `<span class="module-tag is-neutral">Nada</span>`}</div>
+        </div>
+      </div>
+    `;
+  },
+
+  createVitalEffectTags(nextValues, previousValues = null, type = "prod") {
+    return Object.entries(nextValues)
+      .map(([resource, value]) => {
+        const previousValue = previousValues?.[resource] ?? 0;
+        const delta = previousValues ? value - previousValue : value;
+
+        if (delta === 0) return "";
+
+        const meta = getVitalMeta(resource);
+        const isConsumption = type === "cons";
+        const displayValue = isConsumption ? -delta : delta;
+        const isPositive = displayValue > 0;
+
+        return `
+          <span class="module-tag ${isPositive ? "is-positive" : "is-negative"}">
+            <i class="bi ${meta.icon}" aria-hidden="true"></i>
+            ${isPositive ? "+" : ""}${displayValue}
+          </span>
+        `;
+      })
+      .join("");
+  },
+
+  createSelectedBuildCallout(module) {
+    if (!module) {
+      return `
+        <article class="build-selection-callout">
+          <strong>Escolha um módulo para prever o impacto.</strong>
+          <p>As barras acima mostram como a base ficará ao guardar recursos ou confirmar uma construção.</p>
+        </article>
+      `;
+    }
+
+    return `
+      <article class="build-selection-callout is-selected">
+        <strong>${module.name} selecionado</strong>
+        <p>Confira o impacto nos recursos vitais e confirme para aplicar esta escolha na semana.</p>
+      </article>
+    `;
+  },
+
+  async skipBuildStep() {
+    if (
+      this.hasAffordableBuildOption() &&
+      !(await showGameConfirm({
+        title: "Guardar recursos?",
+        message:
+          "Você ainda pode construir ou melhorar um módulo nesta semana. Deseja guardar os recursos e finalizar mesmo assim?",
+        confirmText: "Guardar recursos",
+        cancelText: "Voltar aos módulos",
+      }))
+    ) {
+      return;
+    }
+
+    this.pendingBuildKey = null;
+    this.finishWeek("Nenhum m\u00f3dulo foi constru\u00eddo nesta semana.");
+  },
+
+  hasAffordableBuildOption() {
+    return Object.entries(getModulesData()).some(([key, module]) => {
+      const currentLevel = getActiveModuleLevel(this.state, key);
+      const nextLevel = module.levels[currentLevel];
+
+      return Boolean(nextLevel && canAfford(this.state.operational, nextLevel.cost));
+    });
+  },
+
+  selectBuildModule(key) {
+    if (this.pendingBuildKey === key) {
+      this.pendingBuildKey = null;
+      this.render();
+      return;
+    }
+
+    const previewState = this.createBuildPreviewState(key);
+
+    if (!previewState) {
+      this.showFeedback("Recursos insuficientes para esse m\u00f3dulo.", "warning");
+      return;
+    }
+
+    this.pendingBuildKey = key;
+    this.render();
+  },
+
+  confirmSelectedBuild() {
+    if (!this.pendingBuildKey) {
+      return;
+    }
+
+    const module = getModulesData()[this.pendingBuildKey];
+    const currentLevel = getActiveModuleLevel(this.state, this.pendingBuildKey);
+    const nextState = this.createBuildPreviewState(this.pendingBuildKey);
+
+    if (!nextState) {
+      this.showFeedback("Recursos insuficientes para esse m\u00f3dulo.", "warning");
+      return;
+    }
+
+    this.pendingBuildKey = null;
+    this.finishWeek(`${module.name} chegou ao nível ${currentLevel + 1}.`, nextState);
+  },
+
+  createBuildPreviewState(key) {
     const module = getModulesData()[key];
-    const currentLevel = this.state.activeModules[key] ?? 0;
+    const currentLevel = getActiveModuleLevel(this.state, key);
     const nextLevel = module.levels[currentLevel];
 
     if (!nextLevel || !canAfford(this.state.operational, nextLevel.cost)) {
-      this.showFeedback("Recursos insuficientes para esse m\u00f3dulo.", "warning");
-      return;
+      return null;
     }
 
     const nextOperational = { ...this.state.operational };
@@ -107,7 +285,7 @@
       nextOperational[resource] -= value;
     });
 
-    this.state = {
+    const nextState = {
       ...this.state,
       operational: nextOperational,
       activeModules: {
@@ -116,7 +294,7 @@
       },
     };
 
-    this.finishWeek(`${module.name} chegou ao nível ${currentLevel + 1}.`);
+    return nextState;
   }
 });
 
