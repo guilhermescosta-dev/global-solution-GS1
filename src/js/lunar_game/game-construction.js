@@ -7,9 +7,9 @@
     this.clearFeedback();
     this.questionEl.hidden = false;
     this.quizForm.onsubmit = (event) => event.preventDefault();
-    this.questionEl.textContent = "Use seus recursos para construir ou melhorar um m\u00f3dulo da base.";
+    this.questionEl.textContent = "Use seus recursos para construir ou melhorar um módulo da base.";
 
-    this.updateCardTitle("Constru\u00e7\u00e3o e Upgrades");
+    this.updateCardTitle("Construção e Upgrades");
 
     const modules = getModulesData();
     const moduleCards = Object.entries(modules)
@@ -46,7 +46,7 @@
     const cost = nextLevel?.cost ?? {};
     const available = !isMaxLevel && canAfford(this.state.operational, cost);
     const actionLabel = currentLevel === 0 ? "Construir" : "Fazer upgrade";
-    const costText = isMaxLevel ? "N\u00edvel m\u00e1ximo alcan\u00e7ado" : formatCostList(cost);
+    const costText = isMaxLevel ? "Nível máximo alcançado" : formatCostList(cost);
     const effectText = isMaxLevel
       ? this.createModuleEffects(module.levels[currentLevel - 1])
       : this.createModuleEffects(nextLevel);
@@ -55,7 +55,7 @@
       <article class="module-option ${available ? "" : "is-disabled"}">
         <i class="bi ${MODULE_ICONS[key] ?? "bi-tools"}" aria-hidden="true"></i>
         <div class="module-option-content">
-          <span class="module-level">N\u00edvel atual: ${currentLevel}/3</span>
+          <span class="module-level">Nível atual: ${currentLevel}/3</span>
           <h3>${module.name}</h3>
           <p class="module-cost"><strong>Custo:</strong> ${costText}</p>
           ${effectText}
@@ -79,10 +79,10 @@
 
     const production = Object.entries(levelData.prod)
       .map(([resource, value]) => formatVitalDelta(resource, value, "+"))
-      .join(" Â· ");
+      .join(" · ");
     const consumption = Object.entries(levelData.cons)
       .map(([resource, value]) => formatVitalDelta(resource, value, "-"))
-      .join(" Â· ");
+      .join(" · ");
 
     return `
       <div class="module-effects">
@@ -116,7 +116,7 @@
       },
     };
 
-    this.finishWeek(`${module.name} chegou ao n\u00edvel ${currentLevel + 1}.`);
+    this.finishWeek(`${module.name} chegou ao nível ${currentLevel + 1}.`);
   }
 });
 

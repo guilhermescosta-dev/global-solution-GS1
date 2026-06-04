@@ -59,8 +59,8 @@ Object.assign(LunarGameUI.prototype, {
     const isLastQuestion = this.state.questionIndex + 1 >= CONFIG.QUESTIONS_PER_WEEK;
     submitButton.textContent = this.isReviewingAnswer()
       ? isLastQuestion
-        ? "Ir para constru\u00e7\u00e3o"
-        : "Pr\u00f3xima pergunta"
+        ? "Ir para construção"
+        : "Próxima pergunta"
       : "Confirmar Resposta";
   },
 

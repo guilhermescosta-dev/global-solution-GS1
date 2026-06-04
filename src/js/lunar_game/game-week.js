@@ -106,7 +106,7 @@
       return `
         <article class="quiz-feedback-card">
           <strong>${report.actionMessage ?? "Semana finalizada."}</strong>
-          <p>Os recursos vitais foram atualizados. Continue para a pr\u00f3xima semana para ver o novo saldo.</p>
+          <p>Os recursos vitais foram atualizados. Continue para a próxima semana para ver o novo saldo.</p>
         </article>
       `;
     }
@@ -133,7 +133,7 @@
     return `
       <article class="round-summary-item ${statusClass}">
         <span>${VITAL_LABELS[resource]}</span>
-        <strong>${before} â†’ ${Math.max(0, after)}</strong>
+        <strong>${before} → ${Math.max(0, after)}</strong>
         <small>${signal}${delta}</small>
       </article>
     `;
@@ -164,10 +164,10 @@
   createFinalResult(victory, vital = this.state.vital) {
     if (!victory) {
       return {
-        title: "Falha na Miss\u00e3o",
+        title: "Falha na Missão",
         status: "Um recurso vital chegou a zero.",
         message:
-          "A base perdeu estabilidade e a tripula\u00e7\u00e3o precisou encerrar a opera\u00e7\u00e3o. Tente outra estrat\u00e9gia de constru\u00e7\u00e3o.",
+          "A base perdeu estabilidade e a tripulação precisou encerrar a operação. Tente outra estratégia de construção.",
       };
     }
 
@@ -175,24 +175,24 @@
 
     if (minVital >= 60) {
       return {
-        title: "Base Autossustent\u00e1vel",
-        status: "Miss\u00e3o conclu\u00edda com excel\u00eancia.",
+        title: "Base Autossustentável",
+        status: "Missão concluída com excelência.",
         message: "Sua base sobreviveu \u00e0s 10 semanas com grande equil\u00edbrio de recursos.",
       };
     }
 
     if (minVital >= 30) {
       return {
-        title: "Miss\u00e3o Conclu\u00edda",
-        status: "A tripula\u00e7\u00e3o chegou ao fim da opera\u00e7\u00e3o.",
+        title: "Missão Concluída",
+        status: "A tripulação chegou ao fim da operação.",
         message: "A base sobreviveu, mas alguns recursos ainda poderiam ser otimizados.",
       };
     }
 
     return {
-      title: "Miss\u00e3o em Risco",
+      title: "Missão em Risco",
       status: "A base sobreviveu no limite.",
-      message: "Voc\u00ea concluiu a miss\u00e3o, mas a gest\u00e3o de recursos precisaria de melhorias.",
+      message: "Você concluiu a missão, mas a gestão de recursos precisaria de melhorias.",
     };
   },
 

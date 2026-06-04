@@ -33,7 +33,7 @@ const RESOURCE_META = {
     cardClass: "resource-minerals",
   },
   componentes: {
-    label: "Componentes Eletr\u00f4nicos",
+    label: "Componentes Eletrônicos",
     icon: "bi-cpu",
     cardClass: "resource-components",
   },
@@ -46,8 +46,8 @@ const RESOURCE_META = {
 
 const VITAL_LABELS = {
   energia: "Energia",
-  agua: "\u00c1gua",
-  oxigenio: "Oxig\u00eanio",
+  agua: "Água",
+  oxigenio: "Oxigênio",
   alimentos: "Alimentos",
 };
 
