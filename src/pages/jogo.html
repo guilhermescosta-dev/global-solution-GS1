@@ -13,6 +13,7 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="../css/global-style.css" />
     <link rel="stylesheet" href="../css/jogo.css" />
     <title>Operação Selene - Sobrevivência Lunar</title>
   </head>
@@ -42,7 +43,7 @@
             <a href="./comoJogar.html" class="nav-section">Como jogar</a>
           </li>
           <li>
-            <a href="./jogo.html" class="nav-section botao-iniciar"
+            <a href="./game-pages/briefing.html" class="nav-section botao-iniciar"
               >Iniciar missão</a
             >
           </li>
@@ -52,6 +53,9 @@
 
     <main class="game-page">
       <section class="game-briefing">
+    <main>
+      <!-- TELA DE BRIEFING (Visível inicialmente) -->
+      <section id="briefing-section" class="game-page">
         <div class="container game-briefing-grid">
           <div class="mission-copy">
             <span class="mission-tag">Missão Lunar</span>
@@ -64,7 +68,7 @@
             </p>
 
             <div class="mission-actions">
-              <a href="#" class="botao-iniciar">Iniciar Simulação</a>
+              <a href="./game-pages/briefing.html" class="botao-iniciar">Iniciar Simulação</a>
               <a href="./comoJogar.html" class="botao-iniciar button-secondary"
                 >Ver Como Jogar</a
               >
@@ -196,6 +200,136 @@
           </article>
         </div>
       </section>
+
+      <!-- TELA DO JOGO (Oculta inicialmente) -->
+      <section id="game-section" class="game-interface" style="display: none;">
+        <div class="game-container">
+          <!-- Painel Esquerdo: Controles e Status -->
+          <aside class="game-sidebar">
+            <div class="game-header">
+              <h1 id="week-title" class="game-week">Semana 1</h1>
+              <p id="game-status" class="game-status-text">Início da Missão</p>
+            </div>
+
+            <!-- Recursos Vitais -->
+            <div class="resources-section vital-section">
+              <h3 class="resources-title">
+                <i class="bi bi-heart-pulse-fill"></i> Recursos Vitais
+              </h3>
+              <div class="resources-grid vital-grid">
+                <div class="resource-item">
+                  <div class="resource-header">
+                    <span class="resource-icon energy-icon"><i class="bi bi-lightning-charge-fill"></i></span>
+                    <span class="resource-name">Energia</span>
+                  </div>
+                  <div class="resource-bar-container">
+                    <div class="resource-bar-bg">
+                      <div id="bar-energia" class="resource-bar-fill energy-bar" style="width: 60%"></div>
+                    </div>
+                  </div>
+                  <div id="stat-energia" class="resource-value">60</div>
+                </div>
+
+                <div class="resource-item">
+                  <div class="resource-header">
+                    <span class="resource-icon water-icon"><i class="bi bi-droplet-fill"></i></span>
+                    <span class="resource-name">Água</span>
+                  </div>
+                  <div class="resource-bar-container">
+                    <div class="resource-bar-bg">
+                      <div id="bar-agua" class="resource-bar-fill water-bar" style="width: 60%"></div>
+                    </div>
+                  </div>
+                  <div id="stat-agua" class="resource-value">60</div>
+                </div>
+
+                <div class="resource-item">
+                  <div class="resource-header">
+                    <span class="resource-icon oxygen-icon"><i class="bi bi-wind"></i></span>
+                    <span class="resource-name">Oxigênio</span>
+                  </div>
+                  <div class="resource-bar-container">
+                    <div class="resource-bar-bg">
+                      <div id="bar-oxigenio" class="resource-bar-fill oxygen-bar" style="width: 60%"></div>
+                    </div>
+                  </div>
+                  <div id="stat-oxigenio" class="resource-value">60</div>
+                </div>
+
+                <div class="resource-item">
+                  <div class="resource-header">
+                    <span class="resource-icon food-icon"><i class="bi bi-flower1"></i></span>
+                    <span class="resource-name">Alimentos</span>
+                  </div>
+                  <div class="resource-bar-container">
+                    <div class="resource-bar-bg">
+                      <div id="bar-alimentos" class="resource-bar-fill food-bar" style="width: 50%"></div>
+                    </div>
+                  </div>
+                  <div id="stat-alimentos" class="resource-value">50</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recursos de Produção -->
+            <div class="resources-section production-section">
+              <h3 class="resources-title">
+                <i class="bi bi-gear-fill"></i> Recursos de Produção
+              </h3>
+              <div class="resources-grid production-grid">
+                <div class="production-item">
+                  <span class="production-icon minerals-icon"><i class="bi bi-gem"></i></span>
+                  <div>
+                    <p class="production-name">Minerais</p>
+                    <p id="stat-minerais" class="production-value">10</p>
+                  </div>
+                </div>
+
+                <div class="production-item">
+                  <span class="production-icon components-icon"><i class="bi bi-cpu"></i></span>
+                  <div>
+                    <p class="production-name">Componentes</p>
+                    <p id="stat-componentes" class="production-value">10</p>
+                  </div>
+                </div>
+
+                <div class="production-item">
+                  <span class="production-icon biomass-icon"><i class="bi bi-leaf"></i></span>
+                  <div>
+                    <p class="production-name">Biomassa</p>
+                    <p id="stat-biomassa" class="production-value">10</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Painel Central: Conteúdo do Jogo -->
+          <main class="game-content-area">
+            <div id="message-area" class="game-message">
+              <h2>Bem-vindo, Comandante!</h2>
+              <p>Sua missão é manter a base lunar funcionando por 10 semanas. Equilibre seus recursos vitais e construa módulos estratégicos.</p>
+            </div>
+            <div id="action-area" class="game-actions">
+              <button class="btn-game-primary" onclick="game.nextStep()">Iniciar Missão</button>
+            </div>
+          </main>
+
+          <!-- Painel Direito: Mapa Interativo -->
+          <aside class="game-map">
+            <div class="map-header">
+              <h3>Mapa da Base</h3>
+            </div>
+            <div id="map-overlay" class="map-overlay">
+              <!-- Ícones dos módulos serão inseridos aqui via JS -->
+            </div>
+            <div id="map-info-panel" class="map-info-panel">
+              <h4>Informações dos Módulos</h4>
+              <!-- Conteúdo será inserido via JS -->
+            </div>
+          </aside>
+        </div>
+      </section>
     </main>
 
     <footer class="footer-section">
@@ -217,7 +351,7 @@
             <a href="./comoJogar.html" class="footer-navegacao-pagina"
               >Como jogar</a
             >
-            <a href="./jogo.html" class="footer-navegacao-pagina"
+            <a href="./game-pages/briefing.html" class="footer-navegacao-pagina"
               >Iniciar missão</a
             >
           </nav>
@@ -259,5 +393,22 @@
       crossorigin="anonymous"
     ></script>
     <script src="../js/script.js"></script>
+    <script src="../js/lunar_game/questions.js"></script>
+    <script src="../js/lunar_game/modules.js"></script>
+    <script src="../js/lunar_game/game.js"></script>
+    <script>
+      function startGameSession() {
+        // Ocultar briefing
+        document.getElementById('briefing-section').style.display = 'none';
+        document.querySelector('.game-rules-preview').style.display = 'none';
+        document.querySelector('.vitals-preview').style.display = 'none';
+        
+        // Mostrar jogo
+        document.getElementById('game-section').style.display = 'block';
+        
+        // Scroll para o topo
+        window.scrollTo(0, 0);
+      }
+    </script>
   </body>
 </html>

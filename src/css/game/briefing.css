@@ -1,0 +1,381 @@
+@import url("./game-base.css");
+@import url("./game-components.css");
+
+.game-briefing {
+  min-height: calc(100vh - 95px);
+  padding: clamp(48px, 7vw, 92px) 0 clamp(42px, 6vw, 76px);
+}
+
+.game-briefing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 0.82fr);
+  gap: clamp(28px, 4vw, 52px);
+  align-items: start;
+}
+
+.mission-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mission-copy .game-text {
+  margin-top: 22px;
+}
+
+.briefing-vitals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin-top: 22px;
+}
+
+.briefing-vital-card {
+  --vital-color: var(--color-success);
+  min-height: 82px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--vital-color) 55%, transparent);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--vital-color) 9%, transparent),
+      rgba(224, 224, 224, 0.028)
+    );
+}
+
+.briefing-vital-card strong,
+.briefing-vital-card span {
+  display: block;
+}
+
+.briefing-vital-card strong {
+  color: var(--vital-color);
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+}
+
+.briefing-vital-card span {
+  margin-top: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.vital-energy {
+  --vital-color: var(--color-warning);
+}
+
+.vital-water {
+  --vital-color: var(--color-cyan);
+}
+
+.vital-oxygen {
+  --vital-color: var(--color-success);
+}
+
+.vital-food {
+  --vital-color: var(--color-magenta);
+}
+
+.mission-copy .game-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 28px;
+  width: 100%;
+}
+
+.mission-copy .game-actions .botao-iniciar {
+  width: 100%;
+  text-align: center;
+}
+
+.mission-copy .game-actions .botao-iniciar:first-child {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+}
+
+.mission-copy .game-actions .botao-iniciar:first-child::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 45%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.55s ease;
+}
+
+.mission-copy .game-actions .botao-iniciar:first-child:hover {
+  box-shadow:
+    0 0 24px var(--color-cyan-shadow),
+    0 0 34px rgba(255, 0, 110, 0.16);
+}
+
+.mission-copy .game-actions .botao-iniciar:first-child:hover::after {
+  transform: translateX(120%);
+}
+
+.mission-panel {
+  padding: clamp(22px, 3vw, 30px);
+}
+
+.mission-panel .game-panel-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  justify-items: stretch;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.mission-panel .game-panel-header h2 {
+  width: 100%;
+  margin: 0;
+  color: var(--color-text-lighter);
+  font-family: var(--font-title);
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+}
+
+.briefing-week-progress {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 10px;
+  justify-self: stretch;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  padding: 14px;
+  border: 1px solid rgba(0, 217, 255, 0.34);
+  border-radius: 14px;
+  background: rgba(5, 8, 16, 0.58);
+}
+
+.progress-chip-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.progress-chip-heading span,
+.progress-chip-heading strong {
+  color: var(--color-text-light);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.progress-chip-heading strong {
+  color: var(--color-cyan);
+}
+
+.progress-blocks {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+.progress-blocks i {
+  display: block;
+  width: 100%;
+  height: 12px;
+  border: 1px solid rgba(0, 217, 255, 0.45);
+  border-radius: 4px;
+  background: rgba(224, 224, 224, 0.04);
+}
+
+.progress-blocks i.is-active {
+  border-color: var(--color-cyan);
+  background: var(--color-cyan);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.42);
+}
+
+.vital-resources {
+  display: grid;
+  gap: 18px;
+}
+
+.briefing-operational-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 28px;
+  gap: 10px;
+}
+
+.briefing-operational-list .operational-card {
+  --resource-color: var(--color-cyan);
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  min-height: 70px;
+  padding: 10px;
+  border-color: color-mix(in srgb, var(--resource-color) 58%, transparent);
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--resource-color) 12%, transparent),
+      rgba(224, 224, 224, 0.025)
+    );
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.briefing-operational-list .operational-card:hover {
+  border-color: color-mix(in srgb, var(--resource-color) 84%, transparent);
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--resource-color) 18%, transparent),
+      rgba(224, 224, 224, 0.035)
+    );
+  box-shadow: 0 0 18px color-mix(in srgb, var(--resource-color) 22%, transparent);
+  transform: translateY(-2px);
+}
+
+.briefing-operational-list .operational-card i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--resource-color);
+  border-radius: 10px;
+  color: var(--resource-color);
+  background: color-mix(in srgb, var(--resource-color) 12%, transparent);
+  font-size: 1rem;
+}
+
+.briefing-operational-list .operational-card-info span,
+.briefing-operational-list .operational-card-info strong {
+  display: block;
+}
+
+.briefing-operational-list .operational-card-info span {
+  color: var(--color-text-light);
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.briefing-operational-list .operational-card-info strong {
+  margin: 2px 0 0;
+  color: var(--resource-color);
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+}
+
+.resource-minerals {
+  --resource-color: var(--color-warning);
+}
+
+.resource-components {
+  --resource-color: var(--color-cyan);
+}
+
+.resource-biomass {
+  --resource-color: var(--color-success);
+}
+
+.game-rules-preview {
+  padding: 0 0 clamp(42px, 6vw, 72px);
+}
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.rule-card {
+  min-height: 190px;
+}
+
+.rule-card:nth-child(2) {
+  border-color: rgba(255, 0, 110, 0.72);
+}
+
+.rule-card:nth-child(3) {
+  border-color: rgba(0, 255, 136, 0.72);
+}
+
+.rule-card i {
+  color: var(--color-cyan);
+  font-size: 1.8rem;
+}
+
+.rule-card:nth-child(2) i {
+  color: var(--color-magenta);
+}
+
+.rule-card:nth-child(3) i {
+  color: var(--color-success);
+}
+
+.rule-card h2 {
+  margin: 18px 0 10px;
+  font-size: 1.05rem;
+}
+
+.rule-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 850px) {
+  .game-briefing {
+    min-height: auto;
+    padding-top: 42px;
+  }
+
+  .game-briefing-grid,
+  .rules-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .briefing-operational-list {
+    grid-template-columns: 1fr;
+  }
+
+  .briefing-operational-list .operational-card {
+    grid-template-columns: 42px minmax(0, 1fr);
+    min-height: 76px;
+    padding: 14px;
+  }
+
+  .briefing-operational-list .operational-card i {
+    width: 42px;
+    height: 42px;
+    font-size: 1.25rem;
+  }
+
+  .briefing-operational-list .operational-card-info span {
+    font-size: 0.9rem;
+  }
+
+  .briefing-operational-list .operational-card-info strong {
+    font-size: 1.55rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .briefing-vitals {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-copy .game-actions {
+    grid-template-columns: 1fr;
+  }
+}

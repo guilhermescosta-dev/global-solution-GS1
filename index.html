@@ -44,7 +44,10 @@
             >
           </li>
           <li>
-            <a href="./src/pages/jogo.html" class="nav-section botao-iniciar"
+            <a
+              href="./src/pages/game-pages/briefing.html"
+              class="nav-section botao-iniciar"
+              data-game-start
               >Iniciar missão</a
             >
           </li>
@@ -71,7 +74,7 @@
             </div>
 
             <div class="botoes-hero">
-              <a href="./src/pages/jogo.html" class="botao-iniciar"
+              <a href="./src/pages/game-pages/briefing.html" class="botao-iniciar" data-game-start
                 >Iniciar missão</a
               >
               <a
@@ -179,7 +182,10 @@
             <a href="./src/pages/comoJogar.html" class="footer-navegacao-pagina"
               >Como jogar</a
             >
-            <a href="./src/pages/jogo.html" class="footer-navegacao-pagina"
+            <a
+              href="./src/pages/game-pages/briefing.html"
+              class="footer-navegacao-pagina"
+              data-game-start
               >Iniciar missão</a
             >
           </nav>
@@ -221,5 +227,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="./src/js/script.js"></script>
+    <script src="./src/js/lunar_game/game-config.js"></script>
+    <script src="./src/js/lunar_game/game-state.js"></script>
+    <script src="./src/js/lunar_game/game.js"></script>
   </body>
 </html>
