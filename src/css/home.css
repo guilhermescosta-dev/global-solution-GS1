@@ -254,6 +254,7 @@
     flex-direction: column;
     align-items: stretch;
     min-height: auto;
+    gap: 20px;
   }
 
   .hero-conteudo {
