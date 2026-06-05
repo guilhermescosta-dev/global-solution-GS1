@@ -97,9 +97,11 @@ header {
   box-shadow: 0 0 20px var(--color-cyan-shadow);
 }
 
-.logo-texto {
+.logo-texto, a{
   margin: 0;
   white-space: nowrap;
+  text-decoration: none;
+  color: var(--color-text-light);;
 }
 
 header nav ul {

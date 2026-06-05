@@ -14,13 +14,17 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../../css/game/quiz.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/introjs.min.css" />
     <title>Operação Selene - Quiz Educativo</title>
+    <style>
+
+    </style>
   </head>
   <body>
     <header class="borda-gradient-bottom">
       <div class="logo">
         <i class="bi bi-rocket-takeoff-fill logo-icone"></i>
-        <p class="logo-texto">Operação Selene</p>
+        <a href="../../../index.html"><p class="logo-texto">Operação Selene</p></a>
       </div>
 
       <button
@@ -38,9 +42,7 @@
       <nav id="nav-menu">
         <ul>
           <li><a href="../../../index.html" class="nav-section">Home</a></li>
-          <li>
-            <a href="../comoJogar.html" class="nav-section">Como jogar</a>
-          </li>
+
           <li>
             <a href="./briefing.html" class="nav-section botao-iniciar" data-game-start
               >Iniciar missão</a
@@ -57,7 +59,12 @@
             <h1 class="game-title">Quiz Educativo</h1>
           </div>
 
-          <section class="quiz-resources game-card">
+          <!-- Visualização 3D da Base -->
+          <div id="base-3d-container" data-intro="Aqui você pode ver a evolução da sua base lunar em tempo real!" data-step="1">
+            <div class="base-3d-label"><i class="bi bi-view-stacked"></i> Visualização da Base</div>
+          </div>
+
+          <section class="quiz-resources game-card" data-intro="Estes são seus recursos operacionais. Use-os para construir e melhorar módulos." data-step="2">
             <div class="quiz-resources-header">
               <h2>Recursos Operacionais</h2>
               <span class="panel-kicker">Inventário da Missão</span>
@@ -102,7 +109,7 @@
             </div>
           </section>
 
-          <section class="quiz-card game-card">
+          <section class="quiz-card game-card" data-intro="Responda às perguntas corretamente para ganhar recursos e avançar nas semanas." data-step="3">
             <div class="quiz-progress-row" aria-label="Progresso do quiz">
               <div
                 class="progress-chip"
@@ -210,9 +217,7 @@
           <nav class="footer-navegacao" aria-label="Links do rodapé">
             <p class="footer-titulo">Navegação</p>
             <a href="../../../index.html" class="footer-navegacao-pagina">Home</a>
-            <a href="../comoJogar.html" class="footer-navegacao-pagina"
-              >Como jogar</a
-            >
+
             <a href="./briefing.html" class="footer-navegacao-pagina" data-game-start
               >Iniciar missão</a
             >
@@ -265,6 +270,8 @@
     <script src="../../js/lunar_game/game-construction.js"></script>
     <script src="../../js/lunar_game/game-week.js"></script>
     <script src="../../js/lunar_game/game-results.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
     <script src="../../js/lunar_game/game.js"></script>
   </body>
 </html>
