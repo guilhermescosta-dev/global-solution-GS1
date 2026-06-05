@@ -80,14 +80,14 @@
 }
 
 .mission-copy .game-actions {
-  display: flex;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 28px;
   width: 100%;
 }
 
 .mission-copy .game-actions .botao-iniciar {
-  width: fit-content;
+  width: 100%;
   text-align: center;
 }
 

@@ -101,7 +101,7 @@
 
 .impacto-section {
   padding: clamp(64px, 8vw, 104px) 0;
-  background: transparent;
+  background: var(--color-bg-darker);
 }
 
 .impacto-conteudo {

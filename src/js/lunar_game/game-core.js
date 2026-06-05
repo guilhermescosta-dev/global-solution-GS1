@@ -524,7 +524,24 @@ class LunarGameUI {
     const visited = localStorage.getItem('lunar-tutorial-visited');
     if (!visited && typeof introJs !== 'undefined') {
       setTimeout(() => {
-        introJs().setOptions({
+        this.startTutorial();
+        localStorage.setItem('lunar-tutorial-visited', 'true');
+      }, 800);
+    }
+
+    // Wire the tutorial button (always, not just first visit)
+    const btn = document.getElementById('btn-tutorial');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        if (typeof introJs !== 'undefined') {
+          this.startTutorial();
+        }
+      });
+    }
+  }
+
+  startTutorial() {
+    introJs().setOptions({
           nextLabel: 'Próximo →',
           prevLabel: '← Voltar',
           doneLabel: '<i class="bi bi-rocket-takeoff-fill"></i> Começar missão',
@@ -580,9 +597,6 @@ class LunarGameUI {
             }
           ]
         }).start();
-        localStorage.setItem('lunar-tutorial-visited', 'true');
-      }, 800);
-    }
   }
 
   setState(nextState) {

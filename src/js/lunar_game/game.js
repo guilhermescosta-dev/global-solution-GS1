@@ -27,6 +27,10 @@ function setupStartLinks() {
       });
 
       if (!shouldRestart) {
+        // Se o usuário clicar em "Continuar missão", redirecionamos para o quiz
+        window.location.href = window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/') 
+          ? "./src/pages/game-pages/quiz.html" 
+          : "./quiz.html";
         return;
       }
 
