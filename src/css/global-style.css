@@ -59,6 +59,68 @@ body {
   transform: translateX(-50%);
 }
 
+/* Classe utilitaria para reaproveitar fundo com o efeito espacial */
+.fundo-espacial {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(0, 217, 255, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(circle at 78% 20%, rgba(255, 0, 110, 0.1), transparent 26%),
+    linear-gradient(
+      135deg,
+      var(--color-bg-darker) 0%,
+      var(--color-bg-dark) 100%
+    );
+}
+
+.fundo-espacial::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(240, 240, 240, 0.8) 1px, transparent 1px),
+    linear-gradient(rgba(0, 217, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 217, 255, 0.08) 1px, transparent 1px);
+  background-position:
+    0 0,
+    center,
+    center;
+  background-size:
+    120px 120px,
+    96px 96px,
+    96px 96px;
+  opacity: 0.22;
+}
+
+.fundo-espacial::after {
+  content: "";
+  position: absolute;
+  right: -12vw;
+  bottom: -18vw;
+  z-index: 0;
+  width: min(640px, 70vw);
+  aspect-ratio: 1;
+  pointer-events: none;
+  border: 1px solid rgba(0, 217, 255, 0.24);
+  border-radius: 50%;
+  background:
+    linear-gradient(145deg, rgba(224, 224, 224, 0.08), rgba(0, 217, 255, 0.02)),
+    var(--color-bg-dark);
+  box-shadow: inset 0 0 50px rgba(0, 217, 255, 0.08);
+}
+
+.fundo-espacial > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* navbar */
 
 header {
@@ -136,94 +198,6 @@ header nav ul {
   font-weight: 700;
 }
 
-.button-danger {
-  background: linear-gradient(100deg, var(--color-warning), var(--color-magenta));
-  color: var(--color-text-lighter);
-}
-
-.game-confirm-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 3000;
-  display: grid;
-  place-items: center;
-  padding: 22px;
-  background: rgba(5, 8, 16, 0.78);
-  backdrop-filter: blur(10px);
-}
-
-.game-confirm-dialog {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  gap: 14px;
-  width: min(100%, 540px);
-  padding: clamp(18px, 4vw, 26px);
-  border: 1px solid rgba(0, 217, 255, 0.62);
-  border-radius: 18px;
-  background:
-    linear-gradient(145deg, rgba(0, 217, 255, 0.1), rgba(255, 0, 110, 0.05)),
-    rgba(5, 8, 16, 0.96);
-  box-shadow:
-    0 0 40px rgba(0, 217, 255, 0.18),
-    inset 0 0 26px rgba(0, 217, 255, 0.045);
-}
-
-.game-confirm-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border: 1px solid rgba(0, 217, 255, 0.62);
-  border-radius: 14px;
-  color: var(--color-cyan);
-  background: rgba(0, 217, 255, 0.08);
-  font-size: 1.35rem;
-}
-
-.game-confirm-icon.is-danger {
-  border-color: rgba(255, 170, 0, 0.62);
-  color: var(--color-warning);
-  background: rgba(255, 170, 0, 0.09);
-}
-
-.game-confirm-copy h2 {
-  margin: 0;
-  color: var(--color-text-lighter);
-  font-family: var(--font-title);
-  font-size: clamp(1.1rem, 3vw, 1.45rem);
-}
-
-.game-confirm-copy p {
-  margin: 8px 0 0;
-  color: var(--color-text-muted);
-  font-size: 0.95rem;
-  line-height: 1.55;
-}
-
-.game-confirm-actions {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 6px;
-}
-
-.game-confirm-actions .botao-iniciar {
-  min-height: 48px;
-  cursor: pointer;
-}
-
-@media (max-width: 520px) {
-  .game-confirm-dialog {
-    grid-template-columns: 1fr;
-  }
-
-  .game-confirm-actions {
-    grid-template-columns: 1fr;
-  }
-}
-
 .menu-hamburguer {
   display: none;
   flex-direction: column;
@@ -246,7 +220,19 @@ header nav ul {
 
 /* Footer */
 .footer-section {
+  position: relative;
   background: var(--color-bg-dark);
+}
+
+.footer-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 2px;
+  background: var(--gradient-primary);
+  transform: translateX(-50%);
 }
 
 .footer-container {
