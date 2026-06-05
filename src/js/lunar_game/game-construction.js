@@ -104,9 +104,11 @@
       <i class="${index < currentLevel ? "is-active" : ""}"></i>
     `).join("");
 
+    const levelLabel = currentLevel === 0 ? "Não construído" : `Nível ${currentLevel} de 3`;
+
     return `
-      <div class="module-level-row" aria-label="Nível atual ${currentLevel} de 3">
-        <span>Nível</span>
+      <div class="module-level-row" aria-label="${levelLabel}">
+        <span>${levelLabel}</span>
         <div class="module-level-blocks" aria-hidden="true">${blocks}</div>
       </div>
     `;

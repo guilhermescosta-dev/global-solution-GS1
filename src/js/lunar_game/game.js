@@ -51,6 +51,17 @@ function setupContinueMissionLink() {
   continueLink.className = "botao-iniciar button-secondary";
   continueLink.dataset.gameContinue = "true";
   continueLink.textContent = "Continuar missão";
+  
+  // Garante que o clique funcione corretamente redirecionando para o quiz
+  continueLink.addEventListener("click", (e) => {
+    // Se estivermos na home, o caminho é diferente
+    const isHome = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/');
+    if (isHome) {
+      e.preventDefault();
+      window.location.href = "./src/pages/game-pages/quiz.html";
+    }
+  });
+
   actions.appendChild(continueLink);
 }
 
