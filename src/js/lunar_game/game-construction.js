@@ -46,7 +46,20 @@
     `;
 
     this.answerList.querySelectorAll("[data-module-option]").forEach((card) => {
-      card.addEventListener("click", () => this.selectBuildModule(card.dataset.moduleOption));
+      card.addEventListener("click", (event) => {
+        if (event.target.closest("[data-module-action]")) {
+          return;
+        }
+
+        this.selectBuildModule(card.dataset.moduleOption);
+      });
+    });
+
+    this.answerList.querySelectorAll("[data-module-action]").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        this.handleModuleAction(button.dataset.moduleAction);
+      });
     });
 
     this.answerList.querySelector("[data-confirm-build]")?.addEventListener("click", () => {
@@ -69,9 +82,11 @@
     const isUpgrade = currentLevel > 0 && !isMaxLevel;
     const isSelected = this.pendingBuildKey === key;
     const actionLabel = currentLevel === 0 ? "Construir módulo" : "Fazer upgrade";
+    const buttonLabel = isMaxLevel ? "Completo" : isSelected ? "Confirmar escolha" : actionLabel;
     const buttonClass = isUpgrade ? "button-upgrade" : "button-build";
     const statusClass = isMaxLevel ? "is-complete" : isUpgrade ? "is-upgrade" : "is-new";
     const previousLevel = currentLevel > 0 ? module.levels[currentLevel - 1] : null;
+    const previewLevel = isSelected && !isMaxLevel ? currentLevel + 1 : currentLevel;
     const effectText = isMaxLevel
       ? this.createModuleEffects(module.levels[currentLevel - 1])
       : this.createModuleEffects(nextLevel, previousLevel);
@@ -83,25 +98,26 @@
       >
         <i class="bi ${MODULE_ICONS[key] ?? "bi-tools"}" aria-hidden="true"></i>
         <div class="module-option-content">
-          ${this.createModuleLevelBlocks(currentLevel)}
+          ${this.createModuleLevelBlocks(currentLevel, previewLevel)}
           <h3>${module.name}</h3>
           ${this.createCostTags(cost, isMaxLevel)}
           ${effectText}
           <button
             type="button"
             class="botao-iniciar ${buttonClass}"
+            data-module-action="${key}"
             ${available ? "" : "disabled"}
           >
-            ${isMaxLevel ? "Completo" : isSelected ? "Escolha marcada" : actionLabel}
+            ${buttonLabel}
           </button>
         </div>
       </article>
     `;
   },
 
-  createModuleLevelBlocks(currentLevel) {
+  createModuleLevelBlocks(currentLevel, previewLevel = currentLevel) {
     const blocks = Array.from({ length: 3 }, (_, index) => `
-      <i class="${index < currentLevel ? "is-active" : ""}"></i>
+      <i class="${index < currentLevel ? "is-active" : index < previewLevel ? "is-preview" : ""}"></i>
     `).join("");
 
     const levelLabel = currentLevel === 0 ? "Não construído" : `Nível ${currentLevel} de 3`;
@@ -237,6 +253,15 @@
     });
   },
 
+  handleModuleAction(key) {
+    if (this.pendingBuildKey === key) {
+      this.confirmSelectedBuild({ requireConfirmation: true });
+      return;
+    }
+
+    this.selectBuildModule(key);
+  },
+
   selectBuildModule(key) {
     if (this.pendingBuildKey === key) {
       this.pendingBuildKey = null;
@@ -255,7 +280,7 @@
     this.render();
   },
 
-  confirmSelectedBuild() {
+  async confirmSelectedBuild({ requireConfirmation = false } = {}) {
     if (!this.pendingBuildKey) {
       return;
     }
@@ -266,6 +291,18 @@
 
     if (!nextState) {
       this.showFeedback("Recursos insuficientes para esse m\u00f3dulo.", "warning");
+      return;
+    }
+
+    if (
+      requireConfirmation &&
+      !(await showGameConfirm({
+        title: "Confirmar construção?",
+        message: `${module.name} será aplicado e a semana será finalizada com a previsão mostrada nos recursos vitais.`,
+        confirmText: "Confirmar e finalizar",
+        cancelText: "Voltar aos módulos",
+      }))
+    ) {
       return;
     }
 
