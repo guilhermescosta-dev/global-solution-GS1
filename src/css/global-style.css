@@ -451,6 +451,36 @@ header nav ul {
   margin-top: 6px;
 }
 
+@media (min-width: 851px) and (max-width: 1100px) {
+  header {
+    padding-inline: 2%;
+  }
+
+  .logo {
+    gap: 6px;
+    font-size: clamp(1rem, 2.2vw, 1.35rem);
+  }
+
+  .logo-icone {
+    width: 44px;
+    height: 44px;
+    font-size: 1.35rem;
+  }
+
+  header nav ul {
+    gap: 10px;
+  }
+
+  .nav-section {
+    padding-inline: 12px;
+    font-size: 0.95rem;
+  }
+
+  .botao-iniciar {
+    padding-inline: 20px;
+  }
+}
+
 /* Responsividade */
 @media (max-width: 850px) {
   /* Navbar */
