@@ -733,7 +733,9 @@ class LunarGameUI {
           block.classList.add("is-active");
         }
       } else if (this.state.phase === "game-over") {
-        block.classList.add(config.completedStatus);
+        const failedMission = this.isMissionFailure();
+        const wasReached = index + 1 <= this.state.week;
+        block.classList.add(failedMission && !wasReached ? "is-wrong" : config.completedStatus);
       } else if (index + 1 < this.state.week) {
         block.classList.add(config.completedStatus);
       } else if (index + 1 === this.state.week) {
@@ -746,6 +748,11 @@ class LunarGameUI {
 
   isReviewingAnswer() {
     return Boolean(this.state.lastAnswer);
+  }
+
+  isMissionFailure() {
+    const result = this.state.finalResult;
+    return this.state.phase === "game-over" && (result?.victory === false || result?.title === "Falha na Missão");
   }
 
   updateCardTitle(title) {
