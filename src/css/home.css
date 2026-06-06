@@ -283,7 +283,13 @@
   }
 
   .hero-info {
+    align-items: center;
+    text-align: center;
     order: 1;
+  }
+
+  .titulo-hero {
+    text-align: center;
   }
 
   .hero-media {
@@ -296,6 +302,8 @@
   }
 
   .botoes-hero {
+    align-items: center;
+    align-self: center;
     order: 2;
     width: 100%;
   }
@@ -316,5 +324,11 @@
 
   .destaques-impacto {
     flex-direction: column;
+  }
+
+  .hero-video-titulo {
+    margin: 5% 0 2% 0;
+    align-self: center;
+    text-align: center;
   }
 }
