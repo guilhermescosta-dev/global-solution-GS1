@@ -1,0 +1,219 @@
+@import url("./global-style.css");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
+
+/* ── Hero ── */
+.como-jogar-hero {
+  padding: clamp(48px, 8vw, 100px) 0 clamp(40px, 6vw, 80px);
+}
+
+.como-jogar-intro {
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 217, 255, 0.4);
+  background: rgba(0, 217, 255, 0.08);
+  color: var(--color-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.titulo-hero {
+  font-family: var(--font-title);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.texto-hero {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  max-width: 560px;
+}
+
+.texto-hero strong {
+  color: var(--color-text-light);
+}
+
+.titulo-section {
+  font-family: var(--font-title);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--color-text-lighter);
+  margin-bottom: 8px;
+}
+
+/* ── Steps ── */
+.como-jogar-steps {
+  padding: clamp(48px, 7vw, 88px) 0;
+}
+
+.como-jogar-steps .container {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.step-card {
+  position: relative;
+  padding: 28px 24px 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 217, 255, 0.12);
+  background: linear-gradient(145deg, rgba(0, 217, 255, 0.04), rgba(255, 0, 110, 0.02));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.step-card:hover {
+  border-color: rgba(0, 217, 255, 0.3);
+  transform: translateY(-3px);
+}
+
+.step-number {
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  color: var(--color-cyan);
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+
+.step-icon {
+  font-size: 1.7rem;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.step-card h3 {
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  color: var(--color-text-lighter);
+  font-weight: 600;
+}
+
+.step-card p {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.step-card p strong {
+  color: var(--color-text-light);
+}
+
+/* ── Vitals ── */
+.como-jogar-vitals {
+  padding: clamp(48px, 7vw, 88px) 0;
+}
+
+.como-jogar-vitals .container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.impacto-descricao {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.vital-card-cj {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.vital-card-cj > i {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.vital-card-cj h3 {
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  color: var(--color-text-lighter);
+}
+
+.vital-card-cj p {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.vital-energy-cj { background: rgba(255, 200, 0, 0.05); border-color: rgba(255, 200, 0, 0.15); }
+.vital-energy-cj > i { color: #ffc800; }
+.vital-water-cj { background: rgba(0, 160, 255, 0.05); border-color: rgba(0, 160, 255, 0.15); }
+.vital-water-cj > i { color: #4ab4ff; }
+.vital-oxygen-cj { background: rgba(0, 255, 200, 0.05); border-color: rgba(0, 255, 200, 0.15); }
+.vital-oxygen-cj > i { color: #00ffd0; }
+.vital-food-cj { background: rgba(80, 200, 80, 0.05); border-color: rgba(80, 200, 80, 0.15); }
+.vital-food-cj > i { color: #50c850; }
+
+/* ── CTA ── */
+.como-jogar-cta {
+  padding: clamp(56px, 8vw, 100px) 0;
+}
+
+.cta-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.cta-icon {
+  font-size: 3rem;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cta-content h2 {
+  font-family: var(--font-title);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  color: var(--color-text-lighter);
+}
+
+.cta-content p {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  max-width: 440px;
+  line-height: 1.6;
+}

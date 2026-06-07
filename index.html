@@ -20,7 +20,7 @@
     <header class="borda-gradient-bottom">
       <div class="logo">
         <i class="bi bi-rocket-takeoff-fill logo-icone"></i>
-        <a href="/index.html"><p class="logo-texto">Operação Selene</p></a>
+        <p class="logo-texto">Operação Selene</p>
       </div>
 
       <button
@@ -38,7 +38,13 @@
       <nav id="nav-menu">
         <ul>
           <li><a href="./index.html" class="nav-section">Home</a></li>
-          <li> 
+          <li>
+            <a href="./src/pages/impactos.html" class="nav-section">Impactos</a>
+          </li>
+          <li>
+            <a href="./src/pages/comoJogar.html" class="nav-section"
+              >Como jogar</a
+            >
           </li>
           <li>
             <a
@@ -52,7 +58,7 @@
       </nav>
     </header>
 
-    <main>
+    <main class="fundo-espacial">
       <div class="container">
         <section class="hero-section borda-gradient-bottom">
           <div class="hero-conteudo">
@@ -66,27 +72,44 @@
               <p class="texto-hero">
                 Comande uma base lunar em um jogo de estratégia e gerenciamento
                 de recursos. Responda perguntas técnicas, construa módulos e
-                mantenha a missão ativa por 6 meses.
+                mantenha a missão ativa por 10 semanas.
               </p>
             </div>
-            <div class="hero-mission-actions mission-copy">
-              <div class="botoes-hero game-actions">
-                <a href="./src/pages/game-pages/briefing.html" class="botao-iniciar" data-game-start
-                  >Iniciar missão</a
-                >
-              </div>
+
+            <div class="botoes-hero">
+              <a
+                href="./src/pages/game-pages/briefing.html"
+                class="botao-iniciar"
+                data-game-start
+                >Iniciar missão</a
+              >
             </div>
           </div>
 
-          <img
-            src="./src/assets/imgs/heroImg.png"
-            alt="Base lunar na superfície da Lua"
-            class="hero-img"
-          />
+          <div class="hero-media">
+            <h2 class="hero-video-titulo">Assista ao nosso pitch vídeo</h2>
+
+            <div class="hero-video">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/mi-SV3MQeB4?rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;playsinline=1"
+                title="Pitch vídeo Operação Selene"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                  web-share;
+                "
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
         </section>
       </div>
 
-      <section class="impacto-section borda-gradient-bottom">
+      <section class="impacto-section">
         <div class="container impacto-conteudo">
           <h2 class="titulo-section">Impactos e ODS</h2>
 
@@ -140,17 +163,23 @@
             </article>
 
             <article class="ods-destaque">
-              <i class="bi bi-flower1" aria-hidden="true"></i>
+              <i class="bi bi-recycle" aria-hidden="true"></i>
               <div>
-                <h3>ODS 2: Fome Zero e Agricultura Sustentável</h3>
+                <h3>ODS 12: Consumo e Produção Responsáveis</h3>
                 <p>
-                  A proposta se relaciona com o ODS 2 ao abordar segurança
-                  alimentar, produção de alimentos em ambientes extremos, uso
-                  eficiente de recursos e soluções tecnológicas para sustentar
-                  comunidades em condições desafiadoras.
+                  A proposta se relaciona com o ODS 12 ao trabalhar uso
+                  consciente de recursos, redução de desperdícios,
+                  reaproveitamento e decisões que equilibram consumo, produção e
+                  manutenção da base em um ambiente extremo.
                 </p>
               </div>
             </article>
+          </div>
+          <div class="impacto-saiba-mais">
+            <a href="./src/pages/impactos.html">
+              <i class="bi bi-arrow-right-circle-fill" aria-hidden="true"></i>
+              <span>Saiba mais</span>
+            </a>
           </div>
         </div>
       </section>
@@ -172,7 +201,12 @@
           <nav class="footer-navegacao" aria-label="Links do rodapé">
             <p class="footer-titulo">Navegação</p>
             <a href="./index.html" class="footer-navegacao-pagina">Home</a>
-
+            <a href="./src/pages/impactos.html" class="footer-navegacao-pagina"
+              >Impactos</a
+            >
+            <a href="./src/pages/comoJogar.html" class="footer-navegacao-pagina"
+              >Como jogar</a
+            >
             <a
               href="./src/pages/game-pages/briefing.html"
               class="footer-navegacao-pagina"
