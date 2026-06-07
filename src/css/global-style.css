@@ -23,6 +23,8 @@
   --color-magenta-shadow: rgba(255, 0, 110, 0.08);
   --color-success-transparent: rgba(0, 255, 136, 0.04);
   --color-success-shadow: rgba(0, 255, 136, 0.08);
+  --color-warning-transparent: rgba(255, 170, 0, 0.045);
+  --color-warning-shadow: rgba(255, 170, 0, 0.22);
   --gradient-primary: linear-gradient(
     100deg,
     var(--color-cyan) 0%,
