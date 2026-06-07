@@ -45,7 +45,10 @@
             <a href="./comoJogar.html" class="nav-section">Como jogar</a>
           </li>
           <li>
-            <a href="./game-pages/briefing.html" class="nav-section botao-iniciar"
+            <a
+              href="./game-pages/briefing.html"
+              class="nav-section botao-iniciar"
+              data-game-start
               >Iniciar missão</a
             >
           </li>
@@ -53,8 +56,212 @@
       </nav>
     </header>
 
-    <main>
+    <main class="fundo-espacial">
+      <div class="container">
+        <section class="como-jogar-hero borda-gradient-bottom" id="como-jogar">
+          <div class="como-jogar-hero-conteudo">
+            <span class="como-jogar-tag">Guia da missão</span>
 
+            <h1 class="como-jogar-titulo">Como Jogar</h1>
+
+            <p class="como-jogar-texto">
+              A cada semana, o jogador responde desafios técnicos, recebe
+              recursos operacionais e decide como melhorar a base lunar antes do
+              consumo semanal ser aplicado.
+            </p>
+
+            <div class="como-jogar-resumo" aria-label="Resumo da jogabilidade">
+              <article>
+                <strong>10</strong>
+                <span>semanas para sobreviver</span>
+              </article>
+
+              <article>
+                <strong>04</strong>
+                <span>recursos vitais</span>
+              </article>
+
+              <article>
+                <strong>04</strong>
+                <span>módulos estratégicos</span>
+              </article>
+            </div>
+          </div>
+
+          <img
+            class="como-jogar-hero-imagem"
+            src="../assets/imgs/comoJogar.png"
+            alt="Base lunar da missão Operação Ktisis"
+          />
+
+          <aside class="objetivo-card card-magenta" id="objetivo">
+            <i class="bi bi-bullseye" aria-hidden="true"></i>
+            <div>
+              <h2>Objetivo da Missão</h2>
+              <p>
+                O jogador vence se conseguir manter todos os recursos vitais
+                acima de zero até o fim da décima semana. Se qualquer recurso
+                chegar a zero, a missão falha.
+              </p>
+            </div>
+          </aside>
+        </section>
+      </div>
+
+      <section class="como-jogar-section">
+        <div class="container como-jogar-conteudo">
+          <h2 class="como-jogar-section-titulo">Ciclo de jogo</h2>
+
+          <p class="como-jogar-descricao">
+            Cada semana combina três perguntas, ganho de recursos operacionais,
+            construção ou melhoria de módulos e fechamento do consumo da base.
+          </p>
+
+          <div class="como-jogar-lista">
+            <article class="como-jogar-card card-cyan">
+              <span>01</span>
+              <i class="bi bi-question-circle" aria-hidden="true"></i>
+              <h3>Responder Quiz</h3>
+              <p>
+                Responda 3 perguntas por semana sobre energia, biologia,
+                mineração e geologia lunar.
+              </p>
+            </article>
+
+            <article class="como-jogar-card card-magenta">
+              <span>02</span>
+              <i class="bi bi-gem" aria-hidden="true"></i>
+              <h3>Receber Recursos</h3>
+              <p>
+                As respostas geram Minerais, Componentes ou Biomassa. Acertos
+                rendem mais recursos, mas erros ainda dão uma quantia menor.
+              </p>
+            </article>
+
+            <article class="como-jogar-card card-warning">
+              <span>03</span>
+              <i class="bi bi-tools" aria-hidden="true"></i>
+              <h3>Planejar Construção</h3>
+              <p>
+                Use os recursos recebidos para escolher um módulo, fazer upgrade
+                ou guardar materiais para a próxima semana.
+              </p>
+            </article>
+
+            <article class="como-jogar-card card-success">
+              <span>04</span>
+              <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
+              <h3>Fechar Semana</h3>
+              <p>
+                A base calcula produção dos módulos, consumo semanal e verifica
+                se energia, água, oxigênio e alimentos continuam acima de zero.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="como-jogar-section" id="recursos">
+        <div class="container como-jogar-conteudo">
+          <h2 class="como-jogar-section-titulo">
+            Recursos Vitais para Sobrevivência
+          </h2>
+
+          <p class="como-jogar-descricao">
+            O equilíbrio entre produção e consumo é a chave para chegar à décima
+            semana.
+          </p>
+
+          <div class="recursos-lista">
+            <article class="recurso-card card-warning">
+              <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+              <h3>Energia</h3>
+              <p>Mantém sistemas, iluminação e módulos ativos.</p>
+              <div class="recurso-barra" aria-hidden="true">
+                <span style="--progress: 60%"></span>
+              </div>
+            </article>
+
+            <article class="recurso-card card-cyan">
+              <i class="bi bi-droplet-fill" aria-hidden="true"></i>
+              <h3>Água</h3>
+              <p>Sustenta a tripulação e os sistemas de suporte à vida.</p>
+              <div class="recurso-barra" aria-hidden="true">
+                <span style="--progress: 60%"></span>
+              </div>
+            </article>
+
+            <article class="recurso-card card-cyan">
+              <i class="bi bi-wind" aria-hidden="true"></i>
+              <h3>Oxigênio</h3>
+              <p>Garante a habitabilidade da base lunar.</p>
+              <div class="recurso-barra" aria-hidden="true">
+                <span style="--progress: 60%"></span>
+              </div>
+            </article>
+
+            <article class="recurso-card card-success">
+              <i class="bi bi-flower1" aria-hidden="true"></i>
+              <h3>Alimentos</h3>
+              <p>Mantém a equipe abastecida durante a missão.</p>
+              <div class="recurso-barra" aria-hidden="true">
+                <span style="--progress: 50%"></span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="como-jogar-section" id="modulos">
+        <div class="container como-jogar-conteudo">
+          <h2 class="como-jogar-section-titulo">Módulos Estratégicos</h2>
+
+          <p class="como-jogar-descricao">
+            Os módulos usam recursos operacionais para aumentar a produção da
+            base. Alguns também consomem energia ou água a cada semana.
+          </p>
+
+          <div class="modulos-como-jogar-lista">
+            <article class="modulo-como-jogar-card card-warning">
+              <i class="bi bi-sun" aria-hidden="true"></i>
+              <h3>Painel Solar</h3>
+              <p>Aumenta a produção semanal de energia da base.</p>
+            </article>
+
+            <article class="modulo-como-jogar-card card-success">
+              <i class="bi bi-flower1" aria-hidden="true"></i>
+              <h3>Estufa Hidropônica</h3>
+              <p>
+                Produz alimentos por cultivo controlado, mas depende de água e
+                energia.
+              </p>
+            </article>
+
+            <article class="modulo-como-jogar-card card-cyan">
+              <i class="bi bi-recycle" aria-hidden="true"></i>
+              <h3>Reciclador de Água</h3>
+              <p>Produz água para a base e consome energia para operar.</p>
+            </article>
+
+            <article class="modulo-como-jogar-card card-magenta">
+              <i class="bi bi-wind" aria-hidden="true"></i>
+              <h3>Gerador de Oxigênio</h3>
+              <p>Produz oxigênio para a colônia e consome energia da base.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="como-jogar-cta-section">
+        <div class="container como-jogar-cta">
+          <a
+            href="./game-pages/briefing.html"
+            class="botao-iniciar"
+            data-game-start
+            >Iniciar missão</a
+          >
+        </div>
+      </section>
     </main>
 
     <footer class="footer-section">
@@ -79,7 +286,10 @@
             <a href="./comoJogar.html" class="footer-navegacao-pagina"
               >Como jogar</a
             >
-            <a href="./game-pages/briefing.html" class="footer-navegacao-pagina"
+            <a
+              href="./game-pages/briefing.html"
+              class="footer-navegacao-pagina"
+              data-game-start
               >Iniciar missão</a
             >
           </nav>
@@ -126,4 +336,3 @@
     <script src="../js/lunar_game/game.js"></script>
   </body>
 </html>
-

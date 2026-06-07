@@ -1,219 +1,411 @@
 @import url("./global-style.css");
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
 
-/* ── Hero ── */
+.container {
+  max-width: 1400px;
+}
+
 .como-jogar-hero {
-  padding: clamp(48px, 8vw, 100px) 0 clamp(40px, 6vw, 80px);
-}
-
-.como-jogar-intro {
-  max-width: 680px;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px 56px;
+  min-height: 600px;
+  padding: 72px 0;
 }
 
-.hero-tag {
-  display: inline-block;
-  padding: 4px 14px;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 217, 255, 0.4);
-  background: rgba(0, 217, 255, 0.08);
+.como-jogar-hero-conteudo {
+  display: flex;
+  flex: 1 1 460px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.como-jogar-tag {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 20px;
+  padding: 5px 14px;
+  border: 1px solid var(--color-cyan);
+  border-radius: 999px;
+  background: var(--color-cyan-transparent);
   color: var(--color-cyan);
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  width: fit-content;
 }
 
-.titulo-hero {
-  font-family: var(--font-title);
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 700;
-  line-height: 1.1;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.texto-hero {
-  font-size: clamp(0.95rem, 2vw, 1.1rem);
-  color: var(--color-text-muted);
-  line-height: 1.65;
-  max-width: 560px;
-}
-
-.texto-hero strong {
-  color: var(--color-text-light);
-}
-
-.titulo-section {
-  font-family: var(--font-title);
-  font-size: clamp(1.4rem, 3vw, 2rem);
+.como-jogar-titulo {
+  max-width: 760px;
+  margin: 0;
   color: var(--color-text-lighter);
-  margin-bottom: 8px;
-}
-
-/* ── Steps ── */
-.como-jogar-steps {
-  padding: clamp(48px, 7vw, 88px) 0;
-}
-
-.como-jogar-steps .container {
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-}
-
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.step-card {
-  position: relative;
-  padding: 28px 24px 24px;
-  border-radius: 16px;
-  border: 1px solid rgba(0, 217, 255, 0.12);
-  background: linear-gradient(145deg, rgba(0, 217, 255, 0.04), rgba(255, 0, 110, 0.02));
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: border-color 0.25s, transform 0.25s;
-}
-
-.step-card:hover {
-  border-color: rgba(0, 217, 255, 0.3);
-  transform: translateY(-3px);
-}
-
-.step-number {
   font-family: var(--font-title);
-  font-size: 0.75rem;
-  color: var(--color-cyan);
-  letter-spacing: 0.08em;
-  opacity: 0.7;
+  font-size: 2.7rem;
+  line-height: 1.08;
 }
 
-.step-icon {
-  font-size: 1.7rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.step-card h3 {
-  font-family: var(--font-title);
-  font-size: 0.95rem;
-  color: var(--color-text-lighter);
-  font-weight: 600;
-}
-
-.step-card p {
-  font-size: 0.88rem;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-}
-
-.step-card p strong {
+.como-jogar-texto {
+  max-width: 680px;
+  margin: 22px 0 0;
   color: var(--color-text-light);
-}
-
-/* ── Vitals ── */
-.como-jogar-vitals {
-  padding: clamp(48px, 7vw, 88px) 0;
-}
-
-.como-jogar-vitals .container {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.impacto-descricao {
-  color: var(--color-text-muted);
   font-size: 1rem;
-  max-width: 600px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
-.vitals-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-}
-
-.vital-card-cj {
+.como-jogar-resumo {
   display: flex;
-  align-items: flex-start;
+  flex-wrap: wrap;
   gap: 14px;
-  padding: 20px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  width: 100%;
+  max-width: 680px;
+  margin-top: 28px;
 }
 
-.vital-card-cj > i {
-  font-size: 1.5rem;
-  flex-shrink: 0;
-  margin-top: 2px;
+.como-jogar-resumo article {
+  display: flex;
+  flex: 1 1 170px;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 96px;
+  padding: 16px;
+  border: 1px solid var(--color-cyan);
+  border-radius: 10px;
+  background: var(--color-cyan-transparent);
 }
 
-.vital-card-cj h3 {
+.como-jogar-resumo strong {
+  color: var(--color-cyan);
   font-family: var(--font-title);
-  font-size: 0.9rem;
-  margin-bottom: 6px;
-  color: var(--color-text-lighter);
+  font-size: 1.75rem;
+  line-height: 1;
 }
 
-.vital-card-cj p {
-  font-size: 0.85rem;
+.como-jogar-resumo span {
+  margin-top: 8px;
   color: var(--color-text-muted);
-  line-height: 1.55;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-transform: uppercase;
 }
 
-.vital-energy-cj { background: rgba(255, 200, 0, 0.05); border-color: rgba(255, 200, 0, 0.15); }
-.vital-energy-cj > i { color: #ffc800; }
-.vital-water-cj { background: rgba(0, 160, 255, 0.05); border-color: rgba(0, 160, 255, 0.15); }
-.vital-water-cj > i { color: #4ab4ff; }
-.vital-oxygen-cj { background: rgba(0, 255, 200, 0.05); border-color: rgba(0, 255, 200, 0.15); }
-.vital-oxygen-cj > i { color: #00ffd0; }
-.vital-food-cj { background: rgba(80, 200, 80, 0.05); border-color: rgba(80, 200, 80, 0.15); }
-.vital-food-cj > i { color: #50c850; }
-
-/* ── CTA ── */
-.como-jogar-cta {
-  padding: clamp(56px, 8vw, 100px) 0;
+.como-jogar-hero-imagem {
+  display: block;
+  flex: 1 1 420px;
+  min-width: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--color-cyan);
+  border-radius: 8px;
+  background: var(--color-bg-darker);
+  object-fit: cover;
 }
 
-.cta-content {
+.como-jogar-section {
+  padding: 80px 0;
+}
+
+.como-jogar-conteudo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 18px;
 }
 
-.cta-icon {
-  font-size: 3rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.cta-content h2 {
-  font-family: var(--font-title);
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+.como-jogar-section-titulo {
+  position: relative;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
   color: var(--color-text-lighter);
+  font-family: var(--font-title);
+  font-size: 2.55rem;
+  line-height: 1.15;
+  text-align: center;
 }
 
-.cta-content p {
+.como-jogar-section-titulo::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 86px;
+  height: 3px;
+  background: var(--gradient-primary);
+  transform: translateX(-50%);
+}
+
+.como-jogar-descricao {
+  max-width: 820px;
+  margin: 0 auto 42px;
   color: var(--color-text-muted);
-  font-size: 1rem;
-  max-width: 440px;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.como-jogar-lista,
+.recursos-lista,
+.modulos-como-jogar-lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+}
+
+.objetivo-card,
+.como-jogar-card,
+.recurso-card,
+.modulo-como-jogar-card {
+  --card-color: var(--color-cyan);
+  --card-bg: var(--color-cyan-transparent);
+  --card-shadow: var(--color-cyan-shadow);
+  border: 1px solid var(--card-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.card-cyan {
+  --card-color: var(--color-cyan);
+  --card-bg: var(--color-cyan-transparent);
+  --card-shadow: var(--color-cyan-shadow);
+}
+
+.card-success {
+  --card-color: var(--color-success);
+  --card-bg: var(--color-success-transparent);
+  --card-shadow: var(--color-success-shadow);
+}
+
+.card-warning {
+  --card-color: var(--color-warning);
+  --card-bg: var(--color-warning-transparent);
+  --card-shadow: var(--color-warning-shadow);
+}
+
+.card-magenta {
+  --card-color: var(--color-magenta);
+  --card-bg: var(--color-magenta-transparent);
+  --card-shadow: var(--color-magenta-shadow);
+}
+
+.objetivo-card:hover,
+.como-jogar-card:hover,
+.recurso-card:hover,
+.modulo-como-jogar-card:hover {
+  box-shadow: 0 0 24px var(--card-shadow);
+  transform: translateY(-3px);
+}
+
+.objetivo-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1 1 100%;
+  width: 100%;
+  min-height: auto;
+  padding: 24px 28px;
+}
+
+.objetivo-card i {
+  flex-shrink: 0;
+  color: var(--card-color);
+  font-size: 2.8rem;
+}
+
+.objetivo-card div {
+  flex: 1;
+  min-width: 0;
+}
+
+.objetivo-card h2 {
+  margin: 0;
+  color: var(--color-text-lighter);
+  font-family: var(--font-title);
+  font-size: 2rem;
+  line-height: 1.18;
+}
+
+.objetivo-card p {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
   line-height: 1.6;
+}
+
+.como-jogar-card {
+  position: relative;
+  display: flex;
+  flex: 1 1 250px;
+  flex-direction: column;
+  min-height: 220px;
+  padding: 22px;
+}
+
+.como-jogar-card span {
+  width: fit-content;
+  margin-bottom: 18px;
+  padding: 4px 10px;
+  border: 1px solid var(--card-color);
+  border-radius: 999px;
+  color: var(--card-color);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.como-jogar-card > i {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+}
+
+.como-jogar-card h3,
+.recurso-card h3,
+.modulo-como-jogar-card h3 {
+  margin: 0;
+  color: var(--color-text-lighter);
+  font-family: var(--font-title);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.como-jogar-card p,
+.recurso-card p,
+.modulo-como-jogar-card p {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.como-jogar-card i,
+.recurso-card i,
+.modulo-como-jogar-card i {
+  color: var(--card-color);
+  font-size: 1.7rem;
+}
+
+.recurso-card,
+.modulo-como-jogar-card {
+  display: flex;
+  flex: 1 1 260px;
+  flex-direction: column;
+  min-height: 190px;
+  padding: 22px;
+}
+
+.recurso-card > i,
+.modulo-como-jogar-card > i {
+  margin-bottom: 16px;
+}
+
+.recurso-card p {
+  flex: 1;
+}
+
+.recurso-barra {
+  height: 8px;
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(240, 240, 240, 0.12);
+}
+
+.recurso-barra span {
+  display: block;
+  width: var(--progress);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--card-color),
+    rgba(240, 240, 240, 0.88)
+  );
+  box-shadow: 0 0 12px var(--card-shadow);
+}
+
+.como-jogar-cta-section {
+  padding: 0 0 80px;
+}
+
+.como-jogar-cta {
+  display: flex;
+  justify-content: center;
+}
+
+.como-jogar-cta .botao-iniciar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 14px clamp(36px, 6vw, 72px);
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.como-jogar-cta .botao-iniciar:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 850px) {
+  .como-jogar-hero {
+    flex-direction: column;
+    gap: 28px;
+    min-height: auto;
+    padding: 48px 0;
+  }
+
+  .como-jogar-hero-conteudo,
+  .objetivo-card {
+    align-items: center;
+    text-align: center;
+  }
+
+  .como-jogar-titulo {
+    font-size: 2.15rem;
+    text-align: center;
+  }
+
+  .como-jogar-texto {
+    text-align: center;
+  }
+
+  .como-jogar-section {
+    padding: 56px 0;
+  }
+
+  .como-jogar-section-titulo {
+    font-size: 1.7rem;
+  }
+
+  .objetivo-card {
+    flex-direction: column;
+    width: 100%;
+    min-height: auto;
+    padding: 22px;
+  }
+
+  .objetivo-card h2 {
+    font-size: 1.55rem;
+  }
+
+  .como-jogar-cta-section {
+    padding-bottom: 56px;
+  }
+
+  .como-jogar-cta .botao-iniciar {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .como-jogar-resumo article,
+  .como-jogar-card,
+  .recurso-card,
+  .modulo-como-jogar-card {
+    flex-basis: 100%;
+  }
 }
