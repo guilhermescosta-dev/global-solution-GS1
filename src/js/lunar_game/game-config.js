@@ -1,4 +1,4 @@
-const LUNAR_STORAGE_KEY = "operacao-selene-state";
+const LUNAR_STORAGE_KEY = "operacao-ktisis-state";
 
 const CONFIG = {
   MAX_WEEKS: 10,
@@ -124,3 +124,4 @@ function formatCostList(cost) {
 function formatVitalDelta(resource, value, signal = "+") {
   return `${signal}${value} ${VITAL_LABELS[resource]}`;
 }
+

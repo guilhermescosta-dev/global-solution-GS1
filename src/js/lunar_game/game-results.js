@@ -4,6 +4,7 @@ Object.assign(LunarGameUI.prototype, {
 
     return {
       ...rank,
+      victory,
       vital: { ...vital },
       operational: { ...this.state.operational },
     };
