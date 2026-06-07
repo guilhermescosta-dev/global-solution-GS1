@@ -155,16 +155,31 @@ class LunarGameUI {
     this._blinkMesh = null;
     this._animT = 0;
 
-    const animate = () => {
-      requestAnimationFrame(animate);
-      this._animT += 0.016;
-      this.baseGroup.rotation.y += 0.003;
-      if (this._blinkMesh) {
-        this._blinkMesh.material.emissiveIntensity = Math.sin(this._animT * 2) > 0 ? 1.5 : 0.1;
-      }
-      this.renderer.render(this.scene, this.camera);
-    };
-    animate();
+const animate = () => {
+  requestAnimationFrame(animate);
+  this._animT += 0.016;
+
+  // ─── ÓRBITA DA CÂMERA ───────────────────────────────────────────────────
+  const radius = 13;  // A distância horizontal original da câmera (raio do círculo)
+  const speed = 0.2;  // Velocidade do giro (valores menores = mais lento e suave)
+
+  // Calcula a nova posição X e Z da câmera ao longo do tempo
+  this.camera.position.x = Math.sin(this._animT * speed) * radius;
+  this.camera.position.z = Math.cos(this._animT * speed) * radius;
+  
+  // Força a câmera a continuar apontada para o centro da base lunar
+  this.camera.lookAt(0, 0.5, 0);
+  // ────────────────────────────────────────────────────────────────────────
+
+  // COMITADO/REMOVIDO: Desativamos o giro próprio da base para não conflitar
+  // this.baseGroup.rotation.y += 0.003;
+
+  if (this._blinkMesh) {
+    this._blinkMesh.material.emissiveIntensity = Math.sin(this._animT * 2) > 0 ? 1.5 : 0.1;
+  }
+  this.renderer.render(this.scene, this.camera);
+};
+animate();
 
     window.addEventListener('resize', () => {
       this.camera.aspect = container.clientWidth / container.clientHeight;
