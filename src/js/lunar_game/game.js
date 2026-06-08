@@ -10,32 +10,40 @@ document.addEventListener("DOMContentLoaded", () => {
 function setupStartLinks() {
   document.querySelectorAll("[data-game-start]").forEach((link) => {
     link.addEventListener("click", async (event) => {
-      if (!hasActiveSavedMission()) {
+      const isBriefingPage = window.location.pathname.includes("briefing.html");
+      const isSimulacaoBtn = link.textContent.toLowerCase().includes("simulação");
+
+      // Se não for o botão de "Iniciar Simulação" na página de briefing, 
+      // apenas redireciona normalmente (comportamento para a Home)
+      if (!isBriefingPage || !isSimulacaoBtn) {
+        return;
+      }
+
+      // Se for "Iniciar Simulação" no briefing e tiver jogo salvo, mostra o modal
+      if (hasActiveSavedMission()) {
+        event.preventDefault();
+
+        const shouldRestart = await showGameConfirm({
+          title: "Reiniciar missão?",
+          message:
+            "Existe uma missão em andamento. Se você iniciar outra simulação, o progresso atual será perdido.",
+          confirmText: "Reiniciar",
+          cancelText: "Continuar missão",
+          isDanger: true,
+        });
+
+        if (!shouldRestart) {
+          // Se o usuário clicar em "Continuar missão", redirecionamos para o quiz
+          window.location.href = "./quiz.html";
+          return;
+        }
+
         resetGameState();
-        return;
+        window.location.href = link.href;
+      } else {
+        // Se não tiver jogo salvo, reseta por segurança e inicia
+        resetGameState();
       }
-
-      event.preventDefault();
-
-      const shouldRestart = await showGameConfirm({
-        title: "Reiniciar missão?",
-        message:
-          "Existe uma missão em andamento. Se você iniciar outra simulação, o progresso atual será perdido.",
-        confirmText: "Reiniciar",
-        cancelText: "Continuar missão",
-        isDanger: true,
-      });
-
-      if (!shouldRestart) {
-        // Se o usuário clicar em "Continuar missão", redirecionamos para o quiz
-        window.location.href = window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/') 
-          ? "./src/pages/game-pages/quiz.html" 
-          : "./quiz.html";
-        return;
-      }
-
-      resetGameState();
-      window.location.href = link.href;
     });
   });
 }

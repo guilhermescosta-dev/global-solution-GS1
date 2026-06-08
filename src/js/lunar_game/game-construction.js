@@ -9,6 +9,9 @@
     this.quizForm.onsubmit = (event) => event.preventDefault();
     this.questionEl.textContent = "Use seus recursos para construir ou melhorar um módulo da base.";
 
+    // O modelo 3D e o botão de tutorial já são mostrados na função render()
+    // quando a fase muda para "construction"
+
     this.updateCardTitle("Construção e Upgrades");
 
     const modules = getModulesData();
@@ -241,7 +244,7 @@
     }
 
     this.pendingBuildKey = null;
-    this.finishWeek("Nenhum m\u00f3dulo foi constru\u00eddo nesta semana.");
+    this.finishWeek("Nenhum módulo foi construído nesta semana.");
   },
 
   hasAffordableBuildOption() {
@@ -272,7 +275,7 @@
     const previewState = this.createBuildPreviewState(key);
 
     if (!previewState) {
-      this.showFeedback("Recursos insuficientes para esse m\u00f3dulo.", "warning");
+      this.showFeedback("Recursos insuficientes para esse módulo.", "warning");
       return;
     }
 
@@ -290,7 +293,7 @@
     const nextState = this.createBuildPreviewState(this.pendingBuildKey);
 
     if (!nextState) {
-      this.showFeedback("Recursos insuficientes para esse m\u00f3dulo.", "warning");
+      this.showFeedback("Recursos insuficientes para esse módulo.", "warning");
       return;
     }
 
@@ -334,6 +337,7 @@
     };
 
     return nextState;
-  }
-});
+  },
 
+
+});

@@ -19,9 +19,9 @@ class LunarGameUI {
       return;
     }
 
-    this.initThreeJS();
+    // Three.js e intro.js serão inicializados apenas na fase de construção
+    this.threeJSInitialized = false;
     this.render();
-    this.checkFirstVisit();
   }
 
 
@@ -31,6 +31,13 @@ class LunarGameUI {
     const container = document.getElementById('base-3d-container');
     if (!container || typeof THREE === 'undefined') return;
 
+    // Garantir que o container tenha dimensoes validas
+    if (container.clientWidth === 0 || container.clientHeight === 0) {
+      console.warn('Container 3D tem dimensoes invalidas, adiando inicializacao...');
+      setTimeout(() => this.initThreeJS(), 100);
+      return;
+    }
+
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 2000);
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -39,6 +46,13 @@ class LunarGameUI {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.setClearColor(0x000005, 1);
+
+    // Limpar qualquer canvas anterior para evitar multiplos renderers
+    const existingCanvas = container.querySelector('canvas');
+    if (existingCanvas) {
+      existingCanvas.remove();
+    }
+
     container.appendChild(this.renderer.domElement);
 
     // ── STARS ───────────────────────────────────────────────────────────────
@@ -123,11 +137,11 @@ class LunarGameUI {
 
     // Craters
     const craterData = [
-      { x: -14, z: 12,  r: 3.5, },
-      { x:  18, z: -8,  r: 2.8, },
+      { x: -14, z: 12, r: 3.5, },
+      { x: 18, z: -8, r: 2.8, },
       { x: -22, z: -16, r: 4.5, },
-      { x:  25, z: 20,  r: 2.2, },
-      { x:  -8, z: 22,  r: 1.8, },
+      { x: 25, z: 20, r: 2.2, },
+      { x: -8, z: 22, r: 1.8, },
     ];
     craterData.forEach(({ x, z, r }) => {
       const rimMat = new THREE.MeshPhongMaterial({ color: 0x7a7460, shininess: 1 });
@@ -155,31 +169,31 @@ class LunarGameUI {
     this._blinkMesh = null;
     this._animT = 0;
 
-const animate = () => {
-  requestAnimationFrame(animate);
-  this._animT += 0.016;
+    const animate = () => {
+      requestAnimationFrame(animate);
+      this._animT += 0.016;
 
-  // ─── ÓRBITA DA CÂMERA ───────────────────────────────────────────────────
-  const radius = 13;  // A distância horizontal original da câmera (raio do círculo)
-  const speed = 0.2;  // Velocidade do giro (valores menores = mais lento e suave)
+      // ─── ÓRBITA DA CÂMERA ───────────────────────────────────────────────────
+      const radius = 13;  // A distância horizontal original da câmera (raio do círculo)
+      const speed = 0.2;  // Velocidade do giro (valores menores = mais lento e suave)
 
-  // Calcula a nova posição X e Z da câmera ao longo do tempo
-  this.camera.position.x = Math.sin(this._animT * speed) * radius;
-  this.camera.position.z = Math.cos(this._animT * speed) * radius;
-  
-  // Força a câmera a continuar apontada para o centro da base lunar
-  this.camera.lookAt(0, 0.5, 0);
-  // ────────────────────────────────────────────────────────────────────────
+      // Calcula a nova posição X e Z da câmera ao longo do tempo
+      this.camera.position.x = Math.sin(this._animT * speed) * radius;
+      this.camera.position.z = Math.cos(this._animT * speed) * radius;
 
-  // COMITADO/REMOVIDO: Desativamos o giro próprio da base para não conflitar
-  // this.baseGroup.rotation.y += 0.003;
+      // Força a câmera a continuar apontada para o centro da base lunar
+      this.camera.lookAt(0, 0.5, 0);
+      // ────────────────────────────────────────────────────────────────────────
 
-  if (this._blinkMesh) {
-    this._blinkMesh.material.emissiveIntensity = Math.sin(this._animT * 2) > 0 ? 1.5 : 0.1;
-  }
-  this.renderer.render(this.scene, this.camera);
-};
-animate();
+      // COMITADO/REMOVIDO: Desativamos o giro próprio da base para não conflitar
+      // this.baseGroup.rotation.y += 0.003;
+
+      if (this._blinkMesh) {
+        this._blinkMesh.material.emissiveIntensity = Math.sin(this._animT * 2) > 0 ? 1.5 : 0.1;
+      }
+      this.renderer.render(this.scene, this.camera);
+    };
+    animate();
 
     window.addEventListener('resize', () => {
       this.camera.aspect = container.clientWidth / container.clientHeight;
@@ -357,433 +371,437 @@ animate();
   // Nível 1: 2 painéis com grade de células
   // Nível 2: 4 painéis em cruz com suporte articulado
   // Nível 3: 6 painéis em dois andares
- _buildSolarPanel(group, level) {
-  const mastH = [0, 1.1, 1.45, 1.9][level];
-  const mastMat = new THREE.MeshPhongMaterial({ color: 0x8899aa });
-  const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, mastH, 10), mastMat);
-  mast.position.y = 0.2 + mastH / 2;
-  mast.castShadow = true;
-  group.add(mast);
+  _buildSolarPanel(group, level) {
+    const mastH = [0, 1.1, 1.45, 1.9][level];
+    const mastMat = new THREE.MeshPhongMaterial({ color: 0x8899aa });
+    const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, mastH, 10), mastMat);
+    mast.position.y = 0.2 + mastH / 2;
+    mast.castShadow = true;
+    group.add(mast);
 
-  const cellMat = new THREE.MeshPhongMaterial({
-    color: 0x0e2a88, shininess: 260, specular: 0x6699ff
-  });
-  const frameMat = new THREE.MeshPhongMaterial({ color: 0x778899, shininess: 40 });
-  const backMat = new THREE.MeshPhongMaterial({ color: 0x2a3a4a });
-  const gridMat = new THREE.MeshPhongMaterial({ color: 0x1a3aaa });
+    const cellMat = new THREE.MeshPhongMaterial({
+      color: 0x0e2a88, shininess: 260, specular: 0x6699ff
+    });
+    const frameMat = new THREE.MeshPhongMaterial({ color: 0x778899, shininess: 40 });
+    const backMat = new THREE.MeshPhongMaterial({ color: 0x2a3a4a });
+    const gridMat = new THREE.MeshPhongMaterial({ color: 0x1a3aaa });
 
-  // Fixed default inclination to -Math.PI / 5 (~36°)
-  const addPanel = (w, h, px, py, pz, ry, rx = -Math.PI / 5) => {
-    const grp = new THREE.Group();
-    grp.position.set(px, py, pz);
-    grp.rotation.y = ry;
-    grp.rotation.x = rx;
+    // Fixed default inclination to -Math.PI / 5 (~36°)
+    const addPanel = (w, h, px, py, pz, ry, rx = -Math.PI / 5) => {
+      const grp = new THREE.Group();
+      grp.position.set(px, py, pz);
+      grp.rotation.y = ry;
+      grp.rotation.x = rx;
 
-    // Back plate
-    grp.add(new THREE.Mesh(new THREE.BoxGeometry(w, 0.03, h), backMat));
-    // Cell surface
-    const cell = new THREE.Mesh(new THREE.BoxGeometry(w - 0.06, 0.045, h - 0.06), cellMat);
-    cell.position.y = 0.01;
-    grp.add(cell);
+      // Back plate
+      grp.add(new THREE.Mesh(new THREE.BoxGeometry(w, 0.03, h), backMat));
+      // Cell surface
+      const cell = new THREE.Mesh(new THREE.BoxGeometry(w - 0.06, 0.045, h - 0.06), cellMat);
+      cell.position.y = 0.01;
+      grp.add(cell);
 
-    // Vertical grid lines
-    for (let i = 1; i < 3; i++) {
-      const lm = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.05, h), gridMat);
-      lm.position.set(-w / 2 + (w / 3) * i, 0.015, 0);
-      grp.add(lm);
-    }
-    // Horizontal grid lines
-    for (let i = 1; i < 4; i++) {
-      const lm = new THREE.Mesh(new THREE.BoxGeometry(w, 0.05, 0.012), gridMat);
-      lm.position.set(0, 0.015, -h / 2 + (h / 4) * i);
-      grp.add(lm);
-    }
-    // Frame
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(w + 0.05, 0.055, h + 0.05), frameMat);
-    frame.position.y = -0.005;
-    grp.add(frame);
+      // Vertical grid lines
+      for (let i = 1; i < 3; i++) {
+        const lm = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.05, h), gridMat);
+        lm.position.set(-w / 2 + (w / 3) * i, 0.015, 0);
+        grp.add(lm);
+      }
+      // Horizontal grid lines
+      for (let i = 1; i < 4; i++) {
+        const lm = new THREE.Mesh(new THREE.BoxGeometry(w, 0.05, 0.012), gridMat);
+        lm.position.set(0, 0.015, -h / 2 + (h / 4) * i);
+        grp.add(lm);
+      }
+      // Frame
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(w + 0.05, 0.055, h + 0.05), frameMat);
+      frame.position.y = -0.005;
+      grp.add(frame);
 
-    group.add(grp);
+      group.add(grp);
 
-    // Fix: Connect offset panels back to the center mast with structural arms
-    if (px !== 0 || pz !== 0) {
-      const dist = Math.sqrt(px * px + pz * pz);
-      const armGeo = new THREE.BoxGeometry(dist, 0.04, 0.04);
-      const arm = new THREE.Mesh(armGeo, mastMat);
-      arm.position.set(px / 2, py, pz / 2);
-      arm.rotation.y = Math.atan2(pz, px);
-      group.add(arm);
-    }
-  };
+      // Fix: Connect offset panels back to the center mast with structural arms
+      if (px !== 0 || pz !== 0) {
+        const dist = Math.sqrt(px * px + pz * pz);
+        const armGeo = new THREE.BoxGeometry(dist, 0.04, 0.04);
+        const arm = new THREE.Mesh(armGeo, mastMat);
+        arm.position.set(px / 2, py, pz / 2);
+        arm.rotation.y = Math.atan2(pz, px);
+        group.add(arm);
+      }
+    };
 
-  const topY = 0.2 + mastH;
-  if (level === 1) {
-    addPanel(0.95, 0.58, -0.56, topY, 0, 0);
-    addPanel(0.95, 0.58,  0.56, topY, 0, 0);
-  } else if (level === 2) {
-    addPanel(1.05, 0.65, -0.64, topY, 0, 0);
-    addPanel(1.05, 0.65,  0.64, topY, 0, 0);
-    addPanel(1.05, 0.65, 0, topY, -0.64, Math.PI / 2);
-    addPanel(1.05, 0.65, 0, topY,  0.64, Math.PI / 2);
-  } else if (level === 3) {
-    // Fix: Replaced multi-tier layout with a clean 6-panel radial array
-    for (let i = 0; i < 6; i++) {
-      const angle = i * (Math.PI * 2 / 6);
-      const radius = 0.85;
-      const px = Math.cos(angle) * radius;
-      const pz = Math.sin(angle) * radius;
-      addPanel(1.12, 0.66, px, topY, pz, -angle);
+    const topY = 0.2 + mastH;
+    if (level === 1) {
+      addPanel(0.95, 0.58, -0.56, topY, 0, 0);
+      addPanel(0.95, 0.58, 0.56, topY, 0, 0);
+    } else if (level === 2) {
+      addPanel(1.05, 0.65, -0.64, topY, 0, 0);
+      addPanel(1.05, 0.65, 0.64, topY, 0, 0);
+      addPanel(1.05, 0.65, 0, topY, -0.64, Math.PI / 2);
+      addPanel(1.05, 0.65, 0, topY, 0.64, Math.PI / 2);
+    } else if (level === 3) {
+      // Fix: Replaced multi-tier layout with a clean 6-panel radial array
+      for (let i = 0; i < 6; i++) {
+        const angle = i * (Math.PI * 2 / 6);
+        const radius = 0.85;
+        const px = Math.cos(angle) * radius;
+        const pz = Math.sin(angle) * radius;
+        addPanel(1.12, 0.66, px, topY, pz, -angle);
+      }
     }
   }
-}
 
   // ── ESTUFA ────────────────────────────────────────────────────────────────
   // Nível 1: dome segmentado pequeno com plantas
   // Nível 2: dome médio + airlock com luz indicadora
   // Nível 3: dome grande + anel de crescimento UV
   _buildGreenhouse(group, level) {
-  const ds = [0, 0.84, 1.08, 1.38][level];
-  const archMat = new THREE.MeshPhongMaterial({ color: 0x44bb66, shininess: 50 });
+    const ds = [0, 0.84, 1.08, 1.38][level];
+    const archMat = new THREE.MeshPhongMaterial({ color: 0x44bb66, shininess: 50 });
 
-  // Structural arches
-  for (let i = 0; i < 6; i++) {
-    const arch = new THREE.Mesh(
-      new THREE.TorusGeometry(ds, 0.03, 6, 20, Math.PI / 2),
-      archMat
-    );
-    arch.rotation.y = (i / 6) * Math.PI;
-    arch.rotation.x = Math.PI / 2;
-    arch.position.y = 0.2;
-    group.add(arch);
+    // Structural arches
+    for (let i = 0; i < 6; i++) {
+      const arch = new THREE.Mesh(
+        new THREE.TorusGeometry(ds, 0.03, 6, 20, Math.PI / 2),
+        archMat
+      );
+      arch.rotation.y = (i / 6) * Math.PI;
+      arch.rotation.x = Math.PI / 2;
+      arch.position.y = 0.2;
+      group.add(arch);
+    }
+
+    // Dome panels (alternating opacity for segmented look)
+    for (let i = 0; i < 6; i++) {
+      const panelMat = new THREE.MeshPhongMaterial({
+        color: i % 2 === 0 ? 0x88ffcc : 0xaaffee,
+        transparent: true, opacity: 0.35,
+        shininess: 180, specular: 0xffffff,
+        side: THREE.DoubleSide
+      });
+      const panel = new THREE.Mesh(
+        new THREE.SphereGeometry(ds * 0.99, 4, 4, (i / 6) * Math.PI * 2, Math.PI / 3, 0, Math.PI / 2),
+        panelMat
+      );
+      panel.position.y = 0.2;
+      group.add(panel);
+    }
+
+    // Rim
+    const rimMat = new THREE.MeshPhongMaterial({ color: 0x33aa55, shininess: 60 });
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(ds, 0.06, 10, 40), rimMat);
+    rim.rotation.x = Math.PI / 2;
+    rim.position.y = 0.2;
+    group.add(rim);
+
+    // Airlock (level 2+)
+    if (level >= 2) {
+      const lkMat = new THREE.MeshPhongMaterial({ color: 0x446655, shininess: 40 });
+
+      // Fix: Lowered position to snap perfectly against the dome edge base rim
+      const lk = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.6, 16), lkMat);
+      lk.position.set(ds * 0.9, 0.2 + 0.3, 0);
+      lk.castShadow = true;
+      group.add(lk);
+
+      // Fix: Added connection sleeve tunnel linking the dome to the airlock door
+      const connGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.3, 12);
+      const conn = new THREE.Mesh(connGeo, lkMat);
+      conn.rotation.z = Math.PI / 2;
+      conn.position.set(ds * 0.72, 0.2 + 0.3, 0);
+      group.add(conn);
+
+      // Fix: Moved status sphere to the front external wall of the airlock unit
+      const alMat = new THREE.MeshPhongMaterial({
+        color: 0xffcc00, emissive: 0xcc9900, emissiveIntensity: 0.6
+      });
+      const al = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 8), alMat);
+      al.position.set(ds * 0.9 + 0.32, 0.2 + 0.3, 0);
+      group.add(al);
+    }
+
+    // UV growth ring (level 3)
+    if (level === 3) {
+      const grMat = new THREE.MeshPhongMaterial({
+        color: 0xff55bb, emissive: 0xcc1188, emissiveIntensity: 0.55
+      });
+      const gr = new THREE.Mesh(new THREE.TorusGeometry(ds * 0.62, 0.07, 8, 32), grMat);
+      gr.rotation.x = Math.PI / 2;
+      gr.position.y = 0.55;
+      group.add(gr);
+    }
+
+    // Plants
+    const plantCount = [0, 4, 7, 10][level];
+    const plantColors = [0x22cc44, 0x44ee66, 0x66ff88];
+    for (let i = 0; i < plantCount; i++) {
+      const a = (i / plantCount) * Math.PI * 2;
+      const r = ds * 0.42;
+      const px = Math.cos(a) * r, pz = Math.sin(a) * r;
+      const h = 0.18 + Math.random() * 0.28;
+
+      const stemMat = new THREE.MeshPhongMaterial({ color: 0x226633 });
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.028, h, 6), stemMat);
+      stem.position.set(px, 0.2 + h / 2, pz);
+      group.add(stem);
+
+      const leafMat = new THREE.MeshPhongMaterial({ color: plantColors[i % 3] });
+      const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 6), leafMat);
+      leaf.position.set(px, 0.2 + h + 0.06, pz);
+      group.add(leaf);
+    }
   }
-
-  // Dome panels (alternating opacity for segmented look)
-  for (let i = 0; i < 6; i++) {
-    const panelMat = new THREE.MeshPhongMaterial({
-      color: i % 2 === 0 ? 0x88ffcc : 0xaaffee,
-      transparent: true, opacity: 0.35,
-      shininess: 180, specular: 0xffffff,
-      side: THREE.DoubleSide
-    });
-    const panel = new THREE.Mesh(
-      new THREE.SphereGeometry(ds * 0.99, 4, 4, (i / 6) * Math.PI * 2, Math.PI / 3, 0, Math.PI / 2),
-      panelMat
-    );
-    panel.position.y = 0.2;
-    group.add(panel);
-  }
-
-  // Rim
-  const rimMat = new THREE.MeshPhongMaterial({ color: 0x33aa55, shininess: 60 });
-  const rim = new THREE.Mesh(new THREE.TorusGeometry(ds, 0.06, 10, 40), rimMat);
-  rim.rotation.x = Math.PI / 2;
-  rim.position.y = 0.2;
-  group.add(rim);
-
-  // Airlock (level 2+)
-  if (level >= 2) {
-    const lkMat = new THREE.MeshPhongMaterial({ color: 0x446655, shininess: 40 });
-    
-    // Fix: Lowered position to snap perfectly against the dome edge base rim
-    const lk = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.6, 16), lkMat);
-    lk.position.set(ds * 0.9, 0.2 + 0.3, 0);
-    lk.castShadow = true;
-    group.add(lk);
-
-    // Fix: Added connection sleeve tunnel linking the dome to the airlock door
-    const connGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.3, 12);
-    const conn = new THREE.Mesh(connGeo, lkMat);
-    conn.rotation.z = Math.PI / 2;
-    conn.position.set(ds * 0.72, 0.2 + 0.3, 0);
-    group.add(conn);
-
-    // Fix: Moved status sphere to the front external wall of the airlock unit
-    const alMat = new THREE.MeshPhongMaterial({
-      color: 0xffcc00, emissive: 0xcc9900, emissiveIntensity: 0.6
-    });
-    const al = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 8), alMat);
-    al.position.set(ds * 0.9 + 0.32, 0.2 + 0.3, 0);
-    group.add(al);
-  }
-
-  // UV growth ring (level 3)
-  if (level === 3) {
-    const grMat = new THREE.MeshPhongMaterial({
-      color: 0xff55bb, emissive: 0xcc1188, emissiveIntensity: 0.55
-    });
-    const gr = new THREE.Mesh(new THREE.TorusGeometry(ds * 0.62, 0.07, 8, 32), grMat);
-    gr.rotation.x = Math.PI / 2;
-    gr.position.y = 0.55;
-    group.add(gr);
-  }
-
-  // Plants
-  const plantCount = [0, 4, 7, 10][level];
-  const plantColors = [0x22cc44, 0x44ee66, 0x66ff88];
-  for (let i = 0; i < plantCount; i++) {
-    const a = (i / plantCount) * Math.PI * 2;
-    const r = ds * 0.42;
-    const px = Math.cos(a) * r, pz = Math.sin(a) * r;
-    const h = 0.18 + Math.random() * 0.28;
-
-    const stemMat = new THREE.MeshPhongMaterial({ color: 0x226633 });
-    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.028, h, 6), stemMat);
-    stem.position.set(px, 0.2 + h / 2, pz);
-    group.add(stem);
-
-    const leafMat = new THREE.MeshPhongMaterial({ color: plantColors[i % 3] });
-    const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 6), leafMat);
-    leaf.position.set(px, 0.2 + h + 0.06, pz);
-    group.add(leaf);
-  }
-}
   // ── RECICLADOR DE ÁGUA ────────────────────────────────────────────────────
   // Nível 1: tanque com anéis de compressão e tubulações
   // Nível 2: tanque maior + 6 aletas condensadoras
   // Nível 3: 2 tanques + coluna filtrante + indicador luminoso
   _buildWaterRecycler(group, level) {
-  const tankMat = new THREE.MeshPhongMaterial({
-    color: 0x1188cc, shininess: 180, specular: 0x55aaff
-  });
-  const metalMat = new THREE.MeshPhongMaterial({ color: 0x5577aa, shininess: 60 });
-  const pipeMat = new THREE.MeshPhongMaterial({ color: 0x336688 });
+    const tankMat = new THREE.MeshPhongMaterial({
+      color: 0x1188cc, shininess: 180, specular: 0x55aaff
+    });
+    const metalMat = new THREE.MeshPhongMaterial({ color: 0x5577aa, shininess: 60 });
+    const pipeMat = new THREE.MeshPhongMaterial({ color: 0x336688 });
 
-  const tR = [0, 0.56, 0.7, 0.56][level];
-  const tH = [0, 0.95, 1.15, 0.95][level];
+    const tR = [0, 0.56, 0.7, 0.56][level];
+    const tH = [0, 0.95, 1.15, 0.95][level];
 
-  // Main tank
-  const tank = new THREE.Mesh(new THREE.CylinderGeometry(tR, tR * 1.06, tH, 28), tankMat);
-  tank.position.y = 0.2 + tH / 2;
-  tank.castShadow = true;
-  group.add(tank);
+    // Main tank
+    const tank = new THREE.Mesh(new THREE.CylinderGeometry(tR, tR * 1.06, tH, 28), tankMat);
+    tank.position.y = 0.2 + tH / 2;
+    tank.castShadow = true;
+    group.add(tank);
 
-  // Top dome
-  const cap = new THREE.Mesh(
-    new THREE.SphereGeometry(tR, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2),
-    tankMat
-  );
-  cap.position.y = 0.2 + tH;
-  group.add(cap);
-
-  // Compression band rings
-  [0.35, 0.65].forEach(f => {
-    const band = new THREE.Mesh(new THREE.TorusGeometry(tR + 0.02, 0.03, 6, 28), metalMat);
-    band.rotation.x = Math.PI / 2;
-    band.position.y = 0.2 + tH * f;
-    group.add(band);
-  });
-
-  // Pipe stubs with elbows
-  [-0.32, 0.32].forEach(ox => {
-    const pm = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.55, 8), pipeMat);
-    pm.rotation.z = Math.PI / 2;
-    pm.position.set(ox, 0.2 + 0.28, tR + 0.06);
-    group.add(pm);
-
-    // Fix: Recalculated elbow positions so they stay locked onto the actual pipeline tip
-    const el = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 8), pipeMat);
-    el.position.set(ox, 0.2 + 0.28, tR + 0.335);
-    group.add(el);
-
-    // Fix: Added descending pipes going down from the elbow connectors directly into the pad base
-    const downGeo = new THREE.CylinderGeometry(0.05, 0.05, 0.28, 8);
-    const down = new THREE.Mesh(downGeo, pipeMat);
-    down.position.set(ox, 0.2 + 0.14, tR + 0.335);
-    group.add(down);
-  });
-
-  // Condenser fins (level 2+)
-  if (level >= 2) {
-    for (let i = 0; i < 6; i++) {
-      const fa = (i / 6) * Math.PI * 2;
-      const fin = new THREE.Mesh(new THREE.BoxGeometry(0.06, tH * 0.7, 0.46), metalMat);
-      fin.position.set(
-        Math.cos(fa) * (tR + 0.12),
-        0.2 + tH * 0.48,
-        Math.sin(fa) * (tR + 0.12)
-      );
-      group.add(fin);
-    }
-
-    // Fix: Added structural retaining ring to firmly bound the external cooling grid
-    const beltGeo = new THREE.TorusGeometry(tR + 0.16, 0.025, 6, 28);
-    const belt = new THREE.Mesh(beltGeo, metalMat);
-    belt.rotation.x = Math.PI / 2;
-    belt.position.y = 0.2 + tH * 0.48;
-    group.add(belt);
-  }
-
-  // Second tank + filter column (level 3)
-  if (level === 3) {
-    const t2 = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.4, 0.78, 18), tankMat);
-    t2.position.set(1.0, 0.2 + 0.39, 0);
-    group.add(t2);
-
-    const c2 = new THREE.Mesh(
-      new THREE.SphereGeometry(0.38, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+    // Top dome
+    const cap = new THREE.Mesh(
+      new THREE.SphereGeometry(tR, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2),
       tankMat
     );
-    c2.position.set(1.0, 0.2 + 0.78, 0);
-    group.add(c2);
+    cap.position.y = 0.2 + tH;
+    group.add(cap);
 
-    const filtMat = new THREE.MeshPhongMaterial({ color: 0x88ddff, shininess: 200 });
-    const filt = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 1.1, 12), filtMat);
-    filt.position.set(-0.88, 0.2 + 0.55, 0);
-    group.add(filt);
-
-    const glowMat = new THREE.MeshPhongMaterial({
-      color: 0x00ddff, emissive: 0x0099cc, emissiveIntensity: 0.9
+    // Compression band rings
+    [0.35, 0.65].forEach(f => {
+      const band = new THREE.Mesh(new THREE.TorusGeometry(tR + 0.02, 0.03, 6, 28), metalMat);
+      band.rotation.x = Math.PI / 2;
+      band.position.y = 0.2 + tH * f;
+      group.add(band);
     });
-    const glow = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), glowMat);
-    glow.position.set(-0.88, 0.2 + 1.22, 0);
-    group.add(glow);
+
+    // Pipe stubs with elbows
+    [-0.32, 0.32].forEach(ox => {
+      const pm = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.55, 8), pipeMat);
+      pm.rotation.z = Math.PI / 2;
+      pm.position.set(ox, 0.2 + 0.28, tR + 0.06);
+      group.add(pm);
+
+      // Fix: Recalculated elbow positions so they stay locked onto the actual pipeline tip
+      const el = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 8), pipeMat);
+      el.position.set(ox, 0.2 + 0.28, tR + 0.335);
+      group.add(el);
+
+      // Fix: Added descending pipes going down from the elbow connectors directly into the pad base
+      const downGeo = new THREE.CylinderGeometry(0.05, 0.05, 0.28, 8);
+      const down = new THREE.Mesh(downGeo, pipeMat);
+      down.position.set(ox, 0.2 + 0.14, tR + 0.335);
+      group.add(down);
+    });
+
+    // Condenser fins (level 2+)
+    if (level >= 2) {
+      for (let i = 0; i < 6; i++) {
+        const fa = (i / 6) * Math.PI * 2;
+        const fin = new THREE.Mesh(new THREE.BoxGeometry(0.06, tH * 0.7, 0.46), metalMat);
+        fin.position.set(
+          Math.cos(fa) * (tR + 0.12),
+          0.2 + tH * 0.48,
+          Math.sin(fa) * (tR + 0.12)
+        );
+        group.add(fin);
+      }
+
+      // Fix: Added structural retaining ring to firmly bound the external cooling grid
+      const beltGeo = new THREE.TorusGeometry(tR + 0.16, 0.025, 6, 28);
+      const belt = new THREE.Mesh(beltGeo, metalMat);
+      belt.rotation.x = Math.PI / 2;
+      belt.position.y = 0.2 + tH * 0.48;
+      group.add(belt);
+    }
+
+    // Second tank + filter column (level 3)
+    if (level === 3) {
+      const t2 = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.4, 0.78, 18), tankMat);
+      t2.position.set(1.0, 0.2 + 0.39, 0);
+      group.add(t2);
+
+      const c2 = new THREE.Mesh(
+        new THREE.SphereGeometry(0.38, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+        tankMat
+      );
+      c2.position.set(1.0, 0.2 + 0.78, 0);
+      group.add(c2);
+
+      const filtMat = new THREE.MeshPhongMaterial({ color: 0x88ddff, shininess: 200 });
+      const filt = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 1.1, 12), filtMat);
+      filt.position.set(-0.88, 0.2 + 0.55, 0);
+      group.add(filt);
+
+      const glowMat = new THREE.MeshPhongMaterial({
+        color: 0x00ddff, emissive: 0x0099cc, emissiveIntensity: 0.9
+      });
+      const glow = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), glowMat);
+      glow.position.set(-0.88, 0.2 + 1.22, 0);
+      group.add(glow);
+    }
   }
-}
 
   // ── GERADOR DE OXIGÊNIO ───────────────────────────────────────────────────
   // Nível 1: reator com painéis de instrumentação e anel emissor
   // Nível 2: reator maior + 2 tanques de armazenamento com manômetros
   // Nível 3: reator grande + 4 tanques + radiadores
   _buildOxygenGenerator(group, level) {
-  const reactorMat = new THREE.MeshPhongMaterial({ color: 0xe8eef6, shininess: 120 });
-  const accentMat = new THREE.MeshPhongMaterial({
-    color: 0x44aaff, emissive: 0x1144bb, emissiveIntensity: 0.5
-  });
-  const storageMat = new THREE.MeshPhongMaterial({ color: 0xbbc8da, shininess: 70 });
-  const panelMat = new THREE.MeshPhongMaterial({ color: 0x3a4a5a, shininess: 30 });
+    const reactorMat = new THREE.MeshPhongMaterial({ color: 0xe8eef6, shininess: 120 });
+    const accentMat = new THREE.MeshPhongMaterial({
+      color: 0x44aaff, emissive: 0x1144bb, emissiveIntensity: 0.5
+    });
+    const storageMat = new THREE.MeshPhongMaterial({ color: 0xbbc8da, shininess: 70 });
+    const panelMat = new THREE.MeshPhongMaterial({ color: 0x3a4a5a, shininess: 30 });
 
-  const rH = [0, 0.92, 1.32, 1.55][level];
-  const rR = [0, 0.46, 0.54, 0.60][level];
+    const rH = [0, 0.92, 1.32, 1.55][level];
+    const rR = [0, 0.46, 0.54, 0.60][level];
 
-  // Reactor body
-  const reactor = new THREE.Mesh(new THREE.CylinderGeometry(rR, rR * 1.08, rH, 24), reactorMat);
-  reactor.position.y = 0.2 + rH / 2;
-  reactor.castShadow = true;
-  group.add(reactor);
+    // Reactor body
+    const reactor = new THREE.Mesh(new THREE.CylinderGeometry(rR, rR * 1.08, rH, 24), reactorMat);
+    reactor.position.y = 0.2 + rH / 2;
+    reactor.castShadow = true;
+    group.add(reactor);
 
-  // Top dome
-  const top = new THREE.Mesh(
-    new THREE.SphereGeometry(rR, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2),
-    reactorMat
-  );
-  top.position.y = 0.2 + rH;
-  group.add(top);
-
-  // Fix: Resolved z-fighting artifact with radial outward cushioning + correct tangential rotation
-  for (let i = 0; i < 3; i++) {
-    const angle = (i / 3) * Math.PI * 2;
-    const pn = new THREE.Mesh(new THREE.BoxGeometry(rR * 0.55, rH * 0.22, 0.06), panelMat);
-    pn.position.set(
-      Math.cos(angle) * (rR + 0.04),
-      0.2 + rH * 0.55,
-      Math.sin(angle) * (rR + 0.04)
+    // Top dome
+    const top = new THREE.Mesh(
+      new THREE.SphereGeometry(rR, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2),
+      reactorMat
     );
-    pn.rotation.y = -angle;
-    group.add(pn);
-  }
+    top.position.y = 0.2 + rH;
+    group.add(top);
 
-  // Glowing output ring
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(rR + 0.08, 0.07, 8, 32), accentMat);
-  ring.rotation.x = Math.PI / 2;
-  ring.position.y = 0.2 + rH * 0.62;
-  group.add(ring);
-
-  // Vent nozzles
-  const ventCount = level === 1 ? 3 : level === 2 ? 4 : 6;
-  for (let i = 0; i < ventCount; i++) {
-    const va = (i / ventCount) * Math.PI * 2;
-    const vMat = new THREE.MeshPhongMaterial({ color: 0x88aacc });
-    const v = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.24, 6), vMat);
-    v.position.set(
-      Math.cos(va) * (rR + 0.06),
-      0.2 + rH * 0.86,
-      Math.sin(va) * (rR + 0.06)
-    );
-    v.rotation.x = Math.PI / 6;
-    v.rotation.y = -va;
-    group.add(v);
-  }
-
-  // Storage tanks with pressure gauges (level 2+)
-  if (level >= 2) {
-    [-0.85, 0.85].forEach(ox => {
-      const st = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.78, 16), storageMat);
-      st.position.set(ox, 0.2 + 0.39, 0);
-      st.castShadow = true;
-      group.add(st);
-
-      const sc = new THREE.Mesh(
-        new THREE.SphereGeometry(0.26, 12, 7, 0, Math.PI * 2, 0, Math.PI / 2),
-        storageMat
+    // Fix: Resolved z-fighting artifact with radial outward cushioning + correct tangential rotation
+    for (let i = 0; i < 3; i++) {
+      const angle = (i / 3) * Math.PI * 2;
+      const pn = new THREE.Mesh(new THREE.BoxGeometry(rR * 0.55, rH * 0.22, 0.06), panelMat);
+      pn.position.set(
+        Math.cos(angle) * (rR + 0.04),
+        0.2 + rH * 0.55,
+        Math.sin(angle) * (rR + 0.04)
       );
-      sc.position.set(ox, 0.2 + 0.78, 0);
-      group.add(sc);
+      pn.rotation.y = -angle;
+      group.add(pn);
+    }
 
-      // Fix: Shifted manometers down onto midpoint height to rest flush on the tank
-      const gaugeMat = new THREE.MeshPhongMaterial({
-        color: 0xeeff44, emissive: 0xaacc00, emissiveIntensity: 0.4
+    // Glowing output ring
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(rR + 0.08, 0.07, 8, 32), accentMat);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = 0.2 + rH * 0.62;
+    group.add(ring);
+
+    // Vent nozzles
+    const ventCount = level === 1 ? 3 : level === 2 ? 4 : 6;
+    for (let i = 0; i < ventCount; i++) {
+      const va = (i / ventCount) * Math.PI * 2;
+      const vMat = new THREE.MeshPhongMaterial({ color: 0x88aacc });
+      const v = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.24, 6), vMat);
+      v.position.set(
+        Math.cos(va) * (rR + 0.06),
+        0.2 + rH * 0.86,
+        Math.sin(va) * (rR + 0.06)
+      );
+      v.rotation.x = Math.PI / 6;
+      v.rotation.y = -va;
+      group.add(v);
+    }
+
+    // Storage tanks with pressure gauges (level 2+)
+    if (level >= 2) {
+      [-0.85, 0.85].forEach(ox => {
+        const st = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.78, 16), storageMat);
+        st.position.set(ox, 0.2 + 0.39, 0);
+        st.castShadow = true;
+        group.add(st);
+
+        const sc = new THREE.Mesh(
+          new THREE.SphereGeometry(0.26, 12, 7, 0, Math.PI * 2, 0, Math.PI / 2),
+          storageMat
+        );
+        sc.position.set(ox, 0.2 + 0.78, 0);
+        group.add(sc);
+
+        // Fix: Shifted manometers down onto midpoint height to rest flush on the tank
+        const gaugeMat = new THREE.MeshPhongMaterial({
+          color: 0xeeff44, emissive: 0xaacc00, emissiveIntensity: 0.4
+        });
+        const gauge = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.04, 10), gaugeMat);
+        gauge.position.set(ox, 0.2 + 0.62, 0.28);
+        group.add(gauge);
+
+        // Fix: Added mechanical plumbing conduits feeding gas directly from the generator core to the tanks
+        const connW = Math.abs(ox) - rR - 0.01;
+        const connGeo = new THREE.BoxGeometry(connW, 0.04, 0.04);
+        const conn = new THREE.Mesh(connGeo, new THREE.MeshPhongMaterial({ color: 0x667788 }));
+        conn.position.set(ox / 2, 0.2 + rH * 0.4, 0);
+        group.add(conn);
       });
-      const gauge = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.04, 10), gaugeMat);
-      gauge.position.set(ox, 0.2 + 0.62, 0.28);
-      group.add(gauge);
+    }
 
-      // Fix: Added mechanical plumbing conduits feeding gas directly from the generator core to the tanks
-      const connW = Math.abs(ox) - rR - 0.01;
-      const connGeo = new THREE.BoxGeometry(connW, 0.04, 0.04);
-      const conn = new THREE.Mesh(connGeo, new THREE.MeshPhongMaterial({ color: 0x667788 }));
-      conn.position.set(ox / 2, 0.2 + rH * 0.4, 0);
-      group.add(conn);
-    });
-  }
+    // Extra tanks + radiator fins (level 3)
+    if (level === 3) {
+      [-0.85, 0.85].forEach(oz => {
+        const st = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.78, 16), storageMat);
+        st.position.set(0, 0.2 + 0.39, oz);
+        group.add(st);
 
-  // Extra tanks + radiator fins (level 3)
-  if (level === 3) {
-    [-0.85, 0.85].forEach(oz => {
-      const st = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.78, 16), storageMat);
-      st.position.set(0, 0.2 + 0.39, oz);
-      group.add(st);
+        const sc = new THREE.Mesh(
+          new THREE.SphereGeometry(0.26, 12, 7, 0, Math.PI * 2, 0, Math.PI / 2),
+          storageMat
+        );
+        sc.position.set(0, 0.2 + 0.78, oz);
+        group.add(sc);
+      });
 
-      const sc = new THREE.Mesh(
-        new THREE.SphereGeometry(0.26, 12, 7, 0, Math.PI * 2, 0, Math.PI / 2),
-        storageMat
-      );
-      sc.position.set(0, 0.2 + 0.78, oz);
-      group.add(sc);
-    });
-
-    for (let i = 0; i < 4; i++) {
-      const fa = (i / 4) * Math.PI * 2 + Math.PI / 4;
-      const radMat = new THREE.MeshPhongMaterial({ color: 0xaabbcc });
-      const rad = new THREE.Mesh(new THREE.BoxGeometry(0.05, rH * 0.65, 0.58), radMat);
-      rad.position.set(
-        Math.cos(fa) * (rR + 0.18),
-        0.2 + rH * 0.5,
-        Math.sin(fa) * (rR + 0.18)
-      );
-      rad.rotation.y = fa;
-      group.add(rad);
+      for (let i = 0; i < 4; i++) {
+        const fa = (i / 4) * Math.PI * 2 + Math.PI / 4;
+        const radMat = new THREE.MeshPhongMaterial({ color: 0xaabbcc });
+        const rad = new THREE.Mesh(new THREE.BoxGeometry(0.05, rH * 0.65, 0.58), radMat);
+        rad.position.set(
+          Math.cos(fa) * (rR + 0.18),
+          0.2 + rH * 0.5,
+          Math.sin(fa) * (rR + 0.18)
+        );
+        rad.rotation.y = fa;
+        group.add(rad);
+      }
     }
   }
-}
 
   // ─── INTRO.JS ────────────────────────────────────────────────────────────
 
   checkFirstVisit() {
     const visited = localStorage.getItem('lunar-tutorial-visited');
-    if (!visited && typeof introJs !== 'undefined') {
-      setTimeout(() => {
-        this.startTutorial();
-        localStorage.setItem('lunar-tutorial-visited', 'true');
-      }, 800);
-    }
 
+    // Vincular o clique do botao de tutorial (apenas uma vez)
     const btn = document.getElementById('btn-tutorial');
-    if (btn) {
+    if (btn && !btn.dataset.tutorialBound) {
+      btn.dataset.tutorialBound = 'true';
       btn.addEventListener('click', () => {
         if (typeof introJs !== 'undefined') {
           this.startTutorial();
         }
       });
+    }
+
+    // Iniciar o tutorial automaticamente na primeira visita a construcao
+    if (!visited && typeof introJs !== 'undefined') {
+      setTimeout(() => {
+        this.startTutorial();
+        localStorage.setItem('lunar-tutorial-visited', 'true');
+      }, 500);
     }
   }
 
@@ -831,16 +849,16 @@ animate();
           `
         },
         {
-          element: document.querySelector('.quiz-card'),
+          element: document.querySelector('.quiz-card'), // Altere para a classe real que envolve os blocos de upgrade
           intro: `
-            <div class="selene-intro-step">
-              <div class="selene-intro-icon"><i class="bi bi-question-circle-fill"></i></div>
-              <h3>Perguntas Científicas</h3>
-              <p>A cada semana você responde perguntas sobre ciência lunar e espacial. Acertos rendem recursos extras.</p>
-              <p>No final de cada semana, você escolhe como <strong>investir os recursos</strong> para expandir a base.</p>
-              <p class="selene-intro-tip"><i class="bi bi-lightbulb-fill text-warning"></i> Quanto mais você acertar, mais rápido sua base cresce!</p>
-            </div>
-          `
+          <div class="selene-intro-step">
+            <div class="selene-intro-icon"><i class="bi bi-tools"></i></div>
+            <h3>Construção e Upgrades</h3>
+            <p>Utilize os recursos acumulados para construir ou melhorar os módulos vitais da sua base lunar.</p>
+            <p>Gerencie com sabedoria a <strong>Energia, Água, Oxigênio e Alimentos</strong> para garantir a sobrevivência da colônia.</p>
+            <p class="selene-intro-tip"><i class="bi bi-lightbulb-fill text-warning"></i> Clique em um módulo para prever o impacto que a melhoria causará nos seus recursos atuais!</p>
+          </div>
+  `
         }
       ]
     }).start();
@@ -873,13 +891,44 @@ animate();
     this.updateResources();
     this.updateProgress();
     this.updateProgressVisibility();
-    this.updateThreeJSBase();
 
     if (this.state.phase === "construction") {
+      // Mostrar o container 3D ANTES de inicializar Three.js para evitar dimensoes 0x0
+      const base3dContainer = document.getElementById('base-3d-container');
+      if (base3dContainer) {
+        base3dContainer.hidden = false;
+      }
+
+      // Mostrar o botão de tutorial
+      const btnTutorial = document.getElementById('btn-tutorial');
+      if (btnTutorial) {
+        btnTutorial.hidden = false;
+      }
+
+      // Inicializar Three.js e intro.js apenas na fase de construção
+      if (!this.threeJSInitialized) {
+        this.initThreeJS();
+        this.checkFirstVisit();
+        this.threeJSInitialized = true;
+      }
+      this.updateThreeJSBase();
       this.renderConstruction();
       return;
     }
+
+    // Ocultar o container 3D e o botão de tutorial em todas as outras fases
+    const base3dContainer = document.getElementById('base-3d-container');
+    if (base3dContainer) {
+      base3dContainer.hidden = true;
+    }
+    const btnTutorial = document.getElementById('btn-tutorial');
+    if (btnTutorial) {
+      btnTutorial.hidden = true;
+    }
     if (this.state.phase === "week-summary") {
+      if (this.threeJSInitialized) {
+        this.updateThreeJSBase();
+      }
       this.renderWeekSummary();
       return;
     }
@@ -896,7 +945,8 @@ animate();
     const activeResource = targetResource ?? question?.resource;
 
     if (this.resourcesSection) {
-      this.resourcesSection.hidden = this.state.phase === "game-over";
+      // Mostrar recursos apenas na fase de construção, ocultar em todas as outras fases
+      this.resourcesSection.hidden = this.state.phase !== "construction";
     }
 
     this.resourceCards.forEach((card) => {
@@ -970,7 +1020,7 @@ animate();
       if (config.questionResults) {
         const result = config.questionResults[index];
         if (result === "correct") block.classList.add("is-correct");
-        if (result === "wrong")   block.classList.add("is-wrong");
+        if (result === "wrong") block.classList.add("is-wrong");
         if (!result && index === this.state.questionIndex && this.state.phase === "quiz") {
           block.classList.add("is-active");
         }

@@ -20,6 +20,7 @@ function createInitialState() {
     history: [],
     lastReport: null,
     finalResult: null,
+    weeklyQuestionIndices: {}, // Armazena os índices das perguntas selecionadas para cada semana
   };
 }
 
@@ -79,6 +80,7 @@ function normalizeGameState(savedState = {}) {
       ...savedState.stats,
     },
     history: Array.isArray(savedState.history) ? savedState.history : [],
+    weeklyQuestionIndices: savedState.weeklyQuestionIndices ?? {},
   };
 }
 
@@ -164,8 +166,57 @@ function getModulesData() {
   return typeof MODULES !== "undefined" ? MODULES : {};
 }
 
+/**
+ * Gera perguntas aleatórias balanceadas para uma semana específica.
+ * Garante que haja exatamente 1 pergunta de cada recurso operacional.
+ */
+function generateBalancedQuestionsForWeek(week) {
+  const questions = getQuestionsData();
+  const resources = ['minerais', 'componentes', 'biomassa'];
+  
+  // Agrupar perguntas por recurso
+  const questionsByResource = {
+    minerais: [],
+    componentes: [],
+    biomassa: []
+  };
+  
+  questions.forEach((question, index) => {
+    if (questionsByResource[question.resource]) {
+      questionsByResource[question.resource].push(index);
+    }
+  });
+  
+  // Selecionar aleatoriamente 1 pergunta de cada recurso
+  const selectedIndices = [];
+  resources.forEach(resource => {
+    const availableIndices = questionsByResource[resource];
+    if (availableIndices.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableIndices.length);
+      selectedIndices.push(availableIndices[randomIndex]);
+    }
+  });
+  
+  // Embaralhar a ordem das perguntas selecionadas
+  for (let i = selectedIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [selectedIndices[i], selectedIndices[j]] = [selectedIndices[j], selectedIndices[i]];
+  }
+  
+  return selectedIndices;
+}
+
 function getQuestionsForWeek(week) {
   const questions = getQuestionsData();
+  
+  // Se não temos perguntas, retorna vazio
+  if (questions.length === 0) {
+    return [];
+  }
+  
+  // Verificar se as perguntas para esta semana já foram geradas
+  // Isso é feito através do state que é passado para getCurrentQuestion
+  // Aqui apenas retornamos a lógica de fallback
   const start = (week - 1) * CONFIG.QUESTIONS_PER_WEEK;
   const weeklyQuestions = questions.slice(start, start + CONFIG.QUESTIONS_PER_WEEK);
 
@@ -177,7 +228,27 @@ function getQuestionsForWeek(week) {
 }
 
 function getCurrentQuestion(state) {
-  return getQuestionsForWeek(state.week)[state.questionIndex];
+  const questions = getQuestionsData();
+  const week = state.week;
+  const questionIndex = state.questionIndex;
+  
+  // Gerar ou recuperar os índices das perguntas para esta semana
+  const weekKey = `week_${week}`;
+  if (!state.weeklyQuestionIndices[weekKey]) {
+    // Gerar novas perguntas balanceadas para a semana
+    const indices = generateBalancedQuestionsForWeek(week);
+    state.weeklyQuestionIndices[weekKey] = indices;
+    saveState(state);
+  }
+  
+  const weeklyIndices = state.weeklyQuestionIndices[weekKey];
+  
+  // Retornar a pergunta correspondente ao índice atual
+  if (questionIndex < weeklyIndices.length) {
+    return questions[weeklyIndices[questionIndex]];
+  }
+  
+  return null;
 }
 
 function canAfford(operational, cost) {
