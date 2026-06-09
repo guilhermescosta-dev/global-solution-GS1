@@ -5,7 +5,7 @@
   position: relative;
   isolation: isolate;
   min-height: calc(100vh - 95px);
-  overflow: clip;
+  overflow: hidden;
   background:
     radial-gradient(circle at 18% 18%, rgba(0, 217, 255, 0.12), transparent 28%),
     radial-gradient(circle at 78% 20%, rgba(255, 0, 110, 0.1), transparent 26%),

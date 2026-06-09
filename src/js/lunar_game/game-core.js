@@ -185,11 +185,9 @@ class LunarGameUI {
     // Blinking antenna light reference (set in updateThreeJSBase)
     this._blinkMesh = null;
     this._animT = 0;
-    this._animPaused = false;
 
     const animate = () => {
       requestAnimationFrame(animate);
-      if (this._animPaused) return;
       this._animT += 0.016;
 
       // ─── ÓRBITA DA CÂMERA ───────────────────────────────────────────────────
@@ -833,9 +831,8 @@ class LunarGameUI {
 startTutorial() {
   const isMobile = window.innerWidth < 768;
 
-  // Em qualquer tela, tenta obter o elemento — se existir e tiver altura, usa.
-  // No mobile o intro.js vai rolar até ele e iluminá-lo normalmente.
   const resolve = (selector, byId = false) => {
+    if (isMobile) return undefined;
     const el = byId
       ? document.getElementById(selector)
       : document.querySelector(selector);
@@ -900,30 +897,10 @@ startTutorial() {
     showProgress: true,
     showBullets: false,
     exitOnOverlayClick: false,
-    scrollToElement: true,
+    scrollToElement: !isMobile,
     disableInteraction: false,
     steps
-  })
-  .oncomplete(() => { this._animPaused = false; })
-  .onexit(() => { this._animPaused = false; })
-  .onstart(() => {
-    // Pausa o loop do Three.js para que o intro.js calcule
-    // o layout do canvas sem interferência do requestAnimationFrame
-    if (this._animPaused !== undefined) {
-      this._animPaused = true;
-      // Renderiza um frame estático imediatamente antes de parar,
-      // para que o canvas fique com uma imagem nítida durante o tour
-      if (this.renderer && this.scene && this.camera) {
-        this.renderer.render(this.scene, this.camera);
-      }
-    }
-    // Garante que o container 3D está visível na viewport antes do cálculo
-    const container = document.getElementById('base-3d-container');
-    if (container) {
-      container.scrollIntoView({ behavior: 'instant', block: 'nearest' });
-    }
-  })
-  .start();
+  }).start();
 }
 
 
