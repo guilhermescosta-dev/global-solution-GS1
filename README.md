@@ -67,6 +67,7 @@ O projeto trabalha sustentabilidade a partir de decisões de jogo e se relaciona
 - **Bootstrap Icons**
 - **Three.js**
 - **localStorage**
+- **Intro.js**
 
 ## Estrutura do projeto
 
