@@ -29,18 +29,35 @@ class LunarGameUI {
 
   initThreeJS() {
     const container = document.getElementById('base-3d-container');
-    if (!container || typeof THREE === 'undefined') return;
+    if (!container || typeof THREE === 'undefined') return false;
 
     // Garantir que o container tenha dimensoes validas
     if (container.clientWidth === 0 || container.clientHeight === 0) {
       console.warn('Container 3D tem dimensoes invalidas, adiando inicializacao...');
-      setTimeout(() => this.initThreeJS(), 100);
-      return;
+      setTimeout(() => {
+        if (this.state.phase === "construction" || this.state.phase === "week-summary") {
+          const initialized = this.initThreeJS();
+          this.threeJSInitialized = this.threeJSInitialized || initialized;
+          if (initialized) {
+            this.updateThreeJSBase();
+            if (this.state.phase === "construction") {
+              this.checkFirstVisit();
+            }
+          }
+        }
+      }, 100);
+      return false;
     }
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 2000);
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    try {
+      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    } catch (error) {
+      console.warn("Nao foi possivel iniciar a visualizacao 3D da base.", error);
+      container.classList.add("is-3d-unavailable");
+      return false;
+    }
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.shadowMap.enabled = true;
@@ -202,6 +219,7 @@ class LunarGameUI {
     });
 
     this.updateThreeJSBase();
+    return true;
   }
 
   updateThreeJSBase() {
@@ -892,43 +910,37 @@ class LunarGameUI {
     this.updateProgress();
     this.updateProgressVisibility();
 
-    if (this.state.phase === "construction") {
-      // Mostrar o container 3D ANTES de inicializar Three.js para evitar dimensoes 0x0
-      const base3dContainer = document.getElementById('base-3d-container');
-      if (base3dContainer) {
-        base3dContainer.hidden = false;
-      }
+    const base3dContainer = document.getElementById('base-3d-container');
+    const btnTutorial = document.getElementById('btn-tutorial');
+    const shouldShowBase = ["construction", "week-summary", "game-over"].includes(this.state.phase);
 
-      // Mostrar o botão de tutorial
-      const btnTutorial = document.getElementById('btn-tutorial');
-      if (btnTutorial) {
-        btnTutorial.hidden = false;
-      }
+    if (base3dContainer) {
+      base3dContainer.hidden = !shouldShowBase;
+    }
 
-      // Inicializar Three.js e intro.js apenas na fase de construção
+    if (btnTutorial) {
+      btnTutorial.hidden = this.state.phase !== "construction";
+    }
+
+    if (shouldShowBase) {
       if (!this.threeJSInitialized) {
-        this.initThreeJS();
-        this.checkFirstVisit();
-        this.threeJSInitialized = true;
+        this.threeJSInitialized = this.initThreeJS();
+        if (this.threeJSInitialized && this.state.phase === "construction") {
+          this.checkFirstVisit();
+        }
       }
-      this.updateThreeJSBase();
+
+      if (this.threeJSInitialized) {
+        this.updateThreeJSBase();
+      }
+    }
+
+    if (this.state.phase === "construction") {
       this.renderConstruction();
       return;
     }
 
-    // Ocultar o container 3D e o botão de tutorial em todas as outras fases
-    const base3dContainer = document.getElementById('base-3d-container');
-    if (base3dContainer) {
-      base3dContainer.hidden = true;
-    }
-    const btnTutorial = document.getElementById('btn-tutorial');
-    if (btnTutorial) {
-      btnTutorial.hidden = true;
-    }
     if (this.state.phase === "week-summary") {
-      if (this.threeJSInitialized) {
-        this.updateThreeJSBase();
-      }
       this.renderWeekSummary();
       return;
     }
@@ -939,8 +951,7 @@ class LunarGameUI {
 
     this.renderQuestion();
   }
-
-  updateResources(targetResource = null) {
+  updateResources(targetResource = null, previewOperational = null) {
     const question = getCurrentQuestion(this.state);
     const activeResource = targetResource ?? question?.resource;
 
@@ -952,13 +963,16 @@ class LunarGameUI {
     this.resourceCards.forEach((card) => {
       const resource = card.dataset.resourceCard;
       const value = card.querySelector("strong");
+      const currentValue = this.state.operational[resource] ?? 0;
+      const previewValue = previewOperational?.[resource];
       card.classList.toggle("is-target", resource === activeResource && this.state.phase === "quiz");
 
       if (value) {
-        value.textContent = this.state.operational[resource] ?? 0;
+        value.innerHTML = `${currentValue}`;
       }
 
       card.querySelector(".resource-gain")?.remove();
+      card.querySelector(".resource-preview")?.remove();
 
       const shouldShowGain =
         this.state.phase === "quiz" &&
@@ -972,6 +986,14 @@ class LunarGameUI {
         gain.className = "resource-gain";
         gain.textContent = `+${this.state.lastAnswer.rewardValue}`;
         card.querySelector(".operational-card-info")?.appendChild(gain);
+      }
+
+      if (this.state.phase === "construction" && Number.isFinite(previewValue) && previewValue !== currentValue) {
+        const delta = previewValue - currentValue;
+        const preview = document.createElement("span");
+        preview.className = `resource-preview ${delta < 0 ? "is-loss" : delta > 0 ? "is-gain" : "is-stable"}`;
+        preview.textContent = `→ ${previewValue}`;
+        value?.appendChild(preview);
       }
     });
   }

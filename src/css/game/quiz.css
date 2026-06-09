@@ -5,6 +5,18 @@
   min-height: calc(100vh - 95px);
 }
 
+.quiz-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: clamp(24px, 4vw, 38px);
+}
+
+.quiz-page-heading .game-title {
+  margin: 0;
+}
+
 .quiz-section .game-topbar {
   margin-bottom: 18px;
 }
@@ -110,6 +122,14 @@
   font-size: clamp(1.6rem, 3vw, 2rem);
 }
 
+.quiz-resource-list .operational-card-info strong {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .resource-gain {
   display: inline-flex;
   width: fit-content;
@@ -124,6 +144,23 @@
   font-style: normal;
   font-weight: 700;
   animation: gainFloat 0.72s ease;
+}
+
+.resource-preview {
+  display: inline-flex;
+  align-items: baseline;
+  color: color-mix(in srgb, var(--resource-color) 60%, var(--color-text-muted));
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.resource-preview.is-gain,
+.resource-preview.is-loss {
+  color: var(--color-magenta);
 }
 
 .resource-minerals {
@@ -1165,6 +1202,11 @@
 }
 
 @media (max-width: 700px) {
+  .quiz-page-heading {
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
   .quiz-resources-header {
     align-items: flex-start;
     flex-direction: column;
@@ -1259,6 +1301,20 @@
   overflow: hidden;
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#base-3d-container.is-3d-unavailable::after {
+  content: "Visualização 3D indisponível neste carregamento.";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--color-text-muted);
+  background: rgba(5, 8, 16, 0.78);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-align: center;
 }
 
 .base-3d-label {
@@ -1422,7 +1478,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
   width: 42px;
   height: 42px;
 

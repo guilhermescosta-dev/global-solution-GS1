@@ -374,6 +374,19 @@
     text-align: center;
   }
 
+  .como-jogar-hero-imagem {
+    align-self: stretch;
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    height: clamp(190px, 53vw, 240px);
+    max-height: none;
+    aspect-ratio: 16 / 9;
+    background: transparent;
+    object-fit: cover;
+    object-position: center top;
+  }
+
   .como-jogar-section {
     padding: 56px 0;
   }
