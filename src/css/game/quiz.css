@@ -1500,22 +1500,32 @@
 }
 
 
-/* Ajuste específico para botões do Intro.js em telas pequenas */
-@media (max-width: 600px) {
-  .introjs-tooltip {
-    min-width: 90vw !important;
-    margin-left: 5vw !important;
-    margin-right: 5vw !important;
-  }
-  
-  .introjs-tooltipbuttons {
-    flex-wrap: wrap; /* Garante que os botões quebrem linha se necessário */
-    justify-content: center !important;
-  }
+/* 1. Garante que o Intro.js esteja ACIMA de qualquer elemento da base 3D ou Header */
+.introjs-overlay, 
+.introjs-helperLayer, 
+.introjs-tooltip {
+    z-index: 1000001 !important; /* Maior que o header (1000) e o confirm-overlay (3000) */
+}
 
-  .introjs-button {
-    width: 100%; /* Botões ocupam a largura toda para facilitar o toque */
-    text-align: center;
-    margin-bottom: 5px;
-  }
+/* 2. Evita que o container 3D capture cliques durante o tutorial no mobile */
+.introjs-showElement #base-3d-container {
+    z-index: 1000000 !important;
+    pointer-events: none; /* Impede o canvas de "roubar" o clique do botão Próximo */
+}
+
+/* 3. Ajuste para o tooltip não ser cortado ou ficar atrás de elementos fixos */
+@media (max-width: 768px) {
+    .introjs-tooltip {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        margin: 0 !important;
+        width: 90vw !important;
+        max-width: 90vw !important;
+    }
+    
+    .introjs-arrow {
+        display: none !important; /* Remove a seta no mobile para centralizar o card */
+    }
 }
