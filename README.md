@@ -65,7 +65,6 @@ O projeto trabalha sustentabilidade a partir de decisões de jogo e se relaciona
 - **JavaScript**
 - **Bootstrap 5**
 - **Bootstrap Icons**
-- **Intro.js**
 - **Three.js**
 - **localStorage**
 
@@ -109,22 +108,22 @@ O projeto trabalha sustentabilidade a partir de decisões de jogo e se relaciona
 
 Este projeto é estático, então não precisa instalar dependências.
 
-### Opção 1: abrir diretamente pelo arquivo
+### Opção 1: abrir com Live Server (recomendado)
 
-Abra o arquivo `index.html` no navegador:
-
-```text
-index.html
-```
-
-### Opção 2: abrir com Live Server
-
-Também é possível abrir o projeto com a extensão Live Server do VS Code.
+Para uma melhor experiência, recomenda-se abrir o projeto primeiro com a extensão Live Server do VS Code. Assim, as páginas são carregadas por uma URL HTTP, o que melhora a navegação entre telas e evita bloqueios do navegador em recursos incorporados, como o pitch em vídeo.
 
 Exemplo de URL:
 
 ```text
 http://127.0.0.1:5500/index.html
+```
+
+### Opção 2: abrir diretamente pelo arquivo
+
+Como alternativa, abra o arquivo `index.html` diretamente no navegador:
+
+```text
+index.html
 ```
 
 ### _-Observação sobre o pitch vídeo_
