@@ -833,6 +833,7 @@ class LunarGameUI {
       showBullets: false,
       exitOnOverlayClick: false,
       scrollToElement: true,
+      responsive: true,
       steps: [
         {
           intro: `

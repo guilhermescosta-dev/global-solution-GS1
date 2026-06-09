@@ -1498,3 +1498,24 @@
   border-color: rgba(0, 217, 255, 0.6);
   transform: translateY(-2px);
 }
+
+
+/* Ajuste específico para botões do Intro.js em telas pequenas */
+@media (max-width: 600px) {
+  .introjs-tooltip {
+    min-width: 90vw !important;
+    margin-left: 5vw !important;
+    margin-right: 5vw !important;
+  }
+  
+  .introjs-tooltipbuttons {
+    flex-wrap: wrap; /* Garante que os botões quebrem linha se necessário */
+    justify-content: center !important;
+  }
+
+  .introjs-button {
+    width: 100%; /* Botões ocupam a largura toda para facilitar o toque */
+    text-align: center;
+    margin-bottom: 5px;
+  }
+}
