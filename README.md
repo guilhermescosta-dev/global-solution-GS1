@@ -108,7 +108,13 @@ O projeto trabalha sustentabilidade a partir de decisões de jogo e se relaciona
 
 Este projeto é estático, então não precisa instalar dependências.
 
-### Opção 1: abrir com Live Server (recomendado)
+### Opção 1: acessar o projeto em deploy
+
+Acesse o deploy do projeto pelo link:
+
+[https://global-solution-gs-1.vercel.app/](https://global-solution-gs-1.vercel.app/)
+
+### Opção 2: abrir com Live Server (recomendado)
 
 Para uma melhor experiência, recomenda-se abrir o projeto primeiro com a extensão Live Server do VS Code. Assim, as páginas são carregadas por uma URL HTTP, o que melhora a navegação entre telas e evita bloqueios do navegador em recursos incorporados, como o pitch em vídeo.
 
@@ -118,7 +124,7 @@ Exemplo de URL:
 http://127.0.0.1:5500/index.html
 ```
 
-### Opção 2: abrir diretamente pelo arquivo
+### Opção 3: abrir diretamente pelo arquivo
 
 Como alternativa, abra o arquivo `index.html` diretamente no navegador:
 
