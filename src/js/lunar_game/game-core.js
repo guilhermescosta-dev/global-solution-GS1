@@ -803,7 +803,6 @@ class LunarGameUI {
   checkFirstVisit() {
     const visited = localStorage.getItem('lunar-tutorial-visited');
 
-    // Vincular o clique do botao de tutorial (apenas uma vez)
     const btn = document.getElementById('btn-tutorial');
     if (btn && !btn.dataset.tutorialBound) {
       btn.dataset.tutorialBound = 'true';
@@ -814,73 +813,89 @@ class LunarGameUI {
       });
     }
 
-    // Iniciar o tutorial automaticamente na primeira visita a construcao
     if (!visited && typeof introJs !== 'undefined') {
-      setTimeout(() => {
-        this.startTutorial();
-        localStorage.setItem('lunar-tutorial-visited', 'true');
-      }, 500);
+      // Aguarda o elemento estar visível e com layout calculado
+      const waitForElement = () => {
+        const el = document.getElementById('base-3d-container');
+        if (el && !el.hidden && el.offsetHeight > 0) {
+          this.startTutorial();
+          localStorage.setItem('lunar-tutorial-visited', 'true');
+        } else {
+          setTimeout(waitForElement, 100);
+        }
+      };
+      setTimeout(waitForElement, 500);
     }
   }
 
   startTutorial() {
-    introJs().setOptions({
-      nextLabel: 'Próximo →',
-      prevLabel: '← Voltar',
-      doneLabel: '<i class="bi bi-rocket-takeoff-fill"></i> Começar missão',
-      dontShowAgain: false,
-      showProgress: true,
-      showBullets: false,
-      exitOnOverlayClick: false,
-      scrollToElement: true,
-      steps: [
-        {
-          intro: `
-            <div class="ktisis-intro-step">
-              <div class="ktisis-intro-icon"><i class="bi bi-moon-stars-fill"></i></div>
-              <h3>Bem-vindo à Operação Ktisis</h3>
-              <p>Você é o comandante de uma base lunar em construção. Sua missão: manter a tripulação viva e expandir a base respondendo corretamente às perguntas científicas.</p>
-              <p class="ktisis-intro-tip">Este tutorial vai te mostrar como tudo funciona em menos de 1 minuto.</p>
-            </div>
-          `
-        },
-        {
-          element: document.getElementById('base-3d-container'),
-          intro: `
-            <div class="ktisis-intro-step">
-              <div class="ktisis-intro-icon"><i class="bi bi-building-fill-add"></i></div>
-              <h3>Sua Base Lunar</h3>
-              <p>Esta é a visualização 3D da sua base. Ela evolui conforme você constrói novos módulos.</p>
-              <p>Ao construir e melhorar módulos, você verá a base crescer em tempo real aqui.</p>
-            </div>
-          `
-        },
-        {
-          element: document.querySelector('.quiz-resources'),
-          intro: `
-            <div class="ktisis-intro-step">
-              <div class="ktisis-intro-icon"><i class="bi bi-box-seam-fill"></i></div>
-              <h3>Recursos Operacionais</h3>
-              <p>Estes são seus recursos: <strong>Minerais, Componentes e Biomassa</strong>. Você os ganha respondendo perguntas corretamente.</p>
-              <p>Recursos são usados para <strong>construir e melhorar módulos</strong> da base no final de cada semana.</p>
-            </div>
-          `
-        },
-        {
-          element: document.querySelector('.quiz-card'), // Altere para a classe real que envolve os blocos de upgrade
-          intro: `
-          <div class="ktisis-intro-step">
-            <div class="ktisis-intro-icon"><i class="bi bi-tools"></i></div>
-            <h3>Construção e Upgrades</h3>
-            <p>Utilize os recursos acumulados para construir ou melhorar os módulos vitais da sua base lunar.</p>
-            <p>Gerencie com sabedoria a <strong>Energia, Água, Oxigênio e Alimentos</strong> para garantir a sobrevivência da colônia.</p>
-            <p class="ktisis-intro-tip"><i class="bi bi-lightbulb-fill text-warning"></i> Clique em um módulo para prever o impacto que a melhoria causará nos seus recursos atuais!</p>
-          </div>
-  `
-        }
-      ]
-    }).start();
-  }
+  const resolve = (selector, byId = false) => {
+    const el = byId
+      ? document.getElementById(selector)
+      : document.querySelector(selector);
+    return el && el.offsetHeight > 0 ? el : undefined;
+  };
+
+  const steps = [
+    {
+      intro: `
+        <div class="ktisis-intro-step">
+          <div class="ktisis-intro-icon"><i class="bi bi-moon-stars-fill"></i></div>
+          <h3>Bem-vindo à Operação Ktisis</h3>
+          <p>Você é o comandante de uma base lunar em construção. Sua missão: manter a tripulação viva e expandir a base respondendo corretamente às perguntas científicas.</p>
+          <p class="ktisis-intro-tip">Este tutorial vai te mostrar como tudo funciona em menos de 1 minuto.</p>
+        </div>
+      `
+    },
+    {
+      element: resolve('base-3d-container', true),
+      intro: `
+        <div class="ktisis-intro-step">
+          <div class="ktisis-intro-icon"><i class="bi bi-building-fill-add"></i></div>
+          <h3>Sua Base Lunar</h3>
+          <p>Esta é a visualização 3D da sua base. Ela evolui conforme você constrói novos módulos.</p>
+          <p>Ao construir e melhorar módulos, você verá a base crescer em tempo real aqui.</p>
+        </div>
+      `
+    },
+    {
+      element: resolve('.quiz-resources'),
+      intro: `
+        <div class="ktisis-intro-step">
+          <div class="ktisis-intro-icon"><i class="bi bi-box-seam-fill"></i></div>
+          <h3>Recursos Operacionais</h3>
+          <p>Estes são seus recursos: <strong>Minerais, Componentes e Biomassa</strong>. Você os ganha respondendo perguntas corretamente.</p>
+          <p>Recursos são usados para <strong>construir e melhorar módulos</strong> da base no final de cada semana.</p>
+        </div>
+      `
+    },
+    {
+      element: resolve('.quiz-card'),
+      intro: `
+        <div class="ktisis-intro-step">
+          <div class="ktisis-intro-icon"><i class="bi bi-tools"></i></div>
+          <h3>Construção e Upgrades</h3>
+          <p>Utilize os recursos acumulados para construir ou melhorar os módulos vitais da sua base lunar.</p>
+          <p>Gerencie com sabedoria a <strong>Energia, Água, Oxigênio e Alimentos</strong> para garantir a sobrevivência da colônia.</p>
+          <p class="ktisis-intro-tip"><i class="bi bi-lightbulb-fill text-warning"></i> Clique em um módulo para prever o impacto que a melhoria causará nos seus recursos atuais!</p>
+        </div>
+      `
+    }
+  ];
+
+  introJs().setOptions({
+    nextLabel: 'Próximo →',
+    prevLabel: '← Voltar',
+    doneLabel: '<i class="bi bi-rocket-takeoff-fill"></i> Começar missão',
+    dontShowAgain: false,
+    showProgress: true,
+    showBullets: false,
+    exitOnOverlayClick: false,
+    scrollToElement: true,
+    disableInteraction: false,
+    steps
+  }).start();
+}
 
 
   // ─── STATE & RENDER ──────────────────────────────────────────────────────
