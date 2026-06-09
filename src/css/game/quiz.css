@@ -1337,7 +1337,9 @@
   border: 1px solid rgba(100, 160, 255, 0.3) !important;
   border-radius: 16px !important;
   box-shadow: 0 8px 40px rgba(0, 80, 200, 0.35) !important;
-  max-width: 360px !important;
+  min-width: 280px !important;
+  max-width: min(360px, calc(100vw - 32px)) !important;
+  width: min(360px, calc(100vw - 32px)) !important;
   padding: 0 !important;
 }
 
@@ -1498,6 +1500,3 @@
   border-color: rgba(0, 217, 255, 0.6);
   transform: translateY(-2px);
 }
-
-
-
