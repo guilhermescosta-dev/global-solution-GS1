@@ -109,15 +109,33 @@ O projeto trabalha sustentabilidade a partir de decisões de jogo e se relaciona
 
 Este projeto é estático, então não precisa instalar dependências.
 
-Abrir diretamente
+### Opção 1: abrir diretamente pelo arquivo
+
+Abra o arquivo `index.html` no navegador:
 
 ```text
 index.html
 ```
 
+### Opção 2: abrir com Live Server
+
+Também é possível abrir o projeto com a extensão Live Server do VS Code.
+
+Exemplo de URL:
+
+```text
+http://127.0.0.1:5500/index.html
+```
+
+### _-Observação sobre o pitch vídeo_
+
+O pitch está incorporado na página inicial por iframe do YouTube quando o projeto é aberto por uma URL HTTP, como no Live Server.
+
+Ao abrir o projeto diretamente por `file://`, alguns navegadores podem bloquear a configuração do player incorporado do YouTube. Por isso, nessa situação a página mostra um fallback visual com link para abrir o vídeo diretamente no YouTube.
+
 ## Equipe
 
-**Equipe 1ESOB - FIAP 2026**
+### Equipe 1ESOB - FIAP 2026
 
 - Estevão Nunes Gabriel - RM571413
 - Guilherme Silva Costa - RM573826
