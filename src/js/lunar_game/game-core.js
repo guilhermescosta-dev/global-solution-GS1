@@ -828,14 +828,15 @@ class LunarGameUI {
     }
   }
 
-  startTutorial() {
+startTutorial() {
   const isMobile = window.innerWidth < 768;
 
   const resolve = (selector, byId = false) => {
+    if (isMobile) return undefined;
     const el = byId
       ? document.getElementById(selector)
       : document.querySelector(selector);
-    return (!isMobile && el && el.offsetHeight > 0) ? el : undefined;
+    return (el && el.offsetHeight > 0) ? el : undefined;
   };
 
   const steps = [
@@ -850,13 +851,14 @@ class LunarGameUI {
       `
     },
     {
-      element: resolve('base-3d-container', true), // undefined em mobile → tooltip flutuante, sem overlay preso
+      element: resolve('base-3d-container', true),
       intro: `
         <div class="ktisis-intro-step">
           <div class="ktisis-intro-icon"><i class="bi bi-building-fill-add"></i></div>
           <h3>Sua Base Lunar</h3>
           <p>Esta é a visualização 3D da sua base. Ela evolui conforme você constrói novos módulos.</p>
           <p>Ao construir e melhorar módulos, você verá a base crescer em tempo real aqui.</p>
+          ${isMobile ? `<p class="ktisis-intro-tip"><i class="bi bi-arrow-up"></i> Veja a visualização 3D acima.</p>` : ''}
         </div>
       `
     },
@@ -868,6 +870,7 @@ class LunarGameUI {
           <h3>Recursos Operacionais</h3>
           <p>Estes são seus recursos: <strong>Minerais, Componentes e Biomassa</strong>. Você os ganha respondendo perguntas corretamente.</p>
           <p>Recursos são usados para <strong>construir e melhorar módulos</strong> da base no final de cada semana.</p>
+          ${isMobile ? `<p class="ktisis-intro-tip"><i class="bi bi-arrow-up"></i> Veja a barra de recursos no topo da tela.</p>` : ''}
         </div>
       `
     },
@@ -880,6 +883,7 @@ class LunarGameUI {
           <p>Utilize os recursos acumulados para construir ou melhorar os módulos vitais da sua base lunar.</p>
           <p>Gerencie com sabedoria a <strong>Energia, Água, Oxigênio e Alimentos</strong> para garantir a sobrevivência da colônia.</p>
           <p class="ktisis-intro-tip"><i class="bi bi-lightbulb-fill text-warning"></i> Clique em um módulo para prever o impacto que a melhoria causará nos seus recursos atuais!</p>
+          ${isMobile ? `<p class="ktisis-intro-tip"><i class="bi bi-arrow-down"></i> Veja os módulos abaixo.</p>` : ''}
         </div>
       `
     }
@@ -893,7 +897,7 @@ class LunarGameUI {
     showProgress: true,
     showBullets: false,
     exitOnOverlayClick: false,
-    scrollToElement: !isMobile, // desativa scroll automático em mobile também
+    scrollToElement: !isMobile,
     disableInteraction: false,
     steps
   }).start();
