@@ -96,8 +96,11 @@
 
             <div class="hero-video">
               <iframe
+                id="pitch-iframe"
                 src="https://www.youtube-nocookie.com/embed/LyQNm26bJTY?rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;playsinline=1"
                 title="Pitch vídeo Operação Ktisis"
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
                 allow="
                   accelerometer;
                   autoplay;
@@ -109,6 +112,32 @@
                 "
                 allowfullscreen
               ></iframe>
+
+              <a
+                class="hero-video-fallback"
+                href="https://youtu.be/LyQNm26bJTY"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Assistir pitch vídeo Operação Ktisis no YouTube"
+              >
+                <img
+                  src="https://img.youtube.com/vi/LyQNm26bJTY/hqdefault.jpg"
+                  alt=""
+                  class="hero-video-thumbnail"
+                  loading="lazy"
+                />
+                <span class="hero-video-fallback-conteudo">
+                  <span class="hero-video-play" aria-hidden="true">
+                    <i class="bi bi-play-fill"></i>
+                  </span>
+                  <span class="hero-video-fallback-texto">
+                    <strong>Assistir no YouTube</strong>
+                    <small
+                      >Clique aqui para abrir o vídeo no YouTube.</small
+                    >
+                  </span>
+                </span>
+              </a>
             </div>
           </div>
         </section>
