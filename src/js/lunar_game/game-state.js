@@ -170,9 +170,14 @@ function getModulesData() {
  * Gera perguntas aleatórias balanceadas para uma semana específica.
  * Garante que haja exatamente 1 pergunta de cada recurso operacional.
  */
-function generateBalancedQuestionsForWeek(week) {
+function generateBalancedQuestionsForWeek(week, state = {}) {
   const questions = getQuestionsData();
   const resources = ['minerais', 'componentes', 'biomassa'];
+  const usedIndices = new Set(
+    Object.entries(state.weeklyQuestionIndices ?? {})
+      .filter(([weekKey]) => weekKey !== `week_${week}`)
+      .flatMap(([, indices]) => Array.isArray(indices) ? indices : []),
+  );
   
   // Agrupar perguntas por recurso
   const questionsByResource = {
@@ -191,9 +196,12 @@ function generateBalancedQuestionsForWeek(week) {
   const selectedIndices = [];
   resources.forEach(resource => {
     const availableIndices = questionsByResource[resource];
-    if (availableIndices.length > 0) {
-      const randomIndex = Math.floor(Math.random() * availableIndices.length);
-      selectedIndices.push(availableIndices[randomIndex]);
+    const unusedIndices = availableIndices.filter((index) => !usedIndices.has(index));
+    const pool = unusedIndices.length > 0 ? unusedIndices : availableIndices;
+
+    if (pool.length > 0) {
+      const randomIndex = Math.floor(Math.random() * pool.length);
+      selectedIndices.push(pool[randomIndex]);
     }
   });
   
@@ -234,9 +242,21 @@ function getCurrentQuestion(state) {
   
   // Gerar ou recuperar os índices das perguntas para esta semana
   const weekKey = `week_${week}`;
-  if (!state.weeklyQuestionIndices[weekKey]) {
+  const currentWeekIndices = state.weeklyQuestionIndices[weekKey];
+  const usedPreviousIndices = new Set(
+    Object.entries(state.weeklyQuestionIndices ?? {})
+      .filter(([key]) => key !== weekKey)
+      .flatMap(([, indices]) => Array.isArray(indices) ? indices : []),
+  );
+  const hasAnswersInCurrentWeek = (state.questionResults ?? []).some(Boolean);
+  const shouldRegenerateWeek =
+    !Array.isArray(currentWeekIndices) ||
+    currentWeekIndices.length < CONFIG.QUESTIONS_PER_WEEK ||
+    (!hasAnswersInCurrentWeek && currentWeekIndices.some((index) => usedPreviousIndices.has(index)));
+
+  if (shouldRegenerateWeek) {
     // Gerar novas perguntas balanceadas para a semana
-    const indices = generateBalancedQuestionsForWeek(week);
+    const indices = generateBalancedQuestionsForWeek(week, state);
     state.weeklyQuestionIndices[weekKey] = indices;
     saveState(state);
   }

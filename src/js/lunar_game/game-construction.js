@@ -1,6 +1,5 @@
 ﻿Object.assign(LunarGameUI.prototype, {
   renderConstruction() {
-    this.updateResources(null);
     this.quizCard.classList.add("is-summary-mode");
     this.quizForm.hidden = false;
     if (this.formActions) this.formActions.hidden = true;
@@ -19,6 +18,7 @@
     const previewVital = previewState
       ? this.applyVitalCaps(this.calculateWeekVitalChanges(previewState)).vitalAfter
       : this.createSkipWeekPreview();
+    this.updateResources(null, previewState?.operational ?? this.state.operational);
     const moduleCards = Object.entries(modules)
       .map(([key, module]) => this.createModuleCard(key, module))
       .join("");
@@ -173,15 +173,16 @@
 
     const production = this.createVitalEffectTags(levelData.prod, previousLevelData?.prod, "prod");
     const consumption = this.createVitalEffectTags(levelData.cons, previousLevelData?.cons, "cons");
+    const isUpgradePreview = Boolean(previousLevelData);
 
     return `
       <div class="module-effects">
         <div class="effect-group">
-          <strong>Produz</strong>
+          <strong>${isUpgradePreview ? "Adiciona" : "Produz"}</strong>
           <div>${production || `<span class="module-tag is-neutral">Nada</span>`}</div>
         </div>
         <div class="effect-group">
-          <strong>Consome</strong>
+          <strong>${isUpgradePreview ? "Ajusta consumo" : "Consome"}</strong>
           <div>${consumption || `<span class="module-tag is-neutral">Nada</span>`}</div>
         </div>
       </div>
@@ -216,7 +217,7 @@
       return `
         <article class="build-selection-callout">
           <strong>Escolha um módulo para prever o impacto.</strong>
-          <p>As barras acima mostram como a base ficará ao guardar recursos ou confirmar uma construção.</p>
+          <p>As barras e o inventário mostram como a base ficará ao guardar recursos ou confirmar uma construção.</p>
         </article>
       `;
     }
@@ -224,7 +225,7 @@
     return `
       <article class="build-selection-callout is-selected">
         <strong>${module.name} selecionado</strong>
-        <p>Confira o impacto nos recursos vitais e confirme para aplicar esta escolha na semana.</p>
+        <p>Confira o impacto nos recursos vitais e no inventário antes de confirmar a escolha.</p>
       </article>
     `;
   },
