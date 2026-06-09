@@ -870,7 +870,7 @@ startTutorial() {
           <h3>Recursos Operacionais</h3>
           <p>Estes são seus recursos: <strong>Minerais, Componentes e Biomassa</strong>. Você os ganha respondendo perguntas corretamente.</p>
           <p>Recursos são usados para <strong>construir e melhorar módulos</strong> da base no final de cada semana.</p>
-          ${isMobile ? `<p class="ktisis-intro-tip"><i class="bi bi-arrow-up"></i> Veja a barra de recursos no topo da tela.</p>` : ''}
+          ${isMobile ? `<p class="ktisis-intro-tip"><i class="bi bi-arrow-up"></i> Veja a barra de recursos operacionais abaixo do modelo 3d.</p>` : ''}
         </div>
       `
     },
