@@ -829,11 +829,13 @@ class LunarGameUI {
   }
 
   startTutorial() {
+  const isMobile = window.innerWidth < 768;
+
   const resolve = (selector, byId = false) => {
     const el = byId
       ? document.getElementById(selector)
       : document.querySelector(selector);
-    return el && el.offsetHeight > 0 ? el : undefined;
+    return (!isMobile && el && el.offsetHeight > 0) ? el : undefined;
   };
 
   const steps = [
@@ -848,7 +850,7 @@ class LunarGameUI {
       `
     },
     {
-      element: resolve('base-3d-container', true),
+      element: resolve('base-3d-container', true), // undefined em mobile → tooltip flutuante, sem overlay preso
       intro: `
         <div class="ktisis-intro-step">
           <div class="ktisis-intro-icon"><i class="bi bi-building-fill-add"></i></div>
@@ -891,7 +893,7 @@ class LunarGameUI {
     showProgress: true,
     showBullets: false,
     exitOnOverlayClick: false,
-    scrollToElement: true,
+    scrollToElement: !isMobile, // desativa scroll automático em mobile também
     disableInteraction: false,
     steps
   }).start();
